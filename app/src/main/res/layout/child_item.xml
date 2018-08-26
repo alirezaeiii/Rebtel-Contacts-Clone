@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@drawable/contact_selector"
+        android:paddingLeft="86dp"
+        android:paddingStart="86dp">
+
+        <TextView
+            android:id="@+id/contact_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="13sp"
+            tools:text="+989121895634" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingEnd="8dp"
+            android:paddingRight="8dp"
+            android:textSize="13sp"
+            tools:text="Mobile" />
+
+        <View
+            android:id="@+id/child_line"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="16dp"
+            android:background="#DCDCDC" />
+
+    </RelativeLayout>
+
+</FrameLayout>
