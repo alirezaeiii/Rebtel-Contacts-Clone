@@ -1,7 +1,6 @@
 package com.sample.android.contact;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
@@ -9,19 +8,12 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
+import android.telephony.PhoneNumberUtils;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.sample.android.contact.Utils.deAccent;
-import static com.sample.android.contact.Utils.getTypeValue;
 
 public class ContactsActivity extends AppCompatActivity {
 
@@ -71,19 +63,23 @@ public class ContactsActivity extends AppCompatActivity {
                 int type = cursor.getInt(typeIndex);
 
                 List<PhoneNumber> numbers = new ArrayList<>();
-                PhoneNumber phoneNumber = new PhoneNumber(number, type);
+                PhoneNumber phoneNumber = new PhoneNumber(
+                        PhoneNumberUtils.normalizeNumber(number),
+                        type);
                 numbers.add(phoneNumber);
                 Contact contact = new Contact(name, numbers);
                 int index = contacts.indexOf(contact);
 
-                if(index == -1) {
+                if (index == -1) {
                     contacts.add(contact);
                 } else {
                     contact = contacts.get(index);
                     numbers = contact.getPhoneNumbers();
-                    numbers.add(phoneNumber);
-                    contact.setNumbers(numbers);
-                    contacts.set(index, contact);
+                    if (numbers.indexOf(phoneNumber) == -1) {
+                        numbers.add(phoneNumber);
+                        contact.setNumbers(numbers);
+                        contacts.set(index, contact);
+                    }
                 }
             }
 

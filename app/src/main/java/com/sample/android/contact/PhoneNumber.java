@@ -17,4 +17,13 @@ public class PhoneNumber {
     public int getType() {
         return type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof PhoneNumber)) {
+            return false;
+        }
+        PhoneNumber other = (PhoneNumber) o;
+        return other.number.equals(this.number);
+    }
 }
