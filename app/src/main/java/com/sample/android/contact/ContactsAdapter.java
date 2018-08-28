@@ -191,23 +191,19 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
 
             default:
 
-                if (groupPosition == mContacts.size() - 1 &&
-                        mContacts.get(groupPosition).getPhoneNumbers().size() == 1) {
+                if (groupPosition == mContacts.size() - 1) {
                     showLine = false;
                 } else {
-                    try {
-                        Contact nextContact = (Contact) getGroup(groupPosition + 1);
+                    Contact nextContact = (Contact) getGroup(groupPosition + 1);
 
-                        String nextName = deAccent(nextContact.getName());
-                        char[] nextNameArray = nextName.toUpperCase().toCharArray();
-                        char[] nameArray = deAccent(name).toUpperCase().toCharArray();
+                    String nextName = deAccent(nextContact.getName());
+                    char[] nextNameArray = nextName.toUpperCase().toCharArray();
+                    char[] nameArray = deAccent(name).toUpperCase().toCharArray();
 
-                        if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
-                                (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
-                                        && nameArray[0] != nextNameArray[0])) {
-                            showLine = false;
-                        }
-                    } catch (IndexOutOfBoundsException e) {
+                    if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
+                            (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
+                                    && nameArray[0] != nextNameArray[0])) {
+                        showLine = false;
                     }
                 }
 
@@ -241,9 +237,9 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
         contactNumber.setText(phoneNumber.getNumber());
         numberType.setText(getTypeValue(phoneNumber.getType()));
 
-        boolean showLine = true;
+        boolean lineFlag = true;
 
-        if (childPosition == mContacts.get(groupPosition).getPhoneNumbers().size() - 1) {
+        if (isLastChild || childPosition == 0) {
             try {
                 Contact nextContact = (Contact) getGroup(groupPosition + 1);
 
@@ -252,15 +248,18 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
                 char[] nameArray = deAccent(mContacts.get(groupPosition).getName()).toUpperCase().toCharArray();
 
                 if (Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) {
-                    showLine = false;
+                    lineFlag = false;
                 }
             } catch (IndexOutOfBoundsException e) {
-                showLine = false;
+                lineFlag = false;
             }
         }
 
         View childLine = convertView.findViewById(R.id.child_line);
-        childLine.setVisibility(showLine ? View.VISIBLE : View.GONE);
+        childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
+
+        View childTopLine = convertView.findViewById(R.id.child_top_line);
+        childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
 
         return convertView;
     }

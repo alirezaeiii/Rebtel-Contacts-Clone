@@ -41,6 +41,13 @@
             android:layout_marginTop="16dp"
             android:background="#DCDCDC" />
 
+        <View
+            android:id="@+id/child_top_line"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#DCDCDC" />
+
     </RelativeLayout>
 
 </FrameLayout>
