@@ -247,7 +247,8 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
                 char[] nextNameArray = nextName.toUpperCase().toCharArray();
                 char[] nameArray = deAccent(mContacts.get(groupPosition).getName()).toUpperCase().toCharArray();
 
-                if (Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) {
+                if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
+                        && nameArray[0] != nextNameArray[0]) {
                     lineFlag = false;
                 }
             } catch (IndexOutOfBoundsException e) {
