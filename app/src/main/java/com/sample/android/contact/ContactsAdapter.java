@@ -90,16 +90,23 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
         TextView contactNameView = (TextView) view.findViewById(R.id.contact_name);
         TextView phoneNumberView = (TextView) view.findViewById(R.id.phone_number);
         TextView phoneNumberType = (TextView) view.findViewById(R.id.phone_type);
+        TextView lineNumber = (TextView) view.findViewById(R.id.line_number);
 
         String name = contact.getName();
         List<PhoneNumber> numbers = contact.getPhoneNumbers();
         String number = numbers.size() == 1 ? numbers.get(0).getNumber() : "";
-        int type = numbers.size() == 1 ? numbers.get(0).getType() : -1;
 
         contactNameView.setText(name);
         phoneNumberView.setText(number);
-        phoneNumberType.setText(type == -1 ? String.valueOf(numbers.size()) : getTypeValue(type));
-
+        if(numbers.size() == 1) {
+            phoneNumberType.setVisibility(View.VISIBLE);
+            lineNumber.setVisibility(View.INVISIBLE);
+            phoneNumberType.setText(getTypeValue(numbers.get(0).getType()));
+        } else {
+            lineNumber.setVisibility(View.VISIBLE);
+            phoneNumberType.setVisibility(View.INVISIBLE);
+            lineNumber.setText(String.valueOf(numbers.size()));
+        }
 
         TextView imageText = view.findViewById(R.id.image_text);
         String[] splitedName = name.split("\\s+");
