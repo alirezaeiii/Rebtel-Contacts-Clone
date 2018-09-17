@@ -5,49 +5,65 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:background="@drawable/contact_selector"
-        android:paddingLeft="86dp"
-        android:paddingStart="86dp">
+        android:background="@drawable/contact_selector">
 
-        <TextView
-            android:id="@+id/contact_number"
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="13sp"
-            tools:text="+989121895634" />
+            android:layout_height="wrap_content"
+            tools:paddingLeft="64dp"
+            tools:paddingStart="64dp">
 
-        <TextView
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:paddingEnd="8dp"
-            android:paddingRight="8dp"
-            android:textSize="13sp"
-            tools:text="Mobile" />
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:paddingLeft="22dp"
+                tools:paddingStart="22dp">
 
-        <View
-            android:id="@+id/child_line"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="16dp"
-            android:background="#DCDCDC" />
+                <TextView
+                    android:id="@+id/contact_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    tools:text="+989121895634" />
 
-        <View
-            android:id="@+id/child_top_line"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_alignParentTop="true"
-            android:background="#DCDCDC" />
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="13sp"
+                    tools:text="Mobile" />
 
-    </RelativeLayout>
+                <View
+                    android:id="@+id/child_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="16dp"
+                    android:background="#DCDCDC" />
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/child_top_line"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="#DCDCDC" />
+
+        </FrameLayout>
+
+    </FrameLayout>
 
 </FrameLayout>

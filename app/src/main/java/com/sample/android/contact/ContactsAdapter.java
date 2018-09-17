@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -98,7 +100,7 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
 
         contactNameView.setText(name);
         phoneNumberView.setText(number);
-        if(numbers.size() == 1) {
+        if (numbers.size() == 1) {
             phoneNumberType.setVisibility(View.VISIBLE);
             lineNumber.setVisibility(View.INVISIBLE);
             phoneNumberType.setText(getTypeValue(numbers.get(0).getType()));
@@ -268,6 +270,39 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
 
         View childTopLine = convertView.findViewById(R.id.child_top_line);
         childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
+
+        View frameLayout = convertView.findViewById(R.id.frameLayout);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+
+        View relativeLayout = convertView.findViewById(R.id.relativeLayout);
+        FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        if (lineFlag) {
+            lp.setMarginStart((int) mContext.getResources().getDimension(R.dimen.dimen_frame_margin_default));
+            frameLayout.setLayoutParams(lp);
+
+            rlp.setMarginStart((int) mContext.getResources().getDimension(R.dimen.dimen_relative_margin_default));
+            relativeLayout.setLayoutParams(rlp);
+        } else {
+
+            if (childPosition == 0) {
+                lp.setMarginStart((int) mContext.getResources().getDimension(R.dimen.dimen_frame_margin_default));
+                frameLayout.setLayoutParams(lp);
+
+                rlp.setMarginStart((int) mContext.getResources().getDimension(R.dimen.dimen_relative_margin_default));
+                relativeLayout.setLayoutParams(rlp);
+
+            } else {
+
+                lp.setMarginStart((int) mContext.getResources().getDimension(R.dimen.dimen_frame_margin));
+                frameLayout.setLayoutParams(lp);
+
+                rlp.setMarginStart(0);
+                relativeLayout.setLayoutParams(rlp);
+            }
+        }
 
         return convertView;
     }
