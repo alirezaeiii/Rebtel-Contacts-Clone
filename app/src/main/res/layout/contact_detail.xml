@@ -74,8 +74,10 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
-        app:layout_constraintStart_toEndOf="@id/vertical_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline">
 
         <TextView
@@ -84,16 +86,9 @@
             android:layout_height="24dp"
             android:background="@drawable/contact_circle"
             android:gravity="center"
-            android:text="2" />
+            tools:text="2" />
 
     </FrameLayout>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/vertical_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.88" />
 
     <View
         android:id="@+id/line"

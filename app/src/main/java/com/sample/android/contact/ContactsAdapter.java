@@ -179,7 +179,7 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
             if (Character.isLetter(ch)) {
                 separatorText.setText(name.toCharArray(), 0, 1);
             } else {
-                separatorText.setText("#");
+                separatorText.setText("&");
             }
             separatorView.setVisibility(View.VISIBLE);
         } else {
