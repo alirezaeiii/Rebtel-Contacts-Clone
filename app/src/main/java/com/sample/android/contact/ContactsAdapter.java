@@ -248,21 +248,19 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
 
         boolean lineFlag = true;
 
-        if (isLastChild || childPosition == 0) {
-            try {
-                Contact nextContact = (Contact) getGroup(groupPosition + 1);
+        try {
+            Contact nextContact = (Contact) getGroup(groupPosition + 1);
 
-                String nextName = deAccent(nextContact.getName());
-                char[] nextNameArray = nextName.toUpperCase().toCharArray();
-                char[] nameArray = deAccent(mContacts.get(groupPosition).getName()).toUpperCase().toCharArray();
+            String nextName = deAccent(nextContact.getName());
+            char[] nextNameArray = nextName.toUpperCase().toCharArray();
+            char[] nameArray = deAccent(mContacts.get(groupPosition).getName()).toUpperCase().toCharArray();
 
-                if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
-                        && nameArray[0] != nextNameArray[0]) {
-                    lineFlag = false;
-                }
-            } catch (IndexOutOfBoundsException e) {
+            if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
+                    && nameArray[0] != nextNameArray[0]) {
                 lineFlag = false;
             }
+        } catch (IndexOutOfBoundsException e) {
+            lineFlag = false;
         }
 
         View childLine = convertView.findViewById(R.id.child_line);
