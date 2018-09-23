@@ -47,20 +47,15 @@
 
                 <View
                     android:id="@+id/child_line"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
+                    style="@style/LineStyle"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="16dp"
-                    android:background="#DCDCDC" />
+                    android:layout_marginTop="16dp" />
 
             </RelativeLayout>
 
             <View
                 android:id="@+id/child_top_line"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_alignParentTop="true"
-                android:background="#DCDCDC" />
+                style="@style/LineStyle" />
 
         </FrameLayout>
 

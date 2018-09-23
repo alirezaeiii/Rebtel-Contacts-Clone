@@ -248,7 +248,9 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
 
         boolean lineFlag = true;
 
-        try {
+        if (groupPosition == mContacts.size() - 1) {
+            lineFlag = false;
+        } else {
             Contact nextContact = (Contact) getGroup(groupPosition + 1);
 
             String nextName = deAccent(nextContact.getName());
@@ -259,8 +261,6 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
                     && nameArray[0] != nextNameArray[0]) {
                 lineFlag = false;
             }
-        } catch (IndexOutOfBoundsException e) {
-            lineFlag = false;
         }
 
         View childLine = convertView.findViewById(R.id.child_line);
