@@ -6,6 +6,8 @@ public class Contact {
 
     private String name;
     private List<PhoneNumber> numbers;
+    // State of the item
+    private boolean expanded;
 
     public Contact(String name, List<PhoneNumber> numbers) {
         this.name = name;
@@ -22,6 +24,14 @@ public class Contact {
 
     public void setNumbers(List<PhoneNumber> numbers) {
         this.numbers = numbers;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
     }
 
     @Override

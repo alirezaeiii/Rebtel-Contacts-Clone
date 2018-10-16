@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneNumberUtils;
-import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -83,12 +84,12 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
 
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+            ContactsAdapter adapter = new ContactsAdapter(contacts);
 
-            ContactsAdapter adapter = new ContactsAdapter(this, contacts);
-
-            // Create the list view and bind the adapter
-            ExpandableListView listView = (ExpandableListView) findViewById(R.id.listview);
-            listView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+            recyclerView.setHasFixedSize(true);
         }
     }
 

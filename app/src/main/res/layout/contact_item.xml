@@ -9,4 +9,10 @@
 
     <include layout="@layout/contact_detail" />
 
+    <LinearLayout
+        android:id="@+id/subItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
 </LinearLayout>
