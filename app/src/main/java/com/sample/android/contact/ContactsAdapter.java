@@ -164,17 +164,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             phoneNumberView.setText(number);
 
             ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(detail);
             int viewId;
             if (numbers.size() == 1) {
                 phoneNumberType.setVisibility(View.VISIBLE);
                 lineNumber.setVisibility(View.INVISIBLE);
                 phoneNumberType.setText(getTypeValue(numbers.get(0).getType()));
+                constraintSet.clone(detail);
                 viewId = R.id.phone_type;
             } else {
                 lineNumber.setVisibility(View.VISIBLE);
                 phoneNumberType.setVisibility(View.INVISIBLE);
                 lineNumber.setText(String.valueOf(numbers.size()));
+                constraintSet.clone(detail);
                 viewId = R.id.line_number_frame;
             }
             constraintSet.connect(R.id.contact_name,
