@@ -29,14 +29,16 @@
 
     <TextView
         android:id="@+id/contact_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"
         android:textSize="17sp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/image"
         tools:layout_constraintEnd_toStartOf="@id/phone_type"
         tools:text="Ali Rezaei" />
@@ -73,9 +75,9 @@
         tools:text="Mobile" />
 
     <FrameLayout
+        android:id="@+id/line_number_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/line_number_frame"
         android:paddingEnd="16dp"
         android:paddingRight="16dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
