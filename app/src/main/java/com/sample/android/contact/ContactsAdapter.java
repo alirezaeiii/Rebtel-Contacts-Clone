@@ -3,6 +3,8 @@ package com.sample.android.contact;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -118,7 +120,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.detail)
-        View detail;
+        ConstraintLayout detail;
 
         @BindView(R.id.contact_name)
         TextView contactNameView;
@@ -160,15 +162,26 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             contactNameView.setText(name);
             phoneNumberView.setText(number);
+
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(detail);
+            int viewId;
             if (numbers.size() == 1) {
                 phoneNumberType.setVisibility(View.VISIBLE);
                 lineNumber.setVisibility(View.INVISIBLE);
                 phoneNumberType.setText(getTypeValue(numbers.get(0).getType()));
+                viewId = R.id.phone_type;
             } else {
                 lineNumber.setVisibility(View.VISIBLE);
                 phoneNumberType.setVisibility(View.INVISIBLE);
                 lineNumber.setText(String.valueOf(numbers.size()));
+                viewId = R.id.line_number_frame;
             }
+            constraintSet.connect(R.id.contact_name,
+                    ConstraintSet.END,
+                    viewId,
+                    ConstraintSet.START);
+            constraintSet.applyTo(detail);
 
             String[] splitedName = name.split("\\s+");
             char c;
