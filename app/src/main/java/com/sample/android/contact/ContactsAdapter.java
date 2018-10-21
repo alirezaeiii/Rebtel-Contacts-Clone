@@ -176,7 +176,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 phoneNumberType.setVisibility(View.INVISIBLE);
                 lineNumber.setText(String.valueOf(numbers.size()));
                 constraintSet.clone(detail);
-                viewId = R.id.line_number_frame;
+                viewId = R.id.line_number;
             }
             constraintSet.connect(R.id.contact_name,
                     ConstraintSet.END,

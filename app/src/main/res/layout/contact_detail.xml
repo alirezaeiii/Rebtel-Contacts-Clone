@@ -7,25 +7,18 @@
     android:background="@drawable/contact_selector"
     android:minHeight="64dp">
 
-    <FrameLayout
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/image_text"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/contact_circle"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/guideline"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
-
-        <TextView
-            android:id="@+id/image_text"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/contact_circle"
-            android:gravity="center"
-            tools:text="A.R" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        tools:text="A.R" />
 
     <TextView
         android:id="@+id/contact_name"
@@ -39,7 +32,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@+id/image_text"
         tools:layout_constraintEnd_toStartOf="@id/phone_type"
         tools:text="Ali Rezaei" />
 
@@ -74,30 +67,23 @@
         app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="Mobile" />
 
-    <FrameLayout
-        android:id="@+id/line_number_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
+    <TextView
+        android:id="@+id/line_number"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/contact_circle"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline">
-
-        <TextView
-            android:id="@+id/line_number"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/contact_circle"
-            android:gravity="center"
-            tools:text="2" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        tools:text="2" />
 
     <View
         android:id="@+id/line"
         style="@style/LineStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image" />
+        app:layout_constraintStart_toEndOf="@+id/image_text" />
 
 </android.support.constraint.ConstraintLayout>
