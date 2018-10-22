@@ -212,7 +212,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean showSeparator = false;
 
-            // Show separator ?
+            // Show index separator ?
             switch (mSeparatorRowStates[position]) {
 
                 case SECTIONED_STATE:
@@ -260,7 +260,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean showLine = true;
 
-            // Show separator ?
+            // Show line separator ?
             switch (mLineRowStates[position]) {
 
                 case SECTIONED_STATE:
@@ -316,11 +316,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 childView.setOnClickListener(v -> {
                 });
 
-                TextView contactNumber = childView.findViewById(R.id.contact_number);
-                TextView numberType = childView.findViewById(R.id.type);
+                ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
-                contactNumber.setText(phoneNumber.getNumber());
-                numberType.setText(getTypeValue(phoneNumber.getType()));
+                childViewHolder.contactNumber.setText(phoneNumber.getNumber());
+                childViewHolder.numberType.setText(getTypeValue(phoneNumber.getType()));
 
                 boolean lineFlag = true;
 
@@ -331,7 +330,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                     String nextName = deAccent(nextContact.getName());
                     char[] nextNameArray = nextName.toUpperCase().toCharArray();
-                    char[] nameArray = deAccent(mContacts.get(position).getName()).toUpperCase().toCharArray();
+                    char[] nameArray = deAccent(name).toUpperCase().toCharArray();
 
                     if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
                             && nameArray[0] != nextNameArray[0]) {
@@ -339,26 +338,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     }
                 }
 
-                View childLine = childView.findViewById(R.id.child_line);
-                childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
+                childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
+                childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
 
-                View childTopLine = childView.findViewById(R.id.child_top_line);
-                childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
-
-                View frameLayout = childView.findViewById(R.id.frameLayout);
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT);
 
-                View relativeLayout = childView.findViewById(R.id.relativeLayout);
-                FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                 if (lineFlag) {
                     lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
-                    frameLayout.setLayoutParams(lp);
+                    childViewHolder.frameLayout.setLayoutParams(lp);
 
                     rlp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                    relativeLayout.setLayoutParams(rlp);
+                    childViewHolder.relativeLayout.setLayoutParams(rlp);
                 } else {
 
                     if (childPosition == 0) {
@@ -370,11 +366,36 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                         lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
                         rlp.setMarginStart(0);
                     }
-                    frameLayout.setLayoutParams(lp);
-                    relativeLayout.setLayoutParams(rlp);
+                    childViewHolder.frameLayout.setLayoutParams(lp);
+                    childViewHolder.relativeLayout.setLayoutParams(rlp);
                 }
 
                 subItem.addView(childView);
+            }
+        }
+
+        class ChildViewHolder {
+
+            @BindView(R.id.contact_number)
+            TextView contactNumber;
+
+            @BindView(R.id.type)
+            TextView numberType;
+
+            @BindView(R.id.child_line)
+            View childLine;
+
+            @BindView(R.id.child_top_line)
+            View childTopLine;
+
+            @BindView(R.id.frameLayout)
+            View frameLayout;
+
+            @BindView(R.id.relativeLayout)
+            View relativeLayout;
+
+            private ChildViewHolder(View view) {
+                ButterKnife.bind(this, view);
             }
         }
     }
