@@ -293,10 +293,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 return;
             }
 
-            boolean expanded = contact.isExpanded();
-            subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-            Context context = mRecyclerView.getContext();
-
             boolean lineFlag = true;
 
             if (position == mContacts.size() - 1) {
@@ -313,13 +309,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 }
             }
 
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT);
-
-            FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            boolean expanded = contact.isExpanded();
+            subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+            Context context = mRecyclerView.getContext();
 
             for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
@@ -335,6 +327,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
                 childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
+
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT);
+
+                FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                 if (lineFlag) {
                     lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
