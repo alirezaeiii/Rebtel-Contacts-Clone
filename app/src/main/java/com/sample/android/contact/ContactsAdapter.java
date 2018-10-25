@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.sample.android.contact.Utils.deAccent;
 import static com.sample.android.contact.Utils.getTypeValue;
@@ -62,20 +63,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Contact contact = mContacts.get(position);
 
-        holder.bind(contact, position);
-
-        holder.detail.setOnClickListener(v -> {
-
-            boolean expanded = contact.isExpanded();
-            contact.setExpanded(!expanded);
-            notifyItemChanged(position);
-
-            if (contact.isExpanded()) {
-                mSmoothScroller.setTargetPosition(position);
-                new Handler().postDelayed(() ->
-                        mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller), 100);
-            }
-        });
+        holder.bind(contact);
     }
 
     @Override
@@ -154,7 +142,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             ButterKnife.bind(this, root);
         }
 
-        private void bind(Contact contact, int position) {
+        private void bind(Contact contact) {
+
+            final int position = getAdapterPosition();
 
             String name = contact.getName();
             List<PhoneNumber> numbers = contact.getPhoneNumbers();
@@ -210,6 +200,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 imageText.setText("¿");
             }
 
+            char[] nameArray = deAccent(name).toUpperCase().toCharArray();
+
             boolean showSeparator = false;
 
             // Show index separator ?
@@ -232,7 +224,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                         String previousName = deAccent(previousContact.getName());
                         char[] previousNameArray = previousName.toUpperCase().toCharArray();
-                        char[] nameArray = deAccent(name).toUpperCase().toCharArray();
 
                         if (Character.isLetter(nameArray[0]) &&
                                 nameArray[0] != previousNameArray[0]) {
@@ -280,7 +271,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                         String nextName = deAccent(nextContact.getName());
                         char[] nextNameArray = nextName.toUpperCase().toCharArray();
-                        char[] nameArray = deAccent(name).toUpperCase().toCharArray();
 
                         if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
                                 (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
@@ -307,47 +297,44 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
             Context context = mRecyclerView.getContext();
 
+            boolean lineFlag = true;
+
+            if (position == mContacts.size() - 1) {
+                lineFlag = false;
+            } else {
+                Contact nextContact = mContacts.get(position + 1);
+
+                String nextName = deAccent(nextContact.getName());
+                char[] nextNameArray = nextName.toUpperCase().toCharArray();
+
+                if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
+                        && nameArray[0] != nextNameArray[0]) {
+                    lineFlag = false;
+                }
+            }
+
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT);
+
+            FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+
             for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
                 PhoneNumber phoneNumber = numbers.get(childPosition);
 
                 LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View childView = infalInflater.inflate(R.layout.child_item, null);
-                childView.setOnClickListener(v -> {
-                });
 
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
                 childViewHolder.contactNumber.setText(phoneNumber.getNumber());
                 childViewHolder.numberType.setText(getTypeValue(phoneNumber.getType()));
 
-                boolean lineFlag = true;
-
-                if (position == mContacts.size() - 1) {
-                    lineFlag = false;
-                } else {
-                    Contact nextContact = mContacts.get(position + 1);
-
-                    String nextName = deAccent(nextContact.getName());
-                    char[] nextNameArray = nextName.toUpperCase().toCharArray();
-                    char[] nameArray = deAccent(name).toUpperCase().toCharArray();
-
-                    if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
-                            && nameArray[0] != nextNameArray[0]) {
-                        lineFlag = false;
-                    }
-                }
-
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
                 childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
-
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT);
-
-                FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                 if (lineFlag) {
                     lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
@@ -374,6 +361,21 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
         }
 
+        @OnClick(R.id.detail)
+        void onClick() {
+            final Contact contact = mContacts.get(getAdapterPosition());
+
+            boolean expanded = contact.isExpanded();
+            contact.setExpanded(!expanded);
+            notifyItemChanged(getAdapterPosition());
+
+            if (contact.isExpanded()) {
+                mSmoothScroller.setTargetPosition(getAdapterPosition());
+                new Handler().postDelayed(() ->
+                        mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller), 100);
+            }
+        }
+
         class ChildViewHolder {
 
             @BindView(R.id.contact_number)
@@ -396,6 +398,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             private ChildViewHolder(View view) {
                 ButterKnife.bind(this, view);
+            }
+
+            @OnClick
+            void onClick() {
             }
         }
     }
