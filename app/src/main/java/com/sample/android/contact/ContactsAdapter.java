@@ -371,8 +371,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             if (contact.isExpanded()) {
                 mSmoothScroller.setTargetPosition(getAdapterPosition());
-                new Handler().postDelayed(() ->
-                        mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller), 100);
+                mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
             }
         }
 
