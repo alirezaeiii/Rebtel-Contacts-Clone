@@ -20,6 +20,7 @@ import com.sylversky.indexablelistview.scroller.Indexer;
 import com.sylversky.indexablelistview.section.AlphabetSection;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private int[] mSeparatorRowStates;
     private int[] mLineRowStates;
     private AlphabetSection mAlphabetSection;
+
+    private AtomicBoolean isPendingExpansion = new AtomicBoolean(false);
 
     ContactsAdapter(List<Contact> contacts) {
         mContacts = contacts;
@@ -365,14 +368,21 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         void onClick() {
             final Contact contact = mContacts.get(getAdapterPosition());
 
-            boolean expanded = contact.isExpanded();
-            contact.setExpanded(!expanded);
-            notifyItemChanged(getAdapterPosition());
+            if (!isPendingExpansion.get()) {
+                isPendingExpansion.set(true);
+                boolean expanded = contact.isExpanded();
+                contact.setExpanded(!expanded);
+                notifyItemChanged(getAdapterPosition());
 
-            if (contact.isExpanded()) {
-                mSmoothScroller.setTargetPosition(getAdapterPosition());
-                new Handler().postDelayed(() ->
-                        mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller), 100);
+                if (contact.isExpanded()) {
+                    mSmoothScroller.setTargetPosition(getAdapterPosition());
+                    new Handler().postDelayed(() -> {
+                        mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
+                        isPendingExpansion.set(false);
+                    }, 100);
+                } else {
+                    isPendingExpansion.set(false);
+                }
             }
         }
 
