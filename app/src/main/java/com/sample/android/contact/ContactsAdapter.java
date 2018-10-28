@@ -371,7 +371,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             if (contact.isExpanded()) {
                 mSmoothScroller.setTargetPosition(getAdapterPosition());
-                mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
+                new Handler().postDelayed(() ->
+                        mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller), 100);
             }
         }
 
@@ -397,10 +398,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             private ChildViewHolder(View view) {
                 ButterKnife.bind(this, view);
-            }
-
-            @OnClick
-            void onClick() {
             }
         }
     }

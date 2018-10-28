@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="48dp"
     android:background="@drawable/contact_selector"
+    android:clickable="true"
     android:minHeight="48dp">
 
     <FrameLayout
