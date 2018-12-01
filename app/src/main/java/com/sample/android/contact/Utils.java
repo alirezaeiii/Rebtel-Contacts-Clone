@@ -5,6 +5,8 @@ import android.provider.ContactsContract;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
+import io.reactivex.disposables.Disposable;
+
 public class Utils {
 
     public static String deAccent(String str) {
@@ -42,5 +44,11 @@ public class Utils {
                 break;
         }
         return typeValue;
+    }
+
+    public static void unsubscribe(Disposable subscription) {
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        } // else subscription doesn't exist or already unsubscribed
     }
 }
