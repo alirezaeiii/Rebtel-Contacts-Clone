@@ -8,14 +8,11 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.telephony.PhoneNumberUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import io.reactivex.disposables.Disposable;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 import com.sylversky.indexablelistview.widget.IndexableRecyclerView;
@@ -24,38 +21,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
+
 import static com.sample.android.contact.Utils.unsubscribe;
 
 public class ContactsActivity extends AppCompatActivity {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    private ContactsAdapter mAdapter;
-
-    private Disposable mSearchViewTextSubscription;
-
-    private final static String[] projection = new String[]{
+    private static final String[] projection = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
             ContactsContract.CommonDataKinds.Phone.TYPE
     };
+    private ContactsAdapter mAdapter;
+    private Disposable mSearchViewTextSubscription;
+
+    @BindView(R.id.recyclerView)
+    IndexableRecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        ButterKnife.bind(this);
 
-        IndexableRecyclerView recyclerView = findViewById(R.id.recyclerView);
         mAdapter = new ContactsAdapter();
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
 
         showContacts();
     }
 
-    public void showContacts() {
+    private void showContacts() {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -70,6 +70,10 @@ public class ContactsActivity extends AppCompatActivity {
                     null,
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
             );
+
+            if (cursor == null) {
+                return;
+            }
 
             mAdapter.setItems(getContacts(cursor), true);
             cursor.close();
@@ -123,6 +127,10 @@ public class ContactsActivity extends AppCompatActivity {
                                 selectionArgs,
                                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
                         );
+
+                        if (cursor == null) {
+                            return;
+                        }
 
                         runOnUiThread(() -> {
                             mAdapter.setItems(getContacts(cursor), false);
