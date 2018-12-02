@@ -1,21 +1,27 @@
 package com.sample.android.contact;
 
+import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberUtils;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import io.reactivex.disposables.Disposable;
 
-public class Utils {
+import static com.sample.android.contact.ContactsActivity.projection;
 
-    public static String deAccent(String str) {
+class Utils {
+
+    static String deAccent(String str) {
         String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
-    public static String getTypeValue(int type) {
+    static String getTypeValue(int type) {
         String typeValue;
         switch (type) {
             case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
@@ -46,9 +52,45 @@ public class Utils {
         return typeValue;
     }
 
-    public static void unsubscribe(Disposable subscription) {
+    static void unsubscribe(Disposable subscription) {
         if (subscription != null && !subscription.isDisposed()) {
             subscription.dispose();
         } // else subscription doesn't exist or already unsubscribed
+    }
+
+    static List<Contact> getContacts(Cursor cursor) {
+        List<Contact> contacts = new ArrayList<>();
+
+        int nameIndex = cursor.getColumnIndex(projection[0]);
+        int numberIndex = cursor.getColumnIndex(projection[1]);
+        int typeIndex = cursor.getColumnIndex(projection[2]);
+
+        while (cursor.moveToNext()) {
+
+            String name = cursor.getString(nameIndex);
+            String number = cursor.getString(numberIndex);
+            int type = cursor.getInt(typeIndex);
+
+            List<PhoneNumber> numbers = new ArrayList<>();
+            PhoneNumber phoneNumber = new PhoneNumber(
+                    PhoneNumberUtils.normalizeNumber(number),
+                    type);
+            numbers.add(phoneNumber);
+            Contact contact = new Contact(name, numbers);
+            int index = contacts.indexOf(contact);
+
+            if (index == -1) {
+                contacts.add(contact);
+            } else {
+                contact = contacts.get(index);
+                numbers = contact.getPhoneNumbers();
+                if (numbers.indexOf(phoneNumber) == -1) {
+                    numbers.add(phoneNumber);
+                    contact.setNumbers(numbers);
+                    contacts.set(index, contact);
+                }
+            }
+        }
+        return contacts;
     }
 }

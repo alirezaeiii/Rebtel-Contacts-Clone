@@ -9,7 +9,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.telephony.PhoneNumberUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,21 +16,20 @@ import android.widget.Toast;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 import com.sylversky.indexablelistview.widget.IndexableRecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
+import static com.sample.android.contact.Utils.getContacts;
 import static com.sample.android.contact.Utils.unsubscribe;
 
 public class ContactsActivity extends AppCompatActivity {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    private static final String[] projection = new String[]{
+    public static final String[] projection = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
             ContactsContract.CommonDataKinds.Phone.TYPE
@@ -146,41 +144,5 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onDestroy() {
         unsubscribe(mSearchViewTextSubscription);
         super.onDestroy();
-    }
-
-    private List<Contact> getContacts(Cursor cursor) {
-        List<Contact> contacts = new ArrayList<>();
-
-        int nameIndex = cursor.getColumnIndex(projection[0]);
-        int numberIndex = cursor.getColumnIndex(projection[1]);
-        int typeIndex = cursor.getColumnIndex(projection[2]);
-
-        while (cursor.moveToNext()) {
-
-            String name = cursor.getString(nameIndex);
-            String number = cursor.getString(numberIndex);
-            int type = cursor.getInt(typeIndex);
-
-            List<PhoneNumber> numbers = new ArrayList<>();
-            PhoneNumber phoneNumber = new PhoneNumber(
-                    PhoneNumberUtils.normalizeNumber(number),
-                    type);
-            numbers.add(phoneNumber);
-            Contact contact = new Contact(name, numbers);
-            int index = contacts.indexOf(contact);
-
-            if (index == -1) {
-                contacts.add(contact);
-            } else {
-                contact = contacts.get(index);
-                numbers = contact.getPhoneNumbers();
-                if (numbers.indexOf(phoneNumber) == -1) {
-                    numbers.add(phoneNumber);
-                    contact.setNumbers(numbers);
-                    contacts.set(index, contact);
-                }
-            }
-        }
-        return contacts;
     }
 }
