@@ -29,7 +29,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    public static final String[] projection = new String[]{
+    public static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
             ContactsContract.CommonDataKinds.Phone.TYPE
@@ -63,7 +63,7 @@ public class ContactsActivity extends AppCompatActivity {
 
             final Cursor cursor = getContentResolver().query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    projection,
+                    PROJECTION,
                     null,
                     null,
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
@@ -120,7 +120,7 @@ public class ContactsActivity extends AppCompatActivity {
                         final String[] selectionArgs = new String[]{"%" + charSequence + "%", "%" + charSequence + "%"};
                         final Cursor cursor = getContentResolver().query(
                                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                projection,
+                                PROJECTION,
                                 selection,
                                 selectionArgs,
                                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"

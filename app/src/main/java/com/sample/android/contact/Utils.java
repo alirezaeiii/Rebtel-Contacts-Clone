@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import io.reactivex.disposables.Disposable;
 
-import static com.sample.android.contact.ContactsActivity.projection;
+import static com.sample.android.contact.ContactsActivity.PROJECTION;
 
 class Utils {
 
@@ -61,9 +61,9 @@ class Utils {
     static List<Contact> getContacts(Cursor cursor) {
         List<Contact> contacts = new ArrayList<>();
 
-        int nameIndex = cursor.getColumnIndex(projection[0]);
-        int numberIndex = cursor.getColumnIndex(projection[1]);
-        int typeIndex = cursor.getColumnIndex(projection[2]);
+        int nameIndex = cursor.getColumnIndex(PROJECTION[0]);
+        int numberIndex = cursor.getColumnIndex(PROJECTION[1]);
+        int typeIndex = cursor.getColumnIndex(PROJECTION[2]);
 
         while (cursor.moveToNext()) {
 
