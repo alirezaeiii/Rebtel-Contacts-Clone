@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 import static com.sample.android.contact.Utils.getContacts;
@@ -60,21 +61,7 @@ public class ContactsActivity extends AppCompatActivity {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-
-            final Cursor cursor = getContentResolver().query(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    PROJECTION,
-                    null,
-                    null,
-                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
-            );
-
-            if (cursor == null) {
-                return;
-            }
-
-            mAdapter.setItems(getContacts(cursor), true);
-            cursor.close();
+            setupAdapter(null, null, true);
         }
     }
 
@@ -112,28 +99,14 @@ public class ContactsActivity extends AppCompatActivity {
 
         mSearchViewTextSubscription = RxSearchView.queryTextChanges(searchView)
                 .debounce(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(charSequence -> {
                     if (charSequence.length() > 0) {
 
                         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
                         final String[] selectionArgs = new String[]{"%" + charSequence + "%", "%" + charSequence + "%"};
-                        final Cursor cursor = getContentResolver().query(
-                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                PROJECTION,
-                                selection,
-                                selectionArgs,
-                                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
-                        );
-
-                        if (cursor == null) {
-                            return;
-                        }
-
-                        runOnUiThread(() -> {
-                            mAdapter.setItems(getContacts(cursor), false);
-                            cursor.close();
-                        });
+                        setupAdapter(selection, selectionArgs, false);
                     }
                 });
 
@@ -144,5 +117,22 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onDestroy() {
         unsubscribe(mSearchViewTextSubscription);
         super.onDestroy();
+    }
+
+    private void setupAdapter(String selection, String[] selectionArgs, boolean showSeparator) {
+        final Cursor cursor = getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
+        );
+
+        if (cursor == null) {
+            return;
+        }
+
+        mAdapter.setItems(getContacts(cursor), showSeparator);
+        cursor.close();
     }
 }

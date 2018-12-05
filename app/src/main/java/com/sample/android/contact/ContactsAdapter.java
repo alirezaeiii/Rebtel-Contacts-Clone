@@ -333,8 +333,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 PhoneNumber phoneNumber = numbers.get(childPosition);
 
-                LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View childView = infalInflater.inflate(R.layout.child_item, null);
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View childView = inflater.inflate(R.layout.child_item, null);
 
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
