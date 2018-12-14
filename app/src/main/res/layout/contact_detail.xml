@@ -11,8 +11,8 @@
         android:id="@+id/image_text"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/contact_circle"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/guideline"
@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:paddingLeft="16dp"
         android:paddingStart="16dp"
+        android:paddingLeft="16dp"
         android:textSize="17sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -36,14 +36,22 @@
         tools:layout_constraintEnd_toStartOf="@id/phone_type"
         tools:text="Ali Rezaei" />
 
+    <LinearLayout
+        android:id="@+id/flagItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        app:layout_constraintStart_toStartOf="@+id/contact_name"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
     <TextView
         android:id="@+id/phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
         android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/contact_name"
+        app:layout_constraintStart_toEndOf="@id/flagItem"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="+989121895634" />
 

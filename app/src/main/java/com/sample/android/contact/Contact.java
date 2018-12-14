@@ -5,11 +5,11 @@ import java.util.List;
 public class Contact {
 
     private String name;
-    private List<PhoneNumber> numbers;
+    private List<ContactPhoneNumber> numbers;
     // State of the item
     private boolean expanded;
 
-    public Contact(String name, List<PhoneNumber> numbers) {
+    public Contact(String name, List<ContactPhoneNumber> numbers) {
         this.name = name;
         this.numbers = numbers;
     }
@@ -18,11 +18,11 @@ public class Contact {
         return name;
     }
 
-    public List<PhoneNumber> getPhoneNumbers() {
+    public List<ContactPhoneNumber> getPhoneNumbers() {
         return numbers;
     }
 
-    public void setNumbers(List<PhoneNumber> numbers) {
+    public void setNumbers(List<ContactPhoneNumber> numbers) {
         this.numbers = numbers;
     }
 

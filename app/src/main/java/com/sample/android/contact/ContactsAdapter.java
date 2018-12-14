@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.sylversky.indexablelistview.scroller.Indexer;
 import com.sylversky.indexablelistview.section.AlphabetSection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,6 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.sample.android.contact.Utils.deAccent;
+import static com.sample.android.contact.Utils.getFlagImageView;
+import static com.sample.android.contact.Utils.getFlagResID;
+import static com.sample.android.contact.Utils.getNormalizedNumber;
 import static com.sample.android.contact.Utils.getTypeValue;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
@@ -143,6 +148,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.line)
         View line;
 
+        @BindView(R.id.flagItem)
+        LinearLayout flagItem;
+
         private ViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
@@ -150,14 +158,22 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
         private void bind(Contact contact) {
 
+            Context context = mRecyclerView.getContext();
             final int position = getAdapterPosition();
 
             String name = contact.getName();
-            List<PhoneNumber> numbers = contact.getPhoneNumbers();
+            List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             String number = numbers.size() == 1 ? numbers.get(0).getNumber() : "";
 
             contactNameView.setText(name);
-            phoneNumberView.setText(number);
+            CountryCodeNumber countryCodeNumber = getNormalizedNumber(number);
+            phoneNumberView.setText(countryCodeNumber.number);
+
+            flagItem.removeAllViews();
+
+            if (numbers.size() == 1) {
+                flagItem.addView(getFlagImageView(context, countryCodeNumber));
+            }
 
             ConstraintSet constraintSet = new ConstraintSet();
             int viewId;
@@ -210,7 +226,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean showSeparator = false;
 
-            if(mShowSeparator) {
+            if (mShowSeparator) {
 
                 // Show index separator ?
                 switch (mSeparatorRowStates[position]) {
@@ -260,7 +276,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean showLine = true;
 
-            if(mShowSeparator) {
+            if (mShowSeparator) {
 
                 // Show line separator ?
                 switch (mLineRowStates[position]) {
@@ -308,7 +324,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean lineFlag = true;
 
-            if(mShowSeparator) {
+            if (mShowSeparator) {
 
                 if (position == mContacts.size() - 1) {
                     lineFlag = false;
@@ -327,19 +343,27 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean expanded = contact.isExpanded();
             subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-            Context context = mRecyclerView.getContext();
+            List<ImageView> list = new ArrayList<>();
 
             for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
-                PhoneNumber phoneNumber = numbers.get(childPosition);
+                ContactPhoneNumber phoneNumber = numbers.get(childPosition);
+
+                CountryCodeNumber codeNumber = getNormalizedNumber(phoneNumber.getNumber());
+                ImageView imageView = getFlagImageView(context, codeNumber);
+                if (!list.contains(imageView)) {
+                    flagItem.addView(imageView);
+                    list.add(imageView);
+                }
 
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View childView = inflater.inflate(R.layout.child_item, null);
 
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
-                childViewHolder.contactNumber.setText(phoneNumber.getNumber());
+                childViewHolder.contactNumber.setText(getNormalizedNumber(phoneNumber.getNumber()).number);
                 childViewHolder.numberType.setText(getTypeValue(phoneNumber.getType()));
+                childViewHolder.flagImageView.setImageResource(getFlagResID(context, codeNumber.regionCode));
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
                 childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
@@ -413,6 +437,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             @BindView(R.id.relativeLayout)
             View relativeLayout;
+
+            @BindView(R.id.flagImageView)
+            ImageView flagImageView;
 
             private ChildViewHolder(View view) {
                 ButterKnife.bind(this, view);

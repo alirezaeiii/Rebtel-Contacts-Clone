@@ -1,11 +1,11 @@
 package com.sample.android.contact;
 
-public class PhoneNumber {
+public class ContactPhoneNumber {
 
     private String number;
     private int type;
 
-    public PhoneNumber(String number, int type) {
+    public ContactPhoneNumber(String number, int type) {
         this.number = number;
         this.type = type;
     }
@@ -20,10 +20,10 @@ public class PhoneNumber {
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof PhoneNumber)) {
+        if(!(o instanceof ContactPhoneNumber)) {
             return false;
         }
-        PhoneNumber other = (PhoneNumber) o;
+        ContactPhoneNumber other = (ContactPhoneNumber) o;
         return other.number.equals(this.number);
     }
 }

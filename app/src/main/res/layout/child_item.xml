@@ -18,13 +18,23 @@
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:paddingLeft="22dp"
-            tools:paddingStart="22dp">
+            tools:paddingLeft="@dimen/dimen_relative_margin_default"
+            tools:paddingStart="@dimen/dimen_relative_margin_default">
+
+            <ImageView
+                android:id="@+id/flagImageView"
+                android:layout_width="@dimen/dimen_flag_image_view_width"
+                android:layout_height="@dimen/dimen_flag_image_view_height"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dimen_flag_image_view_margin_end"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/flag_sweden" />
 
             <TextView
                 android:id="@+id/contact_number"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_toEndOf="@id/flagImageView"
                 android:gravity="center"
                 android:textSize="13sp"
                 tools:text="+989121895634" />
@@ -34,11 +44,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:paddingEnd="8dp"
-                android:paddingRight="8dp"
                 android:textSize="13sp"
                 tools:text="Mobile" />
 

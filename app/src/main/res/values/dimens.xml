@@ -4,6 +4,10 @@
     <dimen name="dimen_frame_margin_default">64dp</dimen>
     <dimen name="dimen_relative_margin_default">22dp</dimen>
 
+    <dimen name="dimen_flag_image_view_width">20dp</dimen>
+    <dimen name="dimen_flag_image_view_height">20dp</dimen>
+    <dimen name="dimen_flag_image_view_margin_end">6dp</dimen>
+
     <dimen name="dimen_frame_margin">86dp</dimen>
 
 </resources>
