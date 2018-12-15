@@ -5,12 +5,14 @@
     android:layout_height="48dp"
     android:background="@drawable/contact_selector"
     android:clickable="true"
+    android:focusable="true"
     android:minHeight="48dp">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:ignore="UselessParent"
         tools:paddingLeft="64dp"
         tools:paddingStart="64dp">
 
@@ -48,6 +50,7 @@
                 android:gravity="center"
                 android:paddingEnd="8dp"
                 android:textSize="13sp"
+                tools:ignore="RelativeOverlap,RtlSymmetry"
                 tools:text="Mobile" />
 
             <View

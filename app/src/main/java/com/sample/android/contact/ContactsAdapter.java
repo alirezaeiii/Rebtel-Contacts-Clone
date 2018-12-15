@@ -151,6 +151,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
 
+        @BindView(R.id.flagImageView)
+        ImageView flagImageView;
+
         private ViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
@@ -171,9 +174,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             flagItem.removeAllViews();
 
-            if (numbers.size() == 1) {
-                flagItem.addView(getFlagImageView(context, countryCodeNumber));
-            }
+            flagImageView.setImageResource(numbers.size() == 1 ?
+                    getFlagResID(context, countryCodeNumber.regionCode) :
+                    android.R.color.transparent);
 
             ConstraintSet constraintSet = new ConstraintSet();
             int viewId;
@@ -349,8 +352,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 ContactPhoneNumber phoneNumber = numbers.get(childPosition);
 
-                CountryCodeNumber codeNumber = getNormalizedNumber(phoneNumber.getNumber());
-                ImageView imageView = getFlagImageView(context, codeNumber);
+                countryCodeNumber = getNormalizedNumber(phoneNumber.getNumber());
+                ImageView imageView = getFlagImageView(context, countryCodeNumber);
                 if (!list.contains(imageView)) {
                     flagItem.addView(imageView);
                     list.add(imageView);
@@ -363,7 +366,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 childViewHolder.contactNumber.setText(getNormalizedNumber(phoneNumber.getNumber()).number);
                 childViewHolder.numberType.setText(getTypeValue(phoneNumber.getType()));
-                childViewHolder.flagImageView.setImageResource(getFlagResID(context, codeNumber.regionCode));
+                childViewHolder.flagImageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
                 childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
