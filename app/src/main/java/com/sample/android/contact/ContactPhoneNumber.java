@@ -4,6 +4,13 @@ public class ContactPhoneNumber {
 
     private String number;
     private int type;
+    private String typeLabel;
+
+    public ContactPhoneNumber(String number, int type, String typeLabel) {
+        this.number = number;
+        this.type = type;
+        this.typeLabel = typeLabel;
+    }
 
     public ContactPhoneNumber(String number, int type) {
         this.number = number;
@@ -16,6 +23,10 @@ public class ContactPhoneNumber {
 
     public int getType() {
         return type;
+    }
+
+    public String getTypeLabel() {
+        return typeLabel;
     }
 
     @Override

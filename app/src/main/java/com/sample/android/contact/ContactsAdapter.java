@@ -166,7 +166,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             String name = contact.getName();
             List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
-            String number = numbers.size() == 1 ? numbers.get(0).getNumber() : "";
+            ContactPhoneNumber phoneNumber = numbers.get(0);
+            String number = numbers.size() == 1 ? phoneNumber.getNumber() : "";
 
             contactNameView.setText(name);
             CountryCodeNumber countryCodeNumber = getNormalizedNumber(number);
@@ -183,7 +184,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             if (numbers.size() == 1) {
                 phoneNumberType.setVisibility(View.VISIBLE);
                 lineNumber.setVisibility(View.INVISIBLE);
-                phoneNumberType.setText(getTypeValue(numbers.get(0).getType()));
+                phoneNumberType.setText(getTypeValue(phoneNumber));
                 constraintSet.clone(detail);
                 viewId = R.id.phone_type;
             } else {
@@ -350,7 +351,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
-                ContactPhoneNumber phoneNumber = numbers.get(childPosition);
+                phoneNumber = numbers.get(childPosition);
 
                 countryCodeNumber = getNormalizedNumber(phoneNumber.getNumber());
                 ImageView imageView = getFlagImageView(context, countryCodeNumber);
@@ -365,7 +366,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
                 childViewHolder.contactNumber.setText(getNormalizedNumber(phoneNumber.getNumber()).number);
-                childViewHolder.numberType.setText(getTypeValue(phoneNumber.getType()));
+                childViewHolder.numberType.setText(getTypeValue(phoneNumber));
                 childViewHolder.flagImageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);

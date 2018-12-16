@@ -29,9 +29,9 @@ class Utils {
         return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
-    static String getTypeValue(int type) {
-        String typeValue;
-        switch (type) {
+    static String getTypeValue(ContactPhoneNumber contactPhoneNumber) {
+        String typeValue = "";
+        switch (contactPhoneNumber.getType()) {
             case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
                 typeValue = "Home";
                 break;
@@ -53,8 +53,11 @@ class Utils {
             case ContactsContract.CommonDataKinds.Phone.TYPE_MAIN:
                 typeValue = "Main";
                 break;
-            default:
+            case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
                 typeValue = "Other";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM:
+                typeValue = contactPhoneNumber.getTypeLabel();
                 break;
         }
         return typeValue;
@@ -72,6 +75,7 @@ class Utils {
         int nameIndex = cursor.getColumnIndex(PROJECTION[0]);
         int numberIndex = cursor.getColumnIndex(PROJECTION[1]);
         int typeIndex = cursor.getColumnIndex(PROJECTION[2]);
+        int typeLabelIndex = cursor.getColumnIndex(PROJECTION[3]);
 
         while (cursor.moveToNext()) {
 
@@ -80,7 +84,9 @@ class Utils {
             int type = cursor.getInt(typeIndex);
 
             List<ContactPhoneNumber> numbers = new ArrayList<>();
-            ContactPhoneNumber phoneNumber = new ContactPhoneNumber(number, type);
+            ContactPhoneNumber phoneNumber = (type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM) ?
+                    new ContactPhoneNumber(number, type, cursor.getString(typeLabelIndex)) :
+                    new ContactPhoneNumber(number, type);
             numbers.add(phoneNumber);
             Contact contact = new Contact(name, numbers);
             int index = contacts.indexOf(contact);

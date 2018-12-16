@@ -33,7 +33,8 @@ public class ContactsActivity extends AppCompatActivity {
     public static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
-            ContactsContract.CommonDataKinds.Phone.TYPE
+            ContactsContract.CommonDataKinds.Phone.TYPE,
+            ContactsContract.CommonDataKinds.Phone.LABEL
     };
     private ContactsAdapter mAdapter;
     private Disposable mSearchViewTextSubscription;
