@@ -409,6 +409,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         void onClick() {
             final Contact contact = mContacts.get(getAdapterPosition());
 
+            if(contact.getPhoneNumbers().size() == 1) {
+                return;
+            }
+
             boolean expanded = contact.isExpanded();
             contact.setExpanded(!expanded);
             notifyItemChanged(getAdapterPosition());
