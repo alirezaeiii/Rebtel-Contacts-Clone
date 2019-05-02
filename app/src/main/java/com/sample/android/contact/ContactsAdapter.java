@@ -170,6 +170,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             String number = numbers.size() == 1 ? phoneNumber.getNumber() : "";
 
             contactNameView.setText(name);
+            imageText.setText(contact.getBriefName());
             CountryCodeNumber countryCodeNumber = getNormalizedNumber(number);
             phoneNumberView.setText(countryCodeNumber.number);
 
@@ -199,32 +200,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     viewId,
                     ConstraintSet.START);
             constraintSet.applyTo(detail);
-
-            String[] splitedName = name.split("\\s+");
-            char c;
-            int i;
-            boolean noLetter = true;
-
-            for (i = 0; i < splitedName.length; i++) {
-                c = splitedName[i].toUpperCase().charAt(0);
-                if (Character.isLetter(c)) {
-                    imageText.setText(String.valueOf(c));
-                    noLetter = false;
-                    break;
-                }
-            }
-
-            for (int j = i + 1; j < splitedName.length; j++) {
-                c = splitedName[j].toUpperCase().charAt(0);
-                if (Character.isLetter(c)) {
-                    imageText.append("." + c);
-                    break;
-                }
-            }
-
-            if (noLetter) {
-                imageText.setText("¿");
-            }
 
             char[] nameArray = deAccent(name).toUpperCase().toCharArray();
 

@@ -88,7 +88,35 @@ class Utils {
                     new ContactPhoneNumber(number, type, cursor.getString(typeLabelIndex)) :
                     new ContactPhoneNumber(number, type);
             numbers.add(phoneNumber);
-            Contact contact = new Contact(name, numbers);
+
+            String[] splitedName = name.split("\\s+");
+            char c;
+            int i;
+            boolean noLetter = true;
+            String brief = "";
+
+            for (i = 0; i < splitedName.length; i++) {
+                c = splitedName[i].toUpperCase().charAt(0);
+                if (Character.isLetter(c)) {
+                    brief = String.valueOf(c);
+                    noLetter = false;
+                    break;
+                }
+            }
+
+            for (int j = i + 1; j < splitedName.length; j++) {
+                c = splitedName[j].toUpperCase().charAt(0);
+                if (Character.isLetter(c)) {
+                    brief += "." + c;
+                    break;
+                }
+            }
+
+            if (noLetter) {
+                brief = "¿";
+            }
+
+            Contact contact = new Contact(name, numbers, brief);
             int index = contacts.indexOf(contact);
 
             if (index == -1) {

@@ -6,12 +6,14 @@ public class Contact {
 
     private String name;
     private List<ContactPhoneNumber> numbers;
+    private String briefName;
     // State of the item
     private boolean expanded;
 
-    public Contact(String name, List<ContactPhoneNumber> numbers) {
+    public Contact(String name, List<ContactPhoneNumber> numbers, String briefName) {
         this.name = name;
         this.numbers = numbers;
+        this.briefName = briefName;
     }
 
     public String getName() {
@@ -24,6 +26,10 @@ public class Contact {
 
     public void setNumbers(List<ContactPhoneNumber> numbers) {
         this.numbers = numbers;
+    }
+
+    public String getBriefName() {
+        return briefName;
     }
 
     public void setExpanded(boolean expanded) {
