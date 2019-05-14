@@ -2,4 +2,6 @@
     <string name="app_name">Contacts</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Search for a contact</string>
+    <string name="contacts">Contacts</string>
+    <string name="Dialpad">Dialpad</string>
 </resources>

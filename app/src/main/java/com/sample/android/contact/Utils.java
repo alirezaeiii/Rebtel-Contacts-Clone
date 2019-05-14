@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 import io.reactivex.disposables.Disposable;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
-import static com.sample.android.contact.ContactsActivity.PROJECTION;
+import static com.sample.android.contact.ContactsFragment.PROJECTION;
 
 class Utils {
 
