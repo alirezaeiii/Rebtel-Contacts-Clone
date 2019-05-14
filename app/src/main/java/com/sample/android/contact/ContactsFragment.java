@@ -90,6 +90,7 @@ public class ContactsFragment extends Fragment {
         mSearchBack.setOnClickListener(view -> {
             showContacts();
             mSearchBack.setVisibility(View.INVISIBLE);
+            mSearchView.setQuery("", false);
         });
 
         showContacts();
