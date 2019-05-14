@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="searchViewStyle">@style/ContactSearchView</item>
     </style>
 
     <style name="LineStyle">
@@ -69,9 +68,17 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <style name="ContactSearchView" parent="Widget.AppCompat.Light.SearchView">
-        <item name="queryBackground">@color/colorPrimary</item>
-        <item name="searchHintIcon">@null</item>
+
+    <style name="SearchViewTheme" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar">
+        <item name="colorControlActivated">?android:colorAccent</item>
+        <item name="android:searchViewStyle">@style/Widget.SearchView</item>
+    </style>
+
+    <style name="Widget.SearchView" parent="android:style/Widget.Material.SearchView">
+        <item name="android:searchIcon">@android:color/transparent</item>
+        <item name="android:searchHintIcon">@android:color/transparent</item>
+        <item name="android:queryBackground">@android:color/transparent</item>
+        <item name="android:submitBackground">@android:color/transparent</item>
     </style>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.sample.android.contact;
 
 import android.Manifest;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
@@ -8,30 +10,21 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 import com.sylversky.indexablelistview.widget.IndexableRecyclerView;
-
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 import static com.sample.android.contact.Utils.getContacts;
-import static com.sample.android.contact.Utils.unsubscribe;
 
 public class ContactsFragment extends Fragment {
 
@@ -44,13 +37,15 @@ public class ContactsFragment extends Fragment {
             ContactsContract.CommonDataKinds.Phone.LABEL
     };
     private ContactsAdapter mAdapter;
-    private Disposable mSearchViewTextSubscription;
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
     @BindView(R.id.recyclerView)
     IndexableRecyclerView mRecyclerView;
+
+    @BindView(R.id.search_view)
+    SearchView mSearchView;
+
+    @BindView(R.id.search_back)
+    ImageButton mSearchBack;
 
     private Unbinder unbinder;
 
@@ -66,15 +61,47 @@ public class ContactsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, root);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
-
         mAdapter = new ContactsAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
 
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        // hint, inputType & ime options seem to be ignored from XML! Set in code
+        mSearchView.setQueryHint(getString(R.string.search_hint));
+        mSearchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                setupAdapter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (!query.isEmpty()) {
+                    mSearchBack.setVisibility(View.VISIBLE);
+                    setupAdapter(query);
+                }
+                return true;
+            }
+        });
+
+        mSearchBack.setOnClickListener(view -> {
+            showContacts();
+            mSearchBack.setVisibility(View.INVISIBLE);
+        });
+
         showContacts();
 
         return root;
+    }
+
+    private void setupAdapter(String query) {
+        final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
+                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
+        final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
+        setupAdapter(selection, selectionArgs, false);
     }
 
     private void showContacts() {
@@ -102,47 +129,9 @@ public class ContactsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_menu, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint(getString(R.string.search_hint));
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                showContacts();
-                return true;
-            }
-        });
-
-        mSearchViewTextSubscription = RxSearchView.queryTextChanges(searchView)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(charSequence -> {
-                    if (charSequence.length() > 0) {
-
-                        final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
-                                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
-                        final String[] selectionArgs = new String[]{"%" + charSequence + "%", "%" + charSequence + "%"};
-                        setupAdapter(selection, selectionArgs, false);
-                    }
-                });
-    }
-
-    @Override public void onDestroyView() {
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onDestroy() {
-        unsubscribe(mSearchViewTextSubscription);
-        super.onDestroy();
     }
 
     private void setupAdapter(String selection, String[] selectionArgs, boolean showSeparator) {

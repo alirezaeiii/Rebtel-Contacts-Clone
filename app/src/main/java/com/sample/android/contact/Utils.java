@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import io.reactivex.disposables.Disposable;
-
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 import static com.sample.android.contact.ContactsFragment.PROJECTION;
 
@@ -61,12 +59,6 @@ class Utils {
                 break;
         }
         return typeValue;
-    }
-
-    static void unsubscribe(Disposable subscription) {
-        if (subscription != null && !subscription.isDisposed()) {
-            subscription.dispose();
-        } // else subscription doesn't exist or already unsubscribed
     }
 
     static List<Contact> getContacts(Cursor cursor) {

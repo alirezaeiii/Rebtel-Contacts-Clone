@@ -10,14 +10,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:theme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="?android:actionBarSize"
+            android:elevation="4dp"
+            android:outlineProvider="bounds"
+            android:theme="@style/SearchViewTheme"
+            android:transitionGroup="false"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary" />
+
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:iconifiedByDefault="false"
+                android:transitionGroup="true" />
+
+            <FrameLayout
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingStart="2dp"
+                tools:ignore="RtlSymmetry">
+
+                <ImageButton
+                    android:id="@+id/search_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_arrow_back_padded"
+                    android:visibility="invisible"
+                    tools:ignore="contentDescription" />
+
+            </FrameLayout>
+
+        </FrameLayout>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -25,8 +58,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
         android:layout_marginBottom="48dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

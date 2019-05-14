@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
 
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addItem(new MainPagerItem(new ContactsFragment(), getString(R.string.contacts)));
+        pagerAdapter.addItem(new MainPagerItem(new ContactsFragment(), getString(R.string.app_name)));
         pagerAdapter.addItem(new MainPagerItem(new DialpadFragment(), getString(R.string.Dialpad)));
 
         mViewPager.setAdapter(pagerAdapter);
