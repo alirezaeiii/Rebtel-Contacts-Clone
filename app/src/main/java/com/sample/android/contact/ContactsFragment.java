@@ -47,6 +47,9 @@ public class ContactsFragment extends Fragment {
     @BindView(R.id.search_back)
     ImageButton mSearchBack;
 
+    @BindView(R.id.appBarLayout)
+    View mAppBarLayout;
+
     private Unbinder unbinder;
 
     @Override
@@ -124,6 +127,7 @@ public class ContactsFragment extends Fragment {
                 // Permission is granted
                 showContacts();
             } else {
+                mAppBarLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
             }
         }

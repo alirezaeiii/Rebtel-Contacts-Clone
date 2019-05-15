@@ -7,6 +7,7 @@
     tools:context=".ContactsFragment">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
