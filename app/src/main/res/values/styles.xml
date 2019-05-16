@@ -45,6 +45,9 @@
         <item name="android:layout_marginBottom">8dip</item>
         <item name="android:layout_marginStart">8dip</item>
         <item name="android:layout_marginEnd">8dip</item>
+    </style>
+
+    <style name="PadButtonStyle.DialPadKey">
         <item name="android:background">@drawable/circular_selector</item>
         <item name="android:clickable">true</item>
     </style>
