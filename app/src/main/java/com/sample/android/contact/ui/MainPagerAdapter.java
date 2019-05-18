@@ -1,4 +1,4 @@
-package com.sample.android.contact;
+package com.sample.android.contact.ui;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

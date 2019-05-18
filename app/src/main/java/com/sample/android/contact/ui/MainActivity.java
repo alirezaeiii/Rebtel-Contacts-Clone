@@ -1,9 +1,13 @@
-package com.sample.android.contact;
+package com.sample.android.contact.ui;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.sample.android.contact.widget.ListenableTabLayout;
+import com.sample.android.contact.R;
+import com.sample.android.contact.util.TabIndicatorFollower;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package com.sample.android.contact;
+package com.sample.android.contact.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sample.android.contact.R;
 import com.sample.android.padlayout.DialpadTextView;
 
 public class DialPadKey extends LinearLayout {

@@ -1,4 +1,4 @@
-package com.sample.android.contact;
+package com.sample.android.contact.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +10,11 @@ import android.widget.LinearLayout;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.sample.android.contact.R;
+import com.sample.android.contact.model.Contact;
+import com.sample.android.contact.model.ContactPhoneNumber;
+import com.sample.android.contact.model.CountryCodeNumber;
+import com.sample.android.contact.widget.FlagImageView;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -17,17 +22,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
-import static com.sample.android.contact.ContactsFragment.PROJECTION;
+import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
-class Utils {
+public class Utils {
 
-    static String deAccent(String str) {
+    public static String deAccent(String str) {
         String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
-    static String getTypeValue(ContactPhoneNumber contactPhoneNumber) {
+    public static String getTypeValue(ContactPhoneNumber contactPhoneNumber) {
         String typeValue = "";
         switch (contactPhoneNumber.getType()) {
             case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
@@ -61,7 +66,7 @@ class Utils {
         return typeValue;
     }
 
-    static List<Contact> getContacts(Cursor cursor) {
+    public static List<Contact> getContacts(Cursor cursor) {
         List<Contact> contacts = new ArrayList<>();
 
         int nameIndex = cursor.getColumnIndex(PROJECTION[0]);
@@ -126,7 +131,7 @@ class Utils {
         return contacts;
     }
 
-    static CountryCodeNumber getNormalizedNumber(String number) {
+    public static CountryCodeNumber getNormalizedNumber(String number) {
         number = (!number.matches("000+([0-9]+)") &&
                 number.startsWith("00")) ? "+" + number.substring(2) : number;
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
@@ -140,7 +145,7 @@ class Utils {
         }
     }
 
-    static ImageView getFlagImageView(Context context, CountryCodeNumber countryCodeNumber) {
+    public static ImageView getFlagImageView(Context context, CountryCodeNumber countryCodeNumber) {
         ImageView imageView = new FlagImageView(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
@@ -157,7 +162,7 @@ class Utils {
         return imageView;
     }
 
-    static int getFlagResID(Context context, String regionCode) {
+    public static int getFlagResID(Context context, String regionCode) {
         if (regionCode == null) {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             return getFlagResID(tm.getSimCountryIso());

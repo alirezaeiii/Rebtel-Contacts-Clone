@@ -1,4 +1,4 @@
-package com.sample.android.contact;
+package com.sample.android.contact.ui;
 
 import android.content.Context;
 import android.os.Handler;
@@ -17,6 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.sample.android.contact.R;
+import com.sample.android.contact.model.Contact;
+import com.sample.android.contact.model.ContactPhoneNumber;
+import com.sample.android.contact.model.CountryCodeNumber;
 import com.sylversky.indexablelistview.scroller.Indexer;
 import com.sylversky.indexablelistview.section.AlphabetSection;
 
@@ -27,11 +31,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.sample.android.contact.Utils.deAccent;
-import static com.sample.android.contact.Utils.getFlagImageView;
-import static com.sample.android.contact.Utils.getFlagResID;
-import static com.sample.android.contact.Utils.getNormalizedNumber;
-import static com.sample.android.contact.Utils.getTypeValue;
+import static com.sample.android.contact.util.Utils.deAccent;
+import static com.sample.android.contact.util.Utils.getFlagImageView;
+import static com.sample.android.contact.util.Utils.getFlagResID;
+import static com.sample.android.contact.util.Utils.getNormalizedNumber;
+import static com.sample.android.contact.util.Utils.getTypeValue;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
 

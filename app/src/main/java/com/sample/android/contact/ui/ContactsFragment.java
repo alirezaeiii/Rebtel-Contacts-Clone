@@ -1,4 +1,4 @@
-package com.sample.android.contact;
+package com.sample.android.contact.ui;
 
 import android.Manifest;
 import android.app.SearchManager;
@@ -18,13 +18,14 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.sample.android.contact.R;
 import com.sylversky.indexablelistview.widget.IndexableRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.sample.android.contact.Utils.getContacts;
+import static com.sample.android.contact.util.Utils.getContacts;
 
 public class ContactsFragment extends Fragment {
 

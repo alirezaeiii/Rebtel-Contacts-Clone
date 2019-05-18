@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:context=".ui.MainActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.github.florent37.shapeofview.shapes.TriangleView
-        android:id="@+id/triangle"
-        android:layout_width="30dp"
-        android:layout_height="13dp"
-        android:layout_above="@+id/tab_layout"
-        android:rotation="180">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_behavior=".behavior.QuickHideBehavior">
 
-        <View
+        <com.github.florent37.shapeofview.shapes.TriangleView
+            android:id="@+id/triangle"
+            android:layout_width="30dp"
+            android:layout_height="13dp"
+            android:layout_above="@+id/tab_layout"
+            android:rotation="180">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary" />
+
+        </com.github.florent37.shapeofview.shapes.TriangleView>
+
+        <com.sample.android.contact.widget.ListenableTabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextColor="@android:color/white" />
 
-    </com.github.florent37.shapeofview.shapes.TriangleView>
+    </RelativeLayout>
 
-    <com.sample.android.contact.ListenableTabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        app:tabIndicatorHeight="2dp"
-        app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="@android:color/white" />
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

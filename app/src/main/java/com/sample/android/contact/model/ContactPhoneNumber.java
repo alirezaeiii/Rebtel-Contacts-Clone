@@ -1,4 +1,4 @@
-package com.sample.android.contact;
+package com.sample.android.contact.model;
 
 public class ContactPhoneNumber {
 
