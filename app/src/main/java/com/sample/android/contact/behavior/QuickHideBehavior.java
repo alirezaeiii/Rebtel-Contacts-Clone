@@ -49,10 +49,10 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
                                   int[] consumed, int type) {
         if (dy > 0 && mScrollTrigger != DIRECTION_UP) {
             mScrollTrigger = DIRECTION_UP;
-            restartAnimator(child, 0f);
+            restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
         } else if (dy < 0 && mScrollTrigger != DIRECTION_DOWN) {
             mScrollTrigger = DIRECTION_DOWN;
-            restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
+            restartAnimator(child, 0f);
         }
     }
 
