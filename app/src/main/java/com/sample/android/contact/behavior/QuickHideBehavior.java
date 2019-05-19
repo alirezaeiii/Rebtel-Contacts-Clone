@@ -43,17 +43,22 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
         return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
+    //Called after the scrolling child handles the fling
     @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout,
-                                  View child, View target, int dx, int dy,
-                                  int[] consumed, int type) {
-        if (dy > 0 && mScrollTrigger != DIRECTION_UP) {
-            mScrollTrigger = DIRECTION_UP;
-            restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-        } else if (dy < 0 && mScrollTrigger != DIRECTION_DOWN) {
-            mScrollTrigger = DIRECTION_DOWN;
-            restartAnimator(child, 0f);
+    public boolean onNestedFling(CoordinatorLayout coordinatorLayout,
+                                 View child, View target, float velocityX, float velocityY,
+                                 boolean consumed) {
+        //We only care when the target view is already handling the fling
+        if (consumed) {
+            if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
+                mScrollTrigger = DIRECTION_UP;
+                restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
+            } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
+                mScrollTrigger = DIRECTION_DOWN;
+                restartAnimator(child, 0f);
+            }
         }
+        return false;
     }
 
     /* Helper Methods */
