@@ -5,11 +5,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,10 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.sample.android.contact.R;
+import com.sample.android.contact.model.Contact;
 import com.sylversky.indexablelistview.widget.IndexableRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +55,9 @@ public class ContactsFragment extends Fragment {
 
     @BindView(R.id.appBarLayout)
     View mAppBarLayout;
+
+    @BindView(R.id.progressBar)
+    AppCompatImageView mProgressBar;
 
     private Unbinder unbinder;
 
@@ -97,16 +105,20 @@ public class ContactsFragment extends Fragment {
             mSearchView.setQuery("", false);
         });
 
-        showContacts();
-
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showContacts();
     }
 
     private void setupAdapter(String query) {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        setupAdapter(selection, selectionArgs, false);
+        new SetupAdapterAsync(selection, selectionArgs, false).execute();
     }
 
     private void showContacts() {
@@ -116,7 +128,7 @@ public class ContactsFragment extends Fragment {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            setupAdapter(null, null, true);
+            new SetupAdapterAsync(null, null, true).execute();
         }
     }
 
@@ -140,20 +152,48 @@ public class ContactsFragment extends Fragment {
         unbinder.unbind();
     }
 
-    private void setupAdapter(String selection, String[] selectionArgs, boolean showSeparator) {
-        final Cursor cursor = getActivity().getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
-        );
+    private class SetupAdapterAsync extends AsyncTask<Void, Void, List<Contact>> {
 
-        if (cursor == null) {
-            return;
+        private String selection;
+        private String[] selectionArgs;
+        private boolean showSeparator;
+
+        private SetupAdapterAsync(String selection, String[] selectionArgs, boolean showSeparator) {
+            this.selection = selection;
+            this.selectionArgs = selectionArgs;
+            this.showSeparator = showSeparator;
         }
 
-        mAdapter.setItems(getContacts(cursor), showSeparator);
-        cursor.close();
+        @Override
+        protected void onPreExecute() {
+            if(showSeparator) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        @Override
+        protected List<Contact> doInBackground(Void...params) {
+
+            final Cursor cursor = getActivity().getContentResolver().query(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    PROJECTION,
+                    selection,
+                    selectionArgs,
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
+            );
+
+            List<Contact> contacts = getContacts(cursor);
+            cursor.close();
+
+            return contacts;
+        }
+
+        @Override
+        protected void onPostExecute(List<Contact> contacts) {
+            mAdapter.setItems(contacts, showSeparator);
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 }
