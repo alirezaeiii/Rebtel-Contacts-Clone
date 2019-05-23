@@ -62,12 +62,10 @@
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <ImageView
+    <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_gravity="center"
-        tools:ignore="contentDescription"
-        tools:src="@drawable/loading_animation" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </com.sample.android.contact.widget.NestedCoordinatorLayout>

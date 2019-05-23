@@ -8,8 +8,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -59,10 +57,9 @@ public class ContactsFragment extends Fragment {
     View mAppBarLayout;
 
     @BindView(R.id.progressBar)
-    ImageView mProgressBar;
+    ProgressBar mProgressBar;
 
     private Unbinder unbinder;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,8 +104,6 @@ public class ContactsFragment extends Fragment {
             mSearchBack.setVisibility(View.INVISIBLE);
             mSearchView.setQuery("", false);
         });
-
-        mHandler.postDelayed(() -> mProgressBar.setImageResource(R.drawable.loading_animation), 0);
 
         return root;
     }
