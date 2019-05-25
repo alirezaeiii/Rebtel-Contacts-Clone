@@ -2,12 +2,18 @@ package com.sample.android.contact.behavior;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.RelativeLayout;
+
+import com.sample.android.contact.R;
 
 /**
  * Simple scrolling behavior that monitors nested events in the scrolling
@@ -22,6 +28,8 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
     private int mScrollTrigger;
 
     private ObjectAnimator mAnimator;
+
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -48,14 +56,25 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
     public boolean onNestedFling(CoordinatorLayout coordinatorLayout,
                                  View child, View target, float velocityX, float velocityY,
                                  boolean consumed) {
+        View recyclerView = target.findViewById(R.id.recyclerView);
+        MarginLayoutParams params = (MarginLayoutParams) recyclerView.getLayoutParams();
         //We only care when the target view is already handling the fling
         if (consumed) {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
+                if (child instanceof RelativeLayout) {
+                    params.setMargins(0, 0, 0, 0);
+                    recyclerView.setLayoutParams(params);
+                }
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
+                if (child instanceof RelativeLayout) {
+                    params.setMargins(0, 0, 0,
+                            (int) child.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_bottom_margin));
+                    mHandler.postDelayed(() -> recyclerView.setLayoutParams(params), 250);
+                }
             }
         }
         return false;
@@ -77,7 +96,9 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
     }
 
     private float getTargetHideValue(ViewGroup parent, View target) {
-        if (target instanceof RelativeLayout) {
+        if (target instanceof AppBarLayout) {
+            return -target.getHeight();
+        } else if (target instanceof RelativeLayout) {
             return parent.getHeight() - target.getTop();
         }
         return 0f;
