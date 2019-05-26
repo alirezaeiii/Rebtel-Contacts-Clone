@@ -10,7 +10,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior=".behavior.QuickHideBehavior">
+        app:layout_behavior=".behavior.QuickHideAppBarBehavior">
 
         <FrameLayout
             android:layout_width="match_parent"
