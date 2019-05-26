@@ -10,7 +10,7 @@
 
     <dimen name="dimen_frame_margin">86dp</dimen>
 
-    <dimen name="dimen_recycler_view_bottom_margin">48dp</dimen>
+    <dimen name="dimen_recycler_view_spacing">48dp</dimen>
 
     <dimen name="dialpad_key_number_margin_bottom">1dp</dimen>
     <dimen name="dialpad_key_numbers_size">36sp</dimen>

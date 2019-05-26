@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -63,16 +64,25 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                if (child instanceof RelativeLayout) {
+                if(child instanceof AppBarLayout) {
+                    recyclerView.setPadding(0, 0,0,0);
+                } else if(child instanceof RelativeLayout) {
                     params.setMargins(0, 0, 0, 0);
                     recyclerView.setLayoutParams(params);
                 }
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                if (child instanceof RelativeLayout) {
+                if (child instanceof AppBarLayout) {
+                    // Calculate ActionBar height
+                    TypedValue tv = new TypedValue();
+                    int actionBarHeight = child.getContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
+                            TypedValue.complexToDimensionPixelSize(tv.data, child.getContext().getResources().getDisplayMetrics()) :
+                            (int) child.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+                    mHandler.postDelayed(() -> recyclerView.setPadding(0, actionBarHeight, 0, 0), 250);
+                } else if (child instanceof RelativeLayout) {
                     params.setMargins(0, 0, 0,
-                            (int) child.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_bottom_margin));
+                            (int) child.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_spacing));
                     mHandler.postDelayed(() -> recyclerView.setLayoutParams(params), 250);
                 }
             }
