@@ -32,7 +32,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     protected abstract void directionUpScrolling(View recyclerView);
 
-    protected abstract void directionDownScrolling(View recyclerView, View child);
+    protected abstract void directionDownScrolling(View recyclerView);
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -70,7 +70,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                directionDownScrolling(recyclerView, child);
+                directionDownScrolling(recyclerView);
             }
         }
         return false;

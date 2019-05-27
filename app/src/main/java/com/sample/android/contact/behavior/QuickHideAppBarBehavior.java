@@ -26,12 +26,12 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
     }
 
     @Override
-    protected void directionDownScrolling(View recyclerView, View child) {
+    protected void directionDownScrolling(View recyclerView) {
         // Calculate ActionBar height
         TypedValue tv = new TypedValue();
-        int actionBarHeight = child.getContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
-                TypedValue.complexToDimensionPixelSize(tv.data, child.getContext().getResources().getDisplayMetrics()) :
-                (int) child.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+        int actionBarHeight = recyclerView.getContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
+                TypedValue.complexToDimensionPixelSize(tv.data, recyclerView.getContext().getResources().getDisplayMetrics()) :
+                (int) recyclerView.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
         mHandler.postDelayed(() -> recyclerView.setPadding(0, actionBarHeight, 0, 0), 250);
     }
 }
