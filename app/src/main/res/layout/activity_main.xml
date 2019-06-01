@@ -16,29 +16,23 @@
         android:layout_height="wrap_content"
         app:layout_behavior=".behavior.QuickHideBottomBarBehavior">
 
-        <com.github.florent37.shapeofview.shapes.TriangleView
-            android:id="@+id/triangle"
-            android:layout_width="30dp"
-            android:layout_height="13dp"
-            android:layout_above="@+id/tab_layout"
-            android:rotation="180">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary" />
-
-        </com.github.florent37.shapeofview.shapes.TriangleView>
-
         <com.sample.android.contact.widget.ListenableTabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/rectangle_shape"
+            app:tabIndicatorColor="@color/color1"
             app:tabIndicatorHeight="2dp"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextColor="@android:color/white" />
+            app:tabSelectedTextColor="@color/color1" />
+
+        <ImageView
+            android:id="@+id/triangle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_above="@+id/tab_layout"
+            android:layout_marginBottom="-1dp"
+            android:src="@drawable/triangle_shape" />
 
     </RelativeLayout>
 

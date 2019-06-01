@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:editTextColor">@color/color3</item>
     </style>
 
     <style name="LineStyle">
@@ -82,6 +83,10 @@
         <item name="android:searchHintIcon">@android:color/transparent</item>
         <item name="android:queryBackground">@android:color/transparent</item>
         <item name="android:submitBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorHint">@android:color/darker_gray</item>
     </style>
 
 </resources>
