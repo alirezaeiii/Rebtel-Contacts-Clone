@@ -22,7 +22,6 @@
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/rectangle_shape"
-            app:tabIndicatorColor="@color/color1"
             app:tabIndicatorHeight="2dp"
             app:tabSelectedTextColor="@color/color1" />
 
@@ -32,7 +31,8 @@
             android:layout_height="30dp"
             android:layout_above="@+id/tab_layout"
             android:layout_marginBottom="-1dp"
-            android:src="@drawable/triangle_shape" />
+            android:src="@drawable/triangle_shape"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 

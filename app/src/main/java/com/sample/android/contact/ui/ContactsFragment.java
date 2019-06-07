@@ -61,6 +61,8 @@ public class ContactsFragment extends Fragment {
 
     private Unbinder unbinder;
 
+    private SetupAdapterAsync mSetupAdapterAsync;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +120,8 @@ public class ContactsFragment extends Fragment {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        new SetupAdapterAsync(selection, selectionArgs, false).execute();
+        mSetupAdapterAsync = new SetupAdapterAsync(selection, selectionArgs, false);
+        mSetupAdapterAsync.execute();
     }
 
     private void showContacts() {
@@ -128,7 +131,8 @@ public class ContactsFragment extends Fragment {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            new SetupAdapterAsync(null, null, true).execute();
+            mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
+            mSetupAdapterAsync.execute();
         }
     }
 
@@ -143,6 +147,14 @@ public class ContactsFragment extends Fragment {
                 mAppBarLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mSetupAdapterAsync != null && mSetupAdapterAsync.getStatus() == AsyncTask.Status.RUNNING) {
+            mSetupAdapterAsync.cancel(true);
         }
     }
 
@@ -166,14 +178,14 @@ public class ContactsFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            if(showSeparator) {
+            if (showSeparator) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.INVISIBLE);
             }
         }
 
         @Override
-        protected List<Contact> doInBackground(Void...params) {
+        protected List<Contact> doInBackground(Void... params) {
 
             final Cursor cursor = getActivity().getContentResolver().query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
