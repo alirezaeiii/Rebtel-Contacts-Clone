@@ -5,13 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.sample.android.contact.R;
 
 public class DialpadFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
-    private TextView digits;
+    private EditText digits;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +35,7 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
         deleteButton.setOnClickListener(this);
         deleteButton.setOnLongClickListener(this);
         digits = root.findViewById(R.id.digits);
+        digits.setShowSoftInputOnFocus(false);
 
         return root;
     }
