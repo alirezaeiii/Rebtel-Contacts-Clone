@@ -11,14 +11,17 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <TextView
+        <com.sample.android.contact.widget.ResizingTextEditText
             android:id="@+id/digits"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:cursorVisible="false"
             android:gravity="center"
             android:singleLine="true"
-            app:autoSizeTextType="uniform"
+            android:textSize="34sp"
+            app:resizing_text_min_size="24dp"
             tools:text="+989121895634" />
 
         <ImageButton

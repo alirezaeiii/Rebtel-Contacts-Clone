@@ -7,4 +7,8 @@
         <attr name="letterGone" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="ResizingText">
+        <attr format="dimension" name="resizing_text_min_size"/>
+    </declare-styleable>
+
 </resources>
