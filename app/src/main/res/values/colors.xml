@@ -12,6 +12,7 @@
     <color name="dialpad_secondary_text_color">@color/color3</color>
     <color name="dialpad_button_default">@android:color/transparent</color>
     <color name="dialpad_button_pressed">@color/color2</color>
+    <color name="dialpad_icon_tint">#89000000</color>
 
     <color name="colorLine">#DCDCDC</color>
 

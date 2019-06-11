@@ -7,10 +7,7 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/display"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/display" />
 
     <com.sample.android.padlayout.PadLayout
         android:id="@+id/padLayout"
