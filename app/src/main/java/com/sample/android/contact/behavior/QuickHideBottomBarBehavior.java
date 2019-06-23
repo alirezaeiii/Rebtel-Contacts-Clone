@@ -1,13 +1,18 @@
 package com.sample.android.contact.behavior;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.sample.android.contact.R;
 
 public class QuickHideBottomBarBehavior extends QuickHideBehavior {
+
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -18,6 +23,10 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     @SuppressWarnings("unused")
     public QuickHideBottomBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    protected float getTargetHideValue(ViewGroup parent, View target) {
+        return parent.getHeight() - target.getTop();
     }
 
     @Override

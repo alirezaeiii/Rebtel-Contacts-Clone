@@ -2,15 +2,11 @@ package com.sample.android.contact.behavior;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.sample.android.contact.R;
 
@@ -28,11 +24,11 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     private ObjectAnimator mAnimator;
 
-    Handler mHandler = new Handler(Looper.getMainLooper());
-
     protected abstract void directionUpScrolling(View recyclerView);
 
     protected abstract void directionDownScrolling(View recyclerView);
+
+    protected abstract float getTargetHideValue(ViewGroup parent, View target);
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -89,14 +85,5 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
                 .ofFloat(target, View.TRANSLATION_Y, value)
                 .setDuration(250);
         mAnimator.start();
-    }
-
-    private float getTargetHideValue(ViewGroup parent, View target) {
-        if (target instanceof AppBarLayout) {
-            return -target.getHeight();
-        } else if (target instanceof RelativeLayout) {
-            return parent.getHeight() - target.getTop();
-        }
-        return 0f;
     }
 }

@@ -93,10 +93,8 @@ public class ContactsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                if (!query.isEmpty()) {
-                    mSearchBack.setVisibility(View.VISIBLE);
-                    setupAdapter(query);
-                }
+                mSearchBack.setVisibility(View.VISIBLE);
+                setupAdapter(query);
                 return true;
             }
         });
