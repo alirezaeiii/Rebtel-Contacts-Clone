@@ -14,6 +14,8 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
+    private int bottomSpacing;
+
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
     public QuickHideBottomBarBehavior() {
@@ -23,6 +25,7 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     @SuppressWarnings("unused")
     public QuickHideBottomBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
+        bottomSpacing = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
     }
 
     protected float getTargetHideValue(ViewGroup parent, View target) {
@@ -39,8 +42,9 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     @Override
     protected void directionDownScrolling(View recyclerView) {
         MarginLayoutParams params = (MarginLayoutParams) recyclerView.getLayoutParams();
-        params.setMargins(0, 0, 0,
-                (int) recyclerView.getContext().getResources().getDimension(R.dimen.dimen_recycler_view_spacing));
-        mHandler.postDelayed(() -> recyclerView.setLayoutParams(params), 250);
+        mHandler.postDelayed(() -> {
+            params.setMargins(0, 0, 0, bottomSpacing);
+            recyclerView.setLayoutParams(params);
+        }, 250);
     }
 }
