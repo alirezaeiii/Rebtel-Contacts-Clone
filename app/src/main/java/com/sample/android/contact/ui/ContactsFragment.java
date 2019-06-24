@@ -179,6 +179,7 @@ public class ContactsFragment extends Fragment {
             if (showSeparator) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.INVISIBLE);
+                mAppBarLayout.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -204,6 +205,7 @@ public class ContactsFragment extends Fragment {
             mAdapter.setItems(contacts, showSeparator);
             mProgressBar.setVisibility(View.INVISIBLE);
             mRecyclerView.setVisibility(View.VISIBLE);
+            mAppBarLayout.setVisibility(View.VISIBLE);
         }
     }
 }
