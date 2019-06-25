@@ -70,6 +70,7 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
 </resources>
