@@ -11,11 +11,13 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -93,13 +95,18 @@ public class ContactsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                if(!query.isEmpty()) {
+                if (!query.isEmpty()) {
                     mSearchBack.setVisibility(View.VISIBLE);
                     setupAdapter(query);
                 }
                 return true;
             }
         });
+
+        int searchCloseIconButtonId = getResources().getIdentifier("android:id/search_close_btn", null, null);
+        ImageView searchClose = mSearchView.findViewById(searchCloseIconButtonId);
+        int searchCloseIconColor = ResourcesCompat.getColor(getResources(), R.color.color3, null);
+        searchClose.setColorFilter(searchCloseIconColor);
 
         mSearchBack.setOnClickListener(view -> {
             showContacts();
