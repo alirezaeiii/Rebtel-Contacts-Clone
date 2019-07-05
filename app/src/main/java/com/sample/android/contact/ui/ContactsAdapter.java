@@ -34,7 +34,6 @@ import butterknife.OnClick;
 import static com.sample.android.contact.util.Utils.deAccent;
 import static com.sample.android.contact.util.Utils.getFlagImageView;
 import static com.sample.android.contact.util.Utils.getFlagResID;
-import static com.sample.android.contact.util.Utils.getNormalizedNumber;
 import static com.sample.android.contact.util.Utils.getTypeValue;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
@@ -171,17 +170,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             String name = contact.getName();
             List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             ContactPhoneNumber phoneNumber = numbers.get(0);
-            String number = numbers.size() == 1 ? phoneNumber.getNumber() : "";
+            String number = numbers.size() == 1 ? phoneNumber.getNumber().number : "";
 
             contactNameView.setText(name);
             imageText.setText(contact.getBriefName());
-            CountryCodeNumber countryCodeNumber = getNormalizedNumber(number);
-            phoneNumberView.setText(countryCodeNumber.number);
+            phoneNumberView.setText(number);
 
             flagItem.removeAllViews();
 
             flagImageView.setImageResource(numbers.size() == 1 ?
-                    getFlagResID(context, countryCodeNumber.regionCode) :
+                    getFlagResID(context, phoneNumber.getNumber().regionCode) :
                     android.R.color.transparent);
 
             ConstraintSet constraintSet = new ConstraintSet();
@@ -332,7 +330,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 phoneNumber = numbers.get(childPosition);
 
-                countryCodeNumber = getNormalizedNumber(phoneNumber.getNumber());
+                CountryCodeNumber countryCodeNumber = phoneNumber.getNumber();
                 ImageView imageView = getFlagImageView(context, countryCodeNumber);
                 if (!list.contains(imageView)) {
                     flagItem.addView(imageView);
@@ -344,7 +342,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
-                childViewHolder.contactNumber.setText(getNormalizedNumber(phoneNumber.getNumber()).number);
+                childViewHolder.contactNumber.setText(phoneNumber.getNumber().number);
                 childViewHolder.numberType.setText(getTypeValue(phoneNumber));
                 childViewHolder.flagImageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
 
@@ -388,7 +386,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         void onClick() {
             final Contact contact = mContacts.get(getAdapterPosition());
 
-            if(contact.getPhoneNumbers().size() == 1) {
+            if (contact.getPhoneNumbers().size() == 1) {
                 return;
             }
 

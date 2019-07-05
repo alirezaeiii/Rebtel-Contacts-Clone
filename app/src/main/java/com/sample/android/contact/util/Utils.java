@@ -80,10 +80,12 @@ public class Utils {
             String number = cursor.getString(numberIndex);
             int type = cursor.getInt(typeIndex);
 
+            CountryCodeNumber countryCodeNumber = getNormalizedNumber(number);
+
             List<ContactPhoneNumber> numbers = new ArrayList<>();
             ContactPhoneNumber phoneNumber = (type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM) ?
-                    new ContactPhoneNumber(number, type, cursor.getString(typeLabelIndex)) :
-                    new ContactPhoneNumber(number, type);
+                    new ContactPhoneNumber(countryCodeNumber, type, cursor.getString(typeLabelIndex)) :
+                    new ContactPhoneNumber(countryCodeNumber, type);
             numbers.add(phoneNumber);
 
             String[] splitedName = name.split("\\s+");
@@ -131,7 +133,7 @@ public class Utils {
         return contacts;
     }
 
-    public static CountryCodeNumber getNormalizedNumber(String number) {
+    private static CountryCodeNumber getNormalizedNumber(String number) {
         number = (!number.matches("000+([0-9]+)") &&
                 number.startsWith("00")) ? "+" + number.substring(2) : number;
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();

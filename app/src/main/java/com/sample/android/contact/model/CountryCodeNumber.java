@@ -13,4 +13,13 @@ public class CountryCodeNumber {
     public CountryCodeNumber(String number) {
         this.number = number;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof CountryCodeNumber)) {
+            return false;
+        }
+        CountryCodeNumber other = (CountryCodeNumber) o;
+        return other.number.equals(this.number);
+    }
 }

@@ -2,22 +2,22 @@ package com.sample.android.contact.model;
 
 public class ContactPhoneNumber {
 
-    private String number;
+    private CountryCodeNumber number;
     private int type;
     private String typeLabel;
 
-    public ContactPhoneNumber(String number, int type, String typeLabel) {
+    public ContactPhoneNumber(CountryCodeNumber number, int type, String typeLabel) {
         this.number = number;
         this.type = type;
         this.typeLabel = typeLabel;
     }
 
-    public ContactPhoneNumber(String number, int type) {
+    public ContactPhoneNumber(CountryCodeNumber number, int type) {
         this.number = number;
         this.type = type;
     }
 
-    public String getNumber() {
+    public CountryCodeNumber getNumber() {
         return number;
     }
 
