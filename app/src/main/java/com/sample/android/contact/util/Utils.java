@@ -26,45 +26,7 @@ import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
 public class Utils {
 
-    public static String deAccent(String str) {
-        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(nfdNormalizedString).replaceAll("");
-    }
-
-    public static String getTypeValue(ContactPhoneNumber contactPhoneNumber) {
-        String typeValue = "";
-        switch (contactPhoneNumber.getType()) {
-            case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-                typeValue = "Home";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-                typeValue = "Mobile";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-                typeValue = "Work";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_WORK:
-                typeValue = "Work Fax";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_HOME:
-                typeValue = "Home Fax";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_PAGER:
-                typeValue = "Pager";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_MAIN:
-                typeValue = "Main";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
-                typeValue = "Other";
-                break;
-            case ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM:
-                typeValue = contactPhoneNumber.getTypeLabel();
-                break;
-        }
-        return typeValue;
-    }
+    private Utils() {}
 
     public static List<Contact> getContacts(Cursor cursor) {
         List<Contact> contacts = new ArrayList<>();
@@ -84,38 +46,11 @@ public class Utils {
 
             List<ContactPhoneNumber> numbers = new ArrayList<>();
             ContactPhoneNumber phoneNumber = (type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM) ?
-                    new ContactPhoneNumber(countryCodeNumber, type, cursor.getString(typeLabelIndex)) :
-                    new ContactPhoneNumber(countryCodeNumber, type);
+                    new ContactPhoneNumber(countryCodeNumber, cursor.getString(typeLabelIndex)) :
+                    new ContactPhoneNumber(countryCodeNumber, getTypeValue(type));
             numbers.add(phoneNumber);
 
-            String[] splitedName = name.split("\\s+");
-            char c;
-            int i;
-            boolean noLetter = true;
-            String brief = "";
-
-            for (i = 0; i < splitedName.length; i++) {
-                c = splitedName[i].toUpperCase().charAt(0);
-                if (Character.isLetter(c)) {
-                    brief = String.valueOf(c);
-                    noLetter = false;
-                    break;
-                }
-            }
-
-            for (int j = i + 1; j < splitedName.length; j++) {
-                c = splitedName[j].toUpperCase().charAt(0);
-                if (Character.isLetter(c)) {
-                    brief += "." + c;
-                    break;
-                }
-            }
-
-            if (noLetter) {
-                brief = "¿";
-            }
-
-            Contact contact = new Contact(name, numbers, brief);
+            Contact contact = new Contact(deAccent(name), numbers, getBriefName(name));
             int index = contacts.indexOf(contact);
 
             if (index == -1) {
@@ -145,6 +80,73 @@ public class Utils {
         } catch (NumberParseException e) {
             return new CountryCodeNumber(number);
         }
+    }
+
+    private static String getTypeValue(int type) {
+        String typeValue = "";
+        switch (type) {
+            case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+                typeValue = "Home";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+                typeValue = "Mobile";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+                typeValue = "Work";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_WORK:
+                typeValue = "Work Fax";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_HOME:
+                typeValue = "Home Fax";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_PAGER:
+                typeValue = "Pager";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_MAIN:
+                typeValue = "Main";
+                break;
+            case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
+                typeValue = "Other";
+                break;
+        }
+        return typeValue;
+    }
+
+    private static String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
+
+    private static String getBriefName(String name) {
+        String[] splitedName = name.split("\\s+");
+        char character;
+        int index;
+        boolean noLetter = true;
+        String brief = "";
+
+        for (index = 0; index < splitedName.length; index++) {
+            character = splitedName[index].toUpperCase().charAt(0);
+            if (Character.isLetter(character)) {
+                brief = String.valueOf(character);
+                noLetter = false;
+                break;
+            }
+        }
+
+        for (int j = index + 1; j < splitedName.length; j++) {
+            character = splitedName[j].toUpperCase().charAt(0);
+            if (Character.isLetter(character)) {
+                brief += "." + character;
+                break;
+            }
+        }
+
+        if (noLetter) {
+            brief = "¿";
+        }
+        return brief;
     }
 
     public static ImageView getFlagImageView(Context context, CountryCodeNumber countryCodeNumber) {

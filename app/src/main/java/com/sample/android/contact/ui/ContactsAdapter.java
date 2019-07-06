@@ -31,10 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.sample.android.contact.util.Utils.deAccent;
 import static com.sample.android.contact.util.Utils.getFlagImageView;
 import static com.sample.android.contact.util.Utils.getFlagResID;
-import static com.sample.android.contact.util.Utils.getTypeValue;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
 
@@ -76,7 +74,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Contact contact = mContacts.get(position);
-
         holder.bind(contact);
     }
 
@@ -187,7 +184,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             if (numbers.size() == 1) {
                 phoneNumberType.setVisibility(View.VISIBLE);
                 lineNumber.setVisibility(View.INVISIBLE);
-                phoneNumberType.setText(getTypeValue(phoneNumber));
+                phoneNumberType.setText(phoneNumber.getTypeLabel());
                 constraintSet.clone(detail);
                 viewId = R.id.phone_type;
             } else {
@@ -203,7 +200,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     ConstraintSet.START);
             constraintSet.applyTo(detail);
 
-            char[] nameArray = deAccent(name).toUpperCase().toCharArray();
+            char[] nameArray = name.toUpperCase().toCharArray();
 
             boolean showSeparator = false;
 
@@ -226,9 +223,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                             showSeparator = true;
                         } else {
                             Contact previousContact = mContacts.get(position - 1);
-
-                            String previousName = deAccent(previousContact.getName());
-                            char[] previousNameArray = previousName.toUpperCase().toCharArray();
+                            char[] previousNameArray = previousContact.getName().toUpperCase().toCharArray();
 
                             if (Character.isLetter(nameArray[0]) &&
                                     nameArray[0] != previousNameArray[0]) {
@@ -276,9 +271,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                             showLine = false;
                         } else {
                             Contact nextContact = mContacts.get(position + 1);
-
-                            String nextName = deAccent(nextContact.getName());
-                            char[] nextNameArray = nextName.toUpperCase().toCharArray();
+                            char[] nextNameArray = nextContact.getName().toUpperCase().toCharArray();
 
                             if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
                                     (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
@@ -311,9 +304,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     lineFlag = false;
                 } else {
                     Contact nextContact = mContacts.get(position + 1);
-
-                    String nextName = deAccent(nextContact.getName());
-                    char[] nextNameArray = nextName.toUpperCase().toCharArray();
+                    char[] nextNameArray = nextContact.getName().toUpperCase().toCharArray();
 
                     if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
                             && nameArray[0] != nextNameArray[0]) {
@@ -343,7 +334,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
                 childViewHolder.contactNumber.setText(phoneNumber.getNumber().number);
-                childViewHolder.numberType.setText(getTypeValue(phoneNumber));
+                childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                 childViewHolder.flagImageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
