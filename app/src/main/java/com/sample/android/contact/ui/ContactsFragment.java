@@ -124,26 +124,6 @@ public class ContactsFragment extends Fragment {
         showContacts();
     }
 
-    private void setupAdapter(String query) {
-        final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
-        final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        mSetupAdapterAsync = new SetupAdapterAsync(selection, selectionArgs, false);
-        mSetupAdapterAsync.execute();
-    }
-
-    private void showContacts() {
-        // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-            mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
-            mSetupAdapterAsync.execute();
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -170,6 +150,26 @@ public class ContactsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private void setupAdapter(String query) {
+        final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
+                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
+        final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
+        mSetupAdapterAsync = new SetupAdapterAsync(selection, selectionArgs, false);
+        mSetupAdapterAsync.execute();
+    }
+
+    private void showContacts() {
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            // Android version is lesser than 6.0 or the permission is already granted.
+            mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
+            mSetupAdapterAsync.execute();
+        }
     }
 
     private class SetupAdapterAsync extends AsyncTask<Void, Void, List<Contact>> {
@@ -204,7 +204,7 @@ public class ContactsFragment extends Fragment {
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
             );
 
-            List<Contact> contacts = getContacts(cursor);
+            List<Contact> contacts = getContacts(cursor, ContactsFragment.this.getContext());
             cursor.close();
 
             return contacts;

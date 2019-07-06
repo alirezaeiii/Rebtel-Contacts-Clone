@@ -24,15 +24,11 @@ import com.sample.android.contact.model.CountryCodeNumber;
 import com.sylversky.indexablelistview.scroller.Indexer;
 import com.sylversky.indexablelistview.section.AlphabetSection;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.sample.android.contact.util.Utils.getFlagImageView;
-import static com.sample.android.contact.util.Utils.getFlagResID;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
 
@@ -176,7 +172,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             flagItem.removeAllViews();
 
             flagImageView.setImageResource(numbers.size() == 1 ?
-                    getFlagResID(context, phoneNumber.getNumber().regionCode) :
+                    phoneNumber.getNumber().flagResId :
                     android.R.color.transparent);
 
             ConstraintSet constraintSet = new ConstraintSet();
@@ -315,18 +311,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean expanded = contact.isExpanded();
             subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-            List<ImageView> list = new ArrayList<>();
+            for (ImageView imageView : contact.getImageViews()) {
+                if (imageView.getParent() != null) {
+                    ((ViewGroup) imageView.getParent()).removeView(imageView);
+                }
+                flagItem.addView(imageView);
+            }
 
             for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
                 phoneNumber = numbers.get(childPosition);
-
                 CountryCodeNumber countryCodeNumber = phoneNumber.getNumber();
-                ImageView imageView = getFlagImageView(context, countryCodeNumber);
-                if (!list.contains(imageView)) {
-                    flagItem.addView(imageView);
-                    list.add(imageView);
-                }
 
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View childView = inflater.inflate(R.layout.child_item, null);
@@ -335,7 +330,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 childViewHolder.contactNumber.setText(phoneNumber.getNumber().number);
                 childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
-                childViewHolder.flagImageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
+                childViewHolder.flagImageView.setImageResource(countryCodeNumber.flagResId);
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
                 childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);

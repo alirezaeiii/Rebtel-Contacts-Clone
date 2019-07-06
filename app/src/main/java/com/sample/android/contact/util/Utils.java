@@ -28,7 +28,7 @@ public class Utils {
 
     private Utils() {}
 
-    public static List<Contact> getContacts(Cursor cursor) {
+    public static List<Contact> getContacts(Cursor cursor, Context context) {
         List<Contact> contacts = new ArrayList<>();
 
         int nameIndex = cursor.getColumnIndex(PROJECTION[0]);
@@ -42,7 +42,7 @@ public class Utils {
             String number = cursor.getString(numberIndex);
             int type = cursor.getInt(typeIndex);
 
-            CountryCodeNumber countryCodeNumber = getNormalizedNumber(number);
+            CountryCodeNumber countryCodeNumber = getNormalizedNumber(number, context);
 
             List<ContactPhoneNumber> numbers = new ArrayList<>();
             ContactPhoneNumber phoneNumber = (type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM) ?
@@ -50,7 +50,11 @@ public class Utils {
                     new ContactPhoneNumber(countryCodeNumber, getTypeValue(type));
             numbers.add(phoneNumber);
 
-            Contact contact = new Contact(deAccent(name), numbers, getBriefName(name));
+            List<ImageView> imageViews = new ArrayList<>();
+            ImageView flagImageView = getFlagImageView(context, countryCodeNumber);
+            imageViews.add(flagImageView);
+
+            Contact contact = new Contact(deAccent(name), numbers, getBriefName(name), imageViews);
             int index = contacts.indexOf(contact);
 
             if (index == -1) {
@@ -58,9 +62,14 @@ public class Utils {
             } else {
                 contact = contacts.get(index);
                 numbers = contact.getPhoneNumbers();
+                imageViews = contact.getImageViews();
                 if (numbers.indexOf(phoneNumber) == -1) {
                     numbers.add(phoneNumber);
                     contact.setNumbers(numbers);
+                    if (!imageViews.contains(flagImageView)) {
+                        imageViews.add(flagImageView);
+                        contact.setImageViews(imageViews);
+                    }
                     contacts.set(index, contact);
                 }
             }
@@ -68,17 +77,18 @@ public class Utils {
         return contacts;
     }
 
-    private static CountryCodeNumber getNormalizedNumber(String number) {
+    private static CountryCodeNumber getNormalizedNumber(String number, Context context) {
         number = (!number.matches("000+([0-9]+)") &&
                 number.startsWith("00")) ? "+" + number.substring(2) : number;
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-
         try {
             Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
+            String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
             return new CountryCodeNumber(phoneUtil.format(numberProto, INTERNATIONAL),
-                    phoneUtil.getRegionCodeForNumber(numberProto));
+                    regionCode,
+                    getFlagResID(context, regionCode));
         } catch (NumberParseException e) {
-            return new CountryCodeNumber(number);
+            return new CountryCodeNumber(number, getFlagResID(context, null));
         }
     }
 
@@ -149,7 +159,7 @@ public class Utils {
         return brief;
     }
 
-    public static ImageView getFlagImageView(Context context, CountryCodeNumber countryCodeNumber) {
+    private static ImageView getFlagImageView(Context context, CountryCodeNumber countryCodeNumber) {
         ImageView imageView = new FlagImageView(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
@@ -166,7 +176,7 @@ public class Utils {
         return imageView;
     }
 
-    public static int getFlagResID(Context context, String regionCode) {
+    private static int getFlagResID(Context context, String regionCode) {
         if (regionCode == null) {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             return getFlagResID(tm.getSimCountryIso());

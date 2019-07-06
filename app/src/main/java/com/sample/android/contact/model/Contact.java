@@ -1,5 +1,7 @@
 package com.sample.android.contact.model;
 
+import android.widget.ImageView;
+
 import java.util.List;
 
 public class Contact {
@@ -7,13 +9,16 @@ public class Contact {
     private String name;
     private List<ContactPhoneNumber> numbers;
     private String briefName;
+    private List<ImageView> imageViews;
     // State of the item
     private boolean expanded;
 
-    public Contact(String name, List<ContactPhoneNumber> numbers, String briefName) {
+    public Contact(String name, List<ContactPhoneNumber> numbers, String briefName,
+                   List<ImageView> imageViews) {
         this.name = name;
         this.numbers = numbers;
         this.briefName = briefName;
+        this.imageViews = imageViews;
     }
 
     public String getName() {
@@ -32,6 +37,14 @@ public class Contact {
         return briefName;
     }
 
+    public void setImageViews(List<ImageView> imageViews) {
+        this.imageViews = imageViews;
+    }
+
+    public List<ImageView> getImageViews() {
+        return imageViews;
+    }
+
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
@@ -42,7 +55,7 @@ public class Contact {
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Contact)) {
+        if (!(o instanceof Contact)) {
             return false;
         }
         Contact other = (Contact) o;
