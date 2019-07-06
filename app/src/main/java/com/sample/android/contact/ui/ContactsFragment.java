@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.sample.android.contact.util.Utils.getContacts;
+import static com.sample.android.contact.util.ContactUtil.getContacts;
 
 public class ContactsFragment extends Fragment {
 

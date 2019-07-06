@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
-public class Utils {
+public class ContactUtil {
 
-    private Utils() {}
+    private ContactUtil() {}
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {
         List<Contact> contacts = new ArrayList<>();
