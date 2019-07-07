@@ -35,16 +35,6 @@
         tools:layout_constraintEnd_toStartOf="@id/phone_type"
         tools:text="Ali Rezaei" />
 
-    <ImageView
-        android:id="@+id/flagImageView"
-        android:layout_width="@dimen/dimen_flag_image_view_width"
-        android:layout_height="@dimen/dimen_flag_image_view_height"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="@+id/contact_name"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/flag_sweden" />
-
     <LinearLayout
         android:id="@+id/flagItem"
         android:layout_width="0dp"
@@ -61,9 +51,9 @@
         android:id="@+id/phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_flag_image_view_margin_end"
+        android:layout_marginStart="42dp"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/flagImageView"
+        app:layout_constraintStart_toStartOf="@id/contact_name"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="+989121895634" />
 

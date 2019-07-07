@@ -147,9 +147,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
 
-        @BindView(R.id.flagImageView)
-        ImageView flagImageView;
-
         private ViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
@@ -170,10 +167,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             phoneNumberView.setText(number);
 
             flagItem.removeAllViews();
-
-            flagImageView.setImageResource(numbers.size() == 1 ?
-                    phoneNumber.getNumber().flagResId :
-                    android.R.color.transparent);
+            for (ImageView imageView : contact.getImageViews()) {
+                if (imageView.getParent() != null) {
+                    ((ViewGroup) imageView.getParent()).removeView(imageView);
+                }
+                flagItem.addView(imageView);
+            }
 
             ConstraintSet constraintSet = new ConstraintSet();
             int viewId;
@@ -311,12 +310,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             boolean expanded = contact.isExpanded();
             subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-            for (ImageView imageView : contact.getImageViews()) {
-                if (imageView.getParent() != null) {
-                    ((ViewGroup) imageView.getParent()).removeView(imageView);
-                }
-                flagItem.addView(imageView);
-            }
 
             for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
