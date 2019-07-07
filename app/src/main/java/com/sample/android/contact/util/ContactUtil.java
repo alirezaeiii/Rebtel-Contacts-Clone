@@ -26,7 +26,8 @@ import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
 public class ContactUtil {
 
-    private ContactUtil() {}
+    private ContactUtil() {
+    }
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {
         List<Contact> contacts = new ArrayList<>();
@@ -166,13 +167,7 @@ public class ContactUtil {
                 (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_height));
         params.setMarginEnd((int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_margin_end));
         imageView.setLayoutParams(params);
-        if (countryCodeNumber.regionCode == null) {
-            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            String regionCode = tm.getSimCountryIso();
-            imageView.setImageResource(getFlagResID(regionCode));
-        } else {
-            imageView.setImageResource(getFlagResID(countryCodeNumber.regionCode));
-        }
+        imageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
         return imageView;
     }
 

@@ -204,7 +204,7 @@ public class ContactsFragment extends Fragment {
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
             );
 
-            List<Contact> contacts = getContacts(cursor, ContactsFragment.this.getContext());
+            List<Contact> contacts = getContacts(cursor, getContext());
             cursor.close();
 
             return contacts;
