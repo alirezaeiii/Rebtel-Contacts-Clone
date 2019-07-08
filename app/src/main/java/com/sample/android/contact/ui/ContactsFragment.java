@@ -107,7 +107,6 @@ public class ContactsFragment extends Fragment {
         ImageView searchClose = mSearchView.findViewById(searchCloseIconButtonId);
         int searchCloseIconColor = ResourcesCompat.getColor(getResources(), R.color.color3, null);
         searchClose.setColorFilter(searchCloseIconColor);
-        searchClose.setBackgroundResource(R.drawable.circle_item_background_selector);
 
         mSearchBack.setOnClickListener(view -> {
             showContacts();

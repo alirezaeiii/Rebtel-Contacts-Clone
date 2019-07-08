@@ -21,6 +21,7 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.model.Contact;
 import com.sample.android.contact.model.ContactPhoneNumber;
 import com.sample.android.contact.model.CountryCodeNumber;
+import com.sample.android.contact.widget.FlagImageView;
 import com.sylversky.indexablelistview.scroller.Indexer;
 import com.sylversky.indexablelistview.section.AlphabetSection;
 
@@ -167,10 +168,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             phoneNumberView.setText(number);
 
             flagItem.removeAllViews();
-            for (ImageView imageView : contact.getImageViews()) {
-                if (imageView.getParent() != null) {
-                    ((ViewGroup) imageView.getParent()).removeView(imageView);
-                }
+            for (int flagResId : contact.getFlagResIds()) {
+                ImageView imageView = new FlagImageView(context);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
+                        (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_height));
+                params.setMarginEnd((int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_margin_end));
+                imageView.setLayoutParams(params);
+                imageView.setImageResource(flagResId);
                 flagItem.addView(imageView);
             }
 

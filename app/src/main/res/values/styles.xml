@@ -56,7 +56,7 @@
     </style>
 
 
-    <style name="SearchViewTheme" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar">
+    <style name="SearchViewTheme" parent="@android:style/ThemeOverlay.Material.ActionBar">
         <item name="colorControlActivated">?android:colorAccent</item>
         <item name="android:searchViewStyle">@style/Widget.SearchView</item>
     </style>

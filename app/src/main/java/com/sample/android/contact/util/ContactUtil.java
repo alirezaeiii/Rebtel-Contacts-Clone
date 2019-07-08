@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -14,7 +12,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.model.Contact;
 import com.sample.android.contact.model.ContactPhoneNumber;
 import com.sample.android.contact.model.CountryCodeNumber;
-import com.sample.android.contact.widget.FlagImageView;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -51,11 +48,11 @@ public class ContactUtil {
                     new ContactPhoneNumber(countryCodeNumber, getTypeValue(type));
             numbers.add(phoneNumber);
 
-            List<ImageView> imageViews = new ArrayList<>();
-            ImageView flagImageView = getFlagImageView(context, countryCodeNumber);
-            imageViews.add(flagImageView);
+            List<Integer> flagResIds = new ArrayList<>();
+            int flagResId = getFlagResID(context, countryCodeNumber.regionCode);
+            flagResIds.add(flagResId);
 
-            Contact contact = new Contact(deAccent(name), numbers, getBriefName(name), imageViews);
+            Contact contact = new Contact(deAccent(name), numbers, getBriefName(name), flagResIds);
             int index = contacts.indexOf(contact);
 
             if (index == -1) {
@@ -63,13 +60,13 @@ public class ContactUtil {
             } else {
                 contact = contacts.get(index);
                 numbers = contact.getPhoneNumbers();
-                imageViews = contact.getImageViews();
+                flagResIds = contact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
                     numbers.add(phoneNumber);
                     contact.setNumbers(numbers);
-                    if (!imageViews.contains(flagImageView)) {
-                        imageViews.add(flagImageView);
-                        contact.setImageViews(imageViews);
+                    if (!flagResIds.contains(flagResId)) {
+                        flagResIds.add(flagResId);
+                        contact.setFlagResIds(flagResIds);
                     }
                     contacts.set(index, contact);
                 }
@@ -158,17 +155,6 @@ public class ContactUtil {
             brief = "¿";
         }
         return brief;
-    }
-
-    private static ImageView getFlagImageView(Context context, CountryCodeNumber countryCodeNumber) {
-        ImageView imageView = new FlagImageView(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
-                (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_height));
-        params.setMarginEnd((int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_margin_end));
-        imageView.setLayoutParams(params);
-        imageView.setImageResource(getFlagResID(context, countryCodeNumber.regionCode));
-        return imageView;
     }
 
     private static int getFlagResID(Context context, String regionCode) {
