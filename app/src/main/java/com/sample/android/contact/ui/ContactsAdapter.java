@@ -31,6 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.sample.android.contact.util.ContactUtil.deAccent;
+
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
 
     private List<Contact> mContacts;
@@ -200,7 +202,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     ConstraintSet.START);
             constraintSet.applyTo(detail);
 
-            char[] nameArray = name.toUpperCase().toCharArray();
+            char[] nameArray = deAccent(name).toUpperCase().toCharArray();
 
             boolean showSeparator = false;
 
@@ -223,7 +225,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                             showSeparator = true;
                         } else {
                             Contact previousContact = mContacts.get(position - 1);
-                            char[] previousNameArray = previousContact.getName().toUpperCase().toCharArray();
+                            char[] previousNameArray = deAccent(previousContact.getName()).toUpperCase().toCharArray();
 
                             if (Character.isLetter(nameArray[0]) &&
                                     nameArray[0] != previousNameArray[0]) {
@@ -271,7 +273,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                             showLine = false;
                         } else {
                             Contact nextContact = mContacts.get(position + 1);
-                            char[] nextNameArray = nextContact.getName().toUpperCase().toCharArray();
+                            char[] nextNameArray = deAccent(nextContact.getName()).toUpperCase().toCharArray();
 
                             if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
                                     (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
@@ -304,7 +306,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     lineFlag = false;
                 } else {
                     Contact nextContact = mContacts.get(position + 1);
-                    char[] nextNameArray = nextContact.getName().toUpperCase().toCharArray();
+                    char[] nextNameArray = deAccent(nextContact.getName()).toUpperCase().toCharArray();
 
                     if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
                             && nameArray[0] != nextNameArray[0]) {

@@ -52,7 +52,7 @@ public class ContactUtil {
             int flagResId = getFlagResID(context, countryCodeNumber.regionCode);
             flagResIds.add(flagResId);
 
-            Contact contact = new Contact(deAccent(name), numbers, getBriefName(name), flagResIds);
+            Contact contact = new Contact(name, numbers, getBriefName(name), flagResIds);
             int index = contacts.indexOf(contact);
 
             if (index == -1) {
@@ -73,6 +73,12 @@ public class ContactUtil {
             }
         }
         return contacts;
+    }
+
+    public static String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
     private static CountryCodeNumber getNormalizedNumber(String number, Context context) {
@@ -119,12 +125,6 @@ public class ContactUtil {
                 break;
         }
         return typeValue;
-    }
-
-    private static String deAccent(String str) {
-        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
     private static String getBriefName(String name) {
