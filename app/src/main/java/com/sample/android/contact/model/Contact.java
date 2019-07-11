@@ -7,15 +7,17 @@ public class Contact {
     private String name;
     private List<ContactPhoneNumber> numbers;
     private String briefName;
+    private String accentName;
     private List<Integer> flagResIds;
     // State of the item
     private boolean expanded;
 
     public Contact(String name, List<ContactPhoneNumber> numbers, String briefName,
-                   List<Integer> flagResIds) {
+                   String accentName, List<Integer> flagResIds) {
         this.name = name;
         this.numbers = numbers;
         this.briefName = briefName;
+        this.accentName = accentName;
         this.flagResIds = flagResIds;
     }
 
@@ -33,6 +35,10 @@ public class Contact {
 
     public String getBriefName() {
         return briefName;
+    }
+
+    public String getAccentName() {
+        return accentName;
     }
 
     public void setFlagResIds(List<Integer> flagResIds) {
