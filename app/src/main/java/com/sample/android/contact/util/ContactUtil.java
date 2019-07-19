@@ -42,25 +42,25 @@ public class ContactUtil {
 
             CountryCodeNumber countryCodeNumber = getNormalizedNumber(number, context);
 
-            List<ContactPhoneNumber> numbers = new ArrayList<>();
             ContactPhoneNumber phoneNumber = (type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM) ?
                     new ContactPhoneNumber(countryCodeNumber, cursor.getString(typeLabelIndex)) :
                     new ContactPhoneNumber(countryCodeNumber, getTypeValue(type));
-            numbers.add(phoneNumber);
 
-            List<Integer> flagResIds = new ArrayList<>();
             int flagResId = getFlagResID(context, countryCodeNumber.regionCode);
-            flagResIds.add(flagResId);
 
-            Contact contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
+            Contact contact = new Contact(name);
             int index = contacts.indexOf(contact);
-
             if (index == -1) {
+                List<Integer> flagResIds = new ArrayList<>();
+                flagResIds.add(flagResId);
+                List<ContactPhoneNumber> numbers = new ArrayList<>();
+                numbers.add(phoneNumber);
+                contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
                 contacts.add(contact);
             } else {
                 contact = contacts.get(index);
-                numbers = contact.getPhoneNumbers();
-                flagResIds = contact.getFlagResIds();
+                List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
+                List<Integer> flagResIds = contact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
                     numbers.add(phoneNumber);
                     contact.setNumbers(numbers);

@@ -21,6 +21,10 @@ public class Contact {
         this.flagResIds = flagResIds;
     }
 
+    public Contact(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
