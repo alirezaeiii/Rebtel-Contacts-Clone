@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import android.widget.Toast;
 
 import com.sample.android.contact.R;
 import com.sample.android.contact.model.Contact;
-import com.sylversky.indexablelistview.widget.IndexableRecyclerView;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class ContactsFragment extends Fragment {
     private ContactsAdapter mAdapter;
 
     @BindView(R.id.recyclerView)
-    IndexableRecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
 
     @BindView(R.id.search_view)
     SearchView mSearchView;

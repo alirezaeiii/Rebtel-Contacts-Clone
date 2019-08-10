@@ -29,8 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/btn_dialpad_key"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:src="@drawable/ic_backspace_24dp"
             android:state_enabled="false"
             tools:ignore="ContentDescription" />

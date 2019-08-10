@@ -22,8 +22,6 @@ import com.sample.android.contact.model.Contact;
 import com.sample.android.contact.model.ContactPhoneNumber;
 import com.sample.android.contact.model.CountryCodeNumber;
 import com.sample.android.contact.widget.FlagImageView;
-import com.sylversky.indexablelistview.scroller.Indexer;
-import com.sylversky.indexablelistview.section.AlphabetSection;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Indexer {
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
     private List<Contact> mContacts;
     private RecyclerView mRecyclerView;
@@ -44,12 +42,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     // Cache row states based on positions
     private int[] mSeparatorRowStates;
     private int[] mLineRowStates;
-    private AlphabetSection mAlphabetSection;
     private boolean mShowSeparator;
-
-    ContactsAdapter() {
-        mAlphabetSection = new AlphabetSection(this);
-    }
 
     void setItems(List<Contact> contacts, boolean showSeparator) {
         mContacts = contacts;
@@ -91,26 +84,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 return 150f / displayMetrics.densityDpi;
             }
         };
-    }
-
-    @Override
-    public String getComponentName(int position) {
-        return mContacts.get(position).getName();
-    }
-
-    @Override
-    public Object[] getSections() {
-        return mAlphabetSection.getArraySections();
-    }
-
-    @Override
-    public int getPositionForSection(int i) {
-        return mAlphabetSection.getPositionForSection(i, getItemCount());
-    }
-
-    @Override
-    public int getSectionForPosition(int i) {
-        return 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
