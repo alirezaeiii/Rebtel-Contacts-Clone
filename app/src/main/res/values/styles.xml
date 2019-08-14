@@ -32,7 +32,7 @@
     </style>
 
     <style name="PadButtonStyle.DialPadKey">
-        <item name="android:background">@drawable/circular_selector</item>
+        <item name="android:background">@drawable/unbounded_selector</item>
         <item name="android:clickable">true</item>
     </style>
 

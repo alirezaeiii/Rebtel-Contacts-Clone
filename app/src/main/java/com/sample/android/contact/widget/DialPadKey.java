@@ -50,7 +50,7 @@ public class DialPadKey extends LinearLayout {
         ((DialpadTextView) findViewById(R.id.dialpad_key_number)).setText(numberText);
         final TextView subTextView = findViewById(R.id.dialpad_key_letters);
         if (letterGone && TextUtils.isEmpty(letterText)) {
-            subTextView.setVisibility(GONE);
+            subTextView.setVisibility(INVISIBLE);
         } else {
             subTextView.setText(letterText);
         }
