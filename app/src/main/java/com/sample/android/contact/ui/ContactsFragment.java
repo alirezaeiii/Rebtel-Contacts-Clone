@@ -108,13 +108,9 @@ public class ContactsFragment extends Fragment {
             mSearchView.setQuery("", false);
         });
 
-        return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         showContacts();
+
+        return root;
     }
 
     @Override
