@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Contacts</string>
     <string name="search_hint">Search for a contact</string>
-    <string name="Dialpad">Dialpad</string>
+    <string name="dialpad">Dialpad</string>
 </resources>

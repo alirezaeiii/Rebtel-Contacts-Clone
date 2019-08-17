@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.sample.android.contact.model.MainPagerItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,15 +36,5 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return fragments.get(position).title;
-    }
-}
-
-class MainPagerItem {
-    Fragment fragment;
-    String title;
-
-    MainPagerItem(Fragment fragment, String title) {
-        this.fragment = fragment;
-        this.title = title;
     }
 }
