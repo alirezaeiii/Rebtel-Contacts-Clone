@@ -21,7 +21,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.model.Contact;
 import com.sample.android.contact.model.ContactPhoneNumber;
 import com.sample.android.contact.model.CountryCodeNumber;
-import com.sample.android.contact.widget.FlagImageView;
 
 import java.util.List;
 
@@ -142,7 +141,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             flagItem.removeAllViews();
             for (int flagResId : contact.getFlagResIds()) {
-                ImageView imageView = new FlagImageView(context);
+                ImageView imageView = new ImageView(context);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
                         (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_height));
