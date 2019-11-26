@@ -65,6 +65,8 @@ public class ContactsFragment extends Fragment {
 
     private SetupAdapterAsync mSetupAdapterAsync;
 
+    private List<Contact> contacts;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,7 +105,7 @@ public class ContactsFragment extends Fragment {
         searchClose.setColorFilter(searchCloseIconColor);
 
         mSearchBack.setOnClickListener(view -> {
-            showContacts();
+            mAdapter.setItems(contacts, true);
             mSearchBack.setVisibility(View.INVISIBLE);
             mSearchView.setQuery("", false);
         });
@@ -193,10 +195,13 @@ public class ContactsFragment extends Fragment {
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
             );
 
-            List<Contact> contacts = getContacts(cursor, getContext());
+            List<Contact> items = getContacts(cursor, getContext());
+            if(showSeparator) {
+                contacts = items;
+            }
             cursor.close();
 
-            return contacts;
+            return items;
         }
 
         @Override
