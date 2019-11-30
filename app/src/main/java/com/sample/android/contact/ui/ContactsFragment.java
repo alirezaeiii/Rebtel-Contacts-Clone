@@ -65,7 +65,7 @@ public class ContactsFragment extends Fragment {
 
     private SetupAdapterAsync mSetupAdapterAsync;
 
-    private List<Contact> contacts;
+    private List<Contact> mContacts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,7 +105,7 @@ public class ContactsFragment extends Fragment {
         searchClose.setColorFilter(searchCloseIconColor);
 
         mSearchBack.setOnClickListener(view -> {
-            mAdapter.setItems(contacts, true);
+            mAdapter.setItems(mContacts, true);
             mSearchBack.setVisibility(View.INVISIBLE);
             mSearchView.setQuery("", false);
         });
@@ -197,7 +197,7 @@ public class ContactsFragment extends Fragment {
 
             List<Contact> items = getContacts(cursor, getContext());
             if(showSeparator) {
-                contacts = items;
+                mContacts = items;
             }
             cursor.close();
 
