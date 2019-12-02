@@ -23,8 +23,7 @@ import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
 public class ContactUtil {
 
-    private ContactUtil() {
-    }
+    private ContactUtil() {}
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {
         List<Contact> contacts = new ArrayList<>();
@@ -87,7 +86,6 @@ public class ContactUtil {
             Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
             String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
             return new CountryCodeNumber(phoneUtil.format(numberProto, INTERNATIONAL),
-                    regionCode,
                     getFlagResID(context, regionCode));
         } catch (NumberParseException e) {
             return new CountryCodeNumber(number, getFlagResID(context, null));
