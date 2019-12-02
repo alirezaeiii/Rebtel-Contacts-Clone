@@ -46,13 +46,11 @@ public class ContactUtil {
                     new ContactPhoneNumber(countryCodeNumber, cursor.getString(typeLabelIndex)) :
                     new ContactPhoneNumber(countryCodeNumber, getTypeValue(type));
 
-            int flagResId = getFlagResID(context, countryCodeNumber.regionCode);
-
             Contact contact = new Contact(name);
             int index = contacts.indexOf(contact);
             if (index == -1) {
                 List<Integer> flagResIds = new ArrayList<>();
-                flagResIds.add(flagResId);
+                flagResIds.add(countryCodeNumber.flagResId);
                 List<ContactPhoneNumber> numbers = new ArrayList<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
@@ -64,8 +62,8 @@ public class ContactUtil {
                 if (numbers.indexOf(phoneNumber) == -1) {
                     numbers.add(phoneNumber);
                     contact.setNumbers(numbers);
-                    if (!flagResIds.contains(flagResId)) {
-                        flagResIds.add(flagResId);
+                    if (!flagResIds.contains(countryCodeNumber.flagResId)) {
+                        flagResIds.add(countryCodeNumber.flagResId);
                         contact.setFlagResIds(flagResIds);
                     }
                     contacts.set(index, contact);

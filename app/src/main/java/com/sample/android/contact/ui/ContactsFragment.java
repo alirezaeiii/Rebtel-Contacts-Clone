@@ -85,7 +85,7 @@ public class ContactsFragment extends Fragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                setupAdapter(query);
+                search(query);
                 return true;
             }
 
@@ -93,7 +93,7 @@ public class ContactsFragment extends Fragment {
             public boolean onQueryTextChange(String query) {
                 if (!query.isEmpty()) {
                     mSearchBack.setVisibility(View.VISIBLE);
-                    setupAdapter(query);
+                    search(query);
                 }
                 return true;
             }
@@ -110,7 +110,15 @@ public class ContactsFragment extends Fragment {
             mSearchView.setQuery("", false);
         });
 
-        showContacts();
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            // Android version is lesser than 6.0 or the permission is already granted.
+            mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
+            mSetupAdapterAsync.execute();
+        }
 
         return root;
     }
@@ -121,7 +129,8 @@ public class ContactsFragment extends Fragment {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                showContacts();
+                mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
+                mSetupAdapterAsync.execute();
             } else {
                 mAppBarLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
@@ -143,24 +152,12 @@ public class ContactsFragment extends Fragment {
         unbinder.unbind();
     }
 
-    private void setupAdapter(String query) {
+    private void search(String query) {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
         mSetupAdapterAsync = new SetupAdapterAsync(selection, selectionArgs, false);
         mSetupAdapterAsync.execute();
-    }
-
-    private void showContacts() {
-        // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-            mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
-            mSetupAdapterAsync.execute();
-        }
     }
 
     private class SetupAdapterAsync extends AsyncTask<Void, Void, List<Contact>> {
