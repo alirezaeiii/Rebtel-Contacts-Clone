@@ -2,20 +2,14 @@ package com.sample.android.contact.model;
 
 public class ContactPhoneNumber {
 
-    private CountryCodeNumber number;
-    private String typeLabel;
+    public String number;
+    public String typeLabel;
+    public int flagResId;
 
-    public ContactPhoneNumber(CountryCodeNumber number, String typeLabel) {
+    public ContactPhoneNumber(String number, String typeLabel, int flagResId) {
         this.number = number;
         this.typeLabel = typeLabel;
-    }
-
-    public CountryCodeNumber getNumber() {
-        return number;
-    }
-
-    public String getTypeLabel() {
-        return typeLabel;
+        this.flagResId = flagResId;
     }
 
     @Override
@@ -24,6 +18,7 @@ public class ContactPhoneNumber {
             return false;
         }
         ContactPhoneNumber other = (ContactPhoneNumber) o;
-        return other.number.equals(this.number);
+        return other.number.replaceAll("\\s", "").equals(
+                this.number.replaceAll("\\s", ""));
     }
 }

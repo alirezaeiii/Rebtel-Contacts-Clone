@@ -11,7 +11,6 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import com.sample.android.contact.R;
 import com.sample.android.contact.model.Contact;
 import com.sample.android.contact.model.ContactPhoneNumber;
-import com.sample.android.contact.model.CountryCodeNumber;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -39,17 +38,31 @@ public class ContactUtil {
             String number = cursor.getString(numberIndex);
             int type = cursor.getInt(typeIndex);
 
-            CountryCodeNumber countryCodeNumber = getNormalizedNumber(number, context);
+            String numberType = type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM ?
+                    cursor.getString(typeLabelIndex) : getTypeValue(type);
 
-            ContactPhoneNumber phoneNumber = (type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM) ?
-                    new ContactPhoneNumber(countryCodeNumber, cursor.getString(typeLabelIndex)) :
-                    new ContactPhoneNumber(countryCodeNumber, getTypeValue(type));
+            number = (!number.matches("000+([0-9]+)") &&
+                    number.startsWith("00")) ? "+" + number.substring(2) : number;
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+
+            ContactPhoneNumber phoneNumber;
+            try {
+                Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
+                String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
+                phoneNumber = new ContactPhoneNumber(phoneUtil.format(numberProto, INTERNATIONAL),
+                        numberType,
+                        getFlagResID(context, regionCode));
+            } catch (NumberParseException e) {
+                phoneNumber = new ContactPhoneNumber(number,
+                        numberType,
+                        getFlagResID(context, null));
+            }
 
             Contact contact = new Contact(name);
             int index = contacts.indexOf(contact);
             if (index == -1) {
                 List<Integer> flagResIds = new ArrayList<>();
-                flagResIds.add(countryCodeNumber.flagResId);
+                flagResIds.add(phoneNumber.flagResId);
                 List<ContactPhoneNumber> numbers = new ArrayList<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
@@ -60,12 +73,9 @@ public class ContactUtil {
                 List<Integer> flagResIds = contact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
                     numbers.add(phoneNumber);
-                    contact.setNumbers(numbers);
-                    if (!flagResIds.contains(countryCodeNumber.flagResId)) {
-                        flagResIds.add(countryCodeNumber.flagResId);
-                        contact.setFlagResIds(flagResIds);
+                    if (!flagResIds.contains(phoneNumber.flagResId)) {
+                        flagResIds.add(phoneNumber.flagResId);
                     }
-                    contacts.set(index, contact);
                 }
             }
         }
@@ -76,20 +86,6 @@ public class ContactUtil {
         String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(nfdNormalizedString).replaceAll("");
-    }
-
-    private static CountryCodeNumber getNormalizedNumber(String number, Context context) {
-        number = (!number.matches("000+([0-9]+)") &&
-                number.startsWith("00")) ? "+" + number.substring(2) : number;
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        try {
-            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
-            String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
-            return new CountryCodeNumber(phoneUtil.format(numberProto, INTERNATIONAL),
-                    getFlagResID(context, regionCode));
-        } catch (NumberParseException e) {
-            return new CountryCodeNumber(number, getFlagResID(context, null));
-        }
     }
 
     private static String getTypeValue(int type) {

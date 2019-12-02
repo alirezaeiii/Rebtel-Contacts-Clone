@@ -33,20 +33,12 @@ public class Contact {
         return numbers;
     }
 
-    public void setNumbers(List<ContactPhoneNumber> numbers) {
-        this.numbers = numbers;
-    }
-
     public String getBriefName() {
         return briefName;
     }
 
     public String getAccentName() {
         return accentName;
-    }
-
-    public void setFlagResIds(List<Integer> flagResIds) {
-        this.flagResIds = flagResIds;
     }
 
     public List<Integer> getFlagResIds() {
