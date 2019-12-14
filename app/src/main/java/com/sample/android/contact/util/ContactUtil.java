@@ -22,7 +22,8 @@ import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
 public class ContactUtil {
 
-    private ContactUtil() {}
+    private ContactUtil() {
+    }
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {
         List<Contact> contacts = new ArrayList<>();
@@ -152,7 +153,7 @@ public class ContactUtil {
     private static int getFlagResID(Context context, String regionCode) {
         if (regionCode == null) {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            return getFlagResID(tm.getSimCountryIso());
+            return tm != null ? getFlagResID(tm.getSimCountryIso()) : R.drawable.flag_transparent;
         }
         return getFlagResID(regionCode);
     }
