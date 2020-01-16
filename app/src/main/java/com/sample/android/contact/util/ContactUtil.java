@@ -52,11 +52,12 @@ public class ContactUtil {
                 String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
                 phoneNumber = new ContactPhoneNumber(phoneUtil.format(numberProto, INTERNATIONAL),
                         numberType,
-                        getFlagResID(context, regionCode));
+                        getFlagResID(regionCode));
             } catch (NumberParseException e) {
+                TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
                 phoneNumber = new ContactPhoneNumber(number,
                         numberType,
-                        getFlagResID(context, null));
+                        tm != null ? getFlagResID(tm.getSimCountryIso()) : R.drawable.flag_transparent);
             }
 
             Contact contact = new Contact(name);
@@ -148,14 +149,6 @@ public class ContactUtil {
             brief = "¿";
         }
         return brief;
-    }
-
-    private static int getFlagResID(Context context, String regionCode) {
-        if (regionCode == null) {
-            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            return tm != null ? getFlagResID(tm.getSimCountryIso()) : R.drawable.flag_transparent;
-        }
-        return getFlagResID(regionCode);
     }
 
     private static int getFlagResID(String regionCode) {
