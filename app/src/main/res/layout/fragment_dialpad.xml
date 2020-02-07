@@ -16,75 +16,74 @@
         android:layout_height="0dip"
         android:layout_marginBottom="48dp"
         android:layout_weight="1"
-        custom:equalSpacing="true"
         custom:numColumns="3"
         custom:numRows="5">
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button1"
             style="@style/PadButtonStyle.DialPadKey"
             custom:numberText="1" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button2"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="ABC"
             custom:numberText="2" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button3"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="DEF"
             custom:numberText="3" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button4"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="GHI"
             custom:numberText="4" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button5"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="JKL"
             custom:numberText="5" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button6"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="MNO"
             custom:numberText="6" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button7"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="PQRS"
             custom:numberText="7" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button8"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="TUV"
             custom:numberText="8" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button9"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="WXYZ"
             custom:numberText="9" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button10"
             style="@style/PadButtonStyle.DialPadKey"
             custom:numberText="*" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button11"
             style="@style/PadButtonStyle.DialPadKey"
             custom:letterText="+"
             custom:numberText="0" />
 
-        <com.sample.android.contact.widget.DialPadKey
+        <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button12"
             style="@style/PadButtonStyle.DialPadKey"
             custom:numberText="#" />
