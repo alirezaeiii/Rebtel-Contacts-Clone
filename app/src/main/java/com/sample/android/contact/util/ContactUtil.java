@@ -124,28 +124,22 @@ public class ContactUtil {
         String[] splitedName = name.split("\\s+");
         char character;
         int index;
-        boolean noLetter = true;
-        String brief = "";
+        String brief = "¿";
 
         for (index = 0; index < splitedName.length; index++) {
             character = splitedName[index].toUpperCase().charAt(0);
             if (Character.isLetter(character)) {
                 brief = String.valueOf(character);
-                noLetter = false;
                 break;
             }
         }
 
-        for (int j = index + 1; j < splitedName.length; j++) {
-            character = splitedName[j].toUpperCase().charAt(0);
+        for (int i = index + 1; i < splitedName.length; i++) {
+            character = splitedName[i].toUpperCase().charAt(0);
             if (Character.isLetter(character)) {
                 brief += "." + character;
                 break;
             }
-        }
-
-        if (noLetter) {
-            brief = "¿";
         }
         return brief;
     }
