@@ -39,7 +39,11 @@ class ContactsViewModel(
                 selectionArgs,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
         composeObservable {
-            Observable.just(ContactUtil.getContacts(cursor, context))
+            Observable.just(cursor)
+        }.flatMap {
+            composeObservable {
+                Observable.just(ContactUtil.getContacts(it, context))
+            }
         }.doFinally {
             cursor?.close()
         }.subscribe {
