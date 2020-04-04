@@ -4,15 +4,9 @@ import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,18 +17,35 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
+import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.model.Contact;
+import com.sample.android.contact.util.Resource;
+import com.sample.android.contact.viewmodels.ContactsViewModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 
-import static com.sample.android.contact.util.ContactUtil.getContacts;
+public class ContactsFragment extends DaggerFragment {
 
-public class ContactsFragment extends Fragment {
+    @Inject
+    ContactsViewModel.Factory factory;
+
+    private ContactsViewModel mViewModel;
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -63,15 +74,23 @@ public class ContactsFragment extends Fragment {
 
     private Unbinder unbinder;
 
-    private SetupAdapterAsync mSetupAdapterAsync;
-
     private List<Contact> mContacts;
+
+    @Inject
+    public ContactsFragment() {
+        // Requires empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, root);
+
+        mViewModel = new ViewModelProvider(this, factory).get(ContactsViewModel.class);
+        ViewDataBinding binding = FragmentContactsBinding.bind(root);
+        binding.setVariable(BR.vm, mViewModel);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
 
         mAdapter = new ContactsAdapter();
         mRecyclerView.setAdapter(mAdapter);
@@ -116,9 +135,24 @@ public class ContactsFragment extends Fragment {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
-            mSetupAdapterAsync.execute();
+            mViewModel.showContacts(null, null, true);
         }
+
+        // Create the observer which updates the UI.
+        final Observer<Resource<List<Contact>>> nameObserver = resource -> {
+            if (resource instanceof Resource.Success) {
+                List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
+                boolean showSeparator = false;
+                if (mContacts == null) {
+                    mContacts = items;
+                    showSeparator = true;
+                }
+                mAdapter.setItems(items, showSeparator);
+            }
+        };
+
+        // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
+        mViewModel.getLiveData().observe(this, nameObserver);
 
         return root;
     }
@@ -129,20 +163,11 @@ public class ContactsFragment extends Fragment {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                mSetupAdapterAsync = new SetupAdapterAsync(null, null, true);
-                mSetupAdapterAsync.execute();
+                mViewModel.showContacts(null, null, true);
             } else {
                 mAppBarLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
             }
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mSetupAdapterAsync != null && mSetupAdapterAsync.getStatus() == AsyncTask.Status.RUNNING) {
-            mSetupAdapterAsync.cancel(true);
         }
     }
 
@@ -156,57 +181,6 @@ public class ContactsFragment extends Fragment {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        mSetupAdapterAsync = new SetupAdapterAsync(selection, selectionArgs, false);
-        mSetupAdapterAsync.execute();
-    }
-
-    private class SetupAdapterAsync extends AsyncTask<Void, Void, List<Contact>> {
-
-        private String selection;
-        private String[] selectionArgs;
-        private boolean showSeparator;
-
-        private SetupAdapterAsync(String selection, String[] selectionArgs, boolean showSeparator) {
-            this.selection = selection;
-            this.selectionArgs = selectionArgs;
-            this.showSeparator = showSeparator;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (showSeparator) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.INVISIBLE);
-                mAppBarLayout.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        @Override
-        protected List<Contact> doInBackground(Void... params) {
-
-            final Cursor cursor = getActivity().getContentResolver().query(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    PROJECTION,
-                    selection,
-                    selectionArgs,
-                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC"
-            );
-
-            List<Contact> items = getContacts(cursor, getContext());
-            if(showSeparator) {
-                mContacts = items;
-            }
-            cursor.close();
-
-            return items;
-        }
-
-        @Override
-        protected void onPostExecute(List<Contact> contacts) {
-            mAdapter.setItems(contacts, showSeparator);
-            mProgressBar.setVisibility(View.INVISIBLE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-            mAppBarLayout.setVisibility(View.VISIBLE);
-        }
+        mViewModel.showContacts(selection, selectionArgs, false);
     }
 }

@@ -1,7 +1,6 @@
 package com.sample.android.contact.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,18 @@ import android.widget.EditText;
 
 import com.sample.android.contact.R;
 
-public class DialpadFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
+
+public class DialpadFragment extends DaggerFragment implements View.OnClickListener, View.OnLongClickListener {
 
     private EditText digits;
+
+    @Inject
+    public DialpadFragment() {
+        // Requires empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

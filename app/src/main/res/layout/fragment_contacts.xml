@@ -1,73 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sample.android.contact.widget.NestedCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.ContactsFragment">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <data>
+
+        <variable
+            name="vm"
+            type="com.sample.android.contact.viewmodels.ContactsViewModel" />
+    </data>
+
+    <com.sample.android.contact.widget.NestedCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior=".behavior.QuickHideAppBarBehavior">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
-            android:elevation="4dp"
-            android:outlineProvider="bounds"
-            android:theme="@style/SearchViewTheme"
-            android:transitionGroup="false">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white" />
-
-            <SearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:iconifiedByDefault="false"
-                android:theme="@style/SearchViewStyle"
-                android:transitionGroup="true" />
+            android:layout_height="wrap_content"
+            app:layout_behavior=".behavior.QuickHideAppBarBehavior"
+            app:showData="@{vm.liveData}">
 
             <FrameLayout
-                android:layout_width="96dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:paddingStart="2dp"
-                tools:ignore="RtlSymmetry">
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:elevation="4dp"
+                android:outlineProvider="bounds"
+                android:theme="@style/SearchViewTheme"
+                android:transitionGroup="false">
 
-                <ImageButton
-                    android:id="@+id/search_back"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/circle_item_background_selector"
-                    android:src="@drawable/ic_arrow_back_padded"
-                    android:visibility="invisible"
-                    tools:ignore="contentDescription" />
+                    android:background="@android:color/white" />
+
+                <SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:iconifiedByDefault="false"
+                    android:theme="@style/SearchViewStyle"
+                    android:transitionGroup="true" />
+
+                <FrameLayout
+                    android:layout_width="96dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:paddingStart="2dp"
+                    tools:ignore="RtlSymmetry">
+
+                    <ImageButton
+                        android:id="@+id/search_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/circle_item_background_selector"
+                        android:src="@drawable/ic_arrow_back_padded"
+                        android:visibility="invisible"
+                        tools:ignore="contentDescription" />
+
+                </FrameLayout>
 
             </FrameLayout>
 
-        </FrameLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-    </android.support.design.widget.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="?attr/actionBarSize"
+            app:layoutManager="LinearLayoutManager"
+            app:showData="@{vm.liveData}" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="?attr/actionBarSize"
-        app:layoutManager="LinearLayoutManager" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:showLoading="@{vm.liveData}" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+    </com.sample.android.contact.widget.NestedCoordinatorLayout>
 
-</com.sample.android.contact.widget.NestedCoordinatorLayout>
+</layout>
