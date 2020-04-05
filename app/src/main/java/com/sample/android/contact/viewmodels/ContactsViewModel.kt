@@ -1,7 +1,6 @@
 package com.sample.android.contact.viewmodels
 
 import android.app.Application
-import android.database.Cursor
 import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,13 +25,11 @@ class ContactsViewModel(
 
     private val context = app
 
-    private var cursor: Cursor? = null
-
     fun showContacts(selection: String?, selectionArgs: Array<String>?, showLoading: Boolean) {
         if (showLoading) {
             _liveData.postValue(Resource.Loading())
         }
-        cursor = context.contentResolver.query(
+        val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 ContactsFragment.PROJECTION,
                 selection,

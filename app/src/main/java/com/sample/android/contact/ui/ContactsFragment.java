@@ -49,6 +49,7 @@ public class ContactsFragment extends DaggerFragment {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
     public static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
@@ -139,7 +140,7 @@ public class ContactsFragment extends DaggerFragment {
         }
 
         // Create the observer which updates the UI.
-        final Observer<Resource<List<Contact>>> nameObserver = resource -> {
+        final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
                 boolean showSeparator = false;
@@ -152,7 +153,7 @@ public class ContactsFragment extends DaggerFragment {
         };
 
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        mViewModel.getLiveData().observe(this, nameObserver);
+        mViewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
     }
