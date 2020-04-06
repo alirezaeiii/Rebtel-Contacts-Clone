@@ -136,7 +136,7 @@ public class ContactsFragment extends DaggerFragment {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            mViewModel.showContacts(null, null, true);
+            mViewModel.showContacts(null, null);
         }
 
         // Create the observer which updates the UI.
@@ -164,7 +164,7 @@ public class ContactsFragment extends DaggerFragment {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                mViewModel.showContacts(null, null, true);
+                mViewModel.showContacts(null, null);
             } else {
                 mAppBarLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
@@ -182,6 +182,6 @@ public class ContactsFragment extends DaggerFragment {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        mViewModel.showContacts(selection, selectionArgs, false);
+        mViewModel.showContacts(selection, selectionArgs);
     }
 }

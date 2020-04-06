@@ -25,10 +25,11 @@ class ContactsViewModel(
 
     private val context = app
 
-    fun showContacts(selection: String?, selectionArgs: Array<String>?, showLoading: Boolean) {
-        if (showLoading) {
-            _liveData.postValue(Resource.Loading())
-        }
+    init {
+        _liveData.value = Resource.Loading()
+    }
+
+    fun showContacts(selection: String?, selectionArgs: Array<String>?) {
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 ContactsFragment.PROJECTION,
@@ -36,16 +37,14 @@ class ContactsViewModel(
                 selectionArgs,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
         composeObservable {
-            Observable.just(cursor)
-        }.flatMap {
-            composeObservable {
-                Observable.just(ContactUtil.getContacts(it, context))
-            }
+            Observable.just(ContactUtil.getContacts(cursor, context))
         }.doFinally {
             cursor?.close()
         }.subscribe {
             _liveData.postValue(Resource.Success(it))
-        }.also { compositeDisposable.add(it) }
+        }.also {
+            compositeDisposable.add(it)
+        }
     }
 
     /**
