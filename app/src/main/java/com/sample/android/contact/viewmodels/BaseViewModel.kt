@@ -1,19 +1,11 @@
 package com.sample.android.contact.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
-import io.reactivex.Observable
+import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-open class BaseViewModel(private val schedulerProvider: BaseSchedulerProvider,
-                         app: Application) : AndroidViewModel(app) {
+open class BaseViewModel : ViewModel() {
 
     protected val compositeDisposable = CompositeDisposable()
-
-    protected fun <T> composeObservable(task: () -> Observable<T>): Observable<T> = task()
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
 
     /**
      * Called when the ViewModel is dismantled.

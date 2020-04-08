@@ -1,13 +1,7 @@
 package com.sample.android.contact.ui;
 
-import android.Manifest;
 import android.app.SearchManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.InputType;
@@ -18,9 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
@@ -43,39 +35,13 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
-import static com.sample.android.contact.ContactsServiceKt.CONTACTS_RECEIVER;
-
 public class ContactsFragment extends DaggerFragment {
-
-    public static final String CONTACTS = "contacts";
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            List<Contact> contacts = intent.getParcelableArrayListExtra(CONTACTS);
-            mContacts = contacts;
-            mAdapter.setItems(contacts, true);
-            mProgressBar.setVisibility(View.GONE);
-            mAppBarLayout.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }
-    };
 
     @Inject
     ContactsViewModel.Factory factory;
 
     private ContactsViewModel mViewModel;
 
-    // Request code for READ_CONTACTS. It can be any number > 0.
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-
-    public static final String[] PROJECTION = new String[]{
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER,
-            ContactsContract.CommonDataKinds.Phone.TYPE,
-            ContactsContract.CommonDataKinds.Phone.LABEL
-    };
     private ContactsAdapter mAdapter;
 
     @BindView(R.id.recyclerView)
@@ -100,18 +66,6 @@ public class ContactsFragment extends DaggerFragment {
     @Inject
     public ContactsFragment() {
         // Requires empty public constructor
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(CONTACTS_RECEIVER));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -162,19 +116,16 @@ public class ContactsFragment extends DaggerFragment {
             mSearchView.setQuery("", false);
         });
 
-        // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-        }
-
         // Create the observer which updates the UI.
         final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
-                mAdapter.setItems(items, false);
+                boolean showSeparator = false;
+                if (mContacts == null) {
+                    mContacts = items;
+                    showSeparator = true;
+                }
+                mAdapter.setItems(items, showSeparator);
             }
         };
 
@@ -182,19 +133,6 @@ public class ContactsFragment extends DaggerFragment {
         mViewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted
-            } else {
-                mAppBarLayout.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     @Override

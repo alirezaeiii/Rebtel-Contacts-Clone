@@ -18,20 +18,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
-import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 
 public class ContactUtil {
 
-    private ContactUtil() {
-    }
+    public static final String[] PROJECTION = new String[]{
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER,
+            ContactsContract.CommonDataKinds.Phone.TYPE,
+            ContactsContract.CommonDataKinds.Phone.LABEL
+    };
 
-    public static Cursor getContactsCursor(String selection, String[] selectionArgs, Context context) {
-        return context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC");
+    private ContactUtil() {
     }
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {
