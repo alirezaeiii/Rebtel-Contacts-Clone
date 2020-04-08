@@ -21,4 +21,8 @@
 
     <color name="call_button_default">#00cc00</color>
     <color name="call_button_pressed">#009900</color>
+
+    <color name="color_new_blue">#3978FC</color>
+    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_white_alpha_06">#96ffffff</color>
 </resources>

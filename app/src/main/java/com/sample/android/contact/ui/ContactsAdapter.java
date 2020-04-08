@@ -18,8 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sample.android.contact.R;
-import com.sample.android.contact.model.Contact;
-import com.sample.android.contact.model.ContactPhoneNumber;
+import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.domain.ContactPhoneNumber;
 
 import java.util.List;
 
@@ -132,7 +132,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             String name = contact.getName();
             List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             ContactPhoneNumber phoneNumber = numbers.get(0);
-            String number = numbers.size() == 1 ? phoneNumber.number : "";
+            String number = numbers.size() == 1 ? phoneNumber.getNumber() : "";
 
             contactNameView.setText(name);
             imageText.setText(contact.getBriefName());
@@ -155,7 +155,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             if (numbers.size() == 1) {
                 phoneNumberType.setVisibility(View.VISIBLE);
                 lineNumber.setVisibility(View.INVISIBLE);
-                phoneNumberType.setText(phoneNumber.typeLabel);
+                phoneNumberType.setText(phoneNumber.getTypeLabel());
                 constraintSet.clone(detail);
                 viewId = R.id.phone_type;
             } else {
@@ -296,9 +296,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
                 ChildViewHolder childViewHolder = new ChildViewHolder(childView);
 
-                childViewHolder.contactNumber.setText(phoneNumber.number);
-                childViewHolder.numberType.setText(phoneNumber.typeLabel);
-                childViewHolder.flagImageView.setImageResource(phoneNumber.flagResId);
+                childViewHolder.contactNumber.setText(phoneNumber.getNumber());
+                childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
+                childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
                 childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
                 childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);

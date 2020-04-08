@@ -1,4 +1,4 @@
-package com.sample.android.contact.model;
+package com.sample.android.contact.domain;
 
 import androidx.fragment.app.Fragment;
 

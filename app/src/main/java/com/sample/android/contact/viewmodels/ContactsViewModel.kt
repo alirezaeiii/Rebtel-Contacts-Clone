@@ -6,9 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sample.android.contact.model.Contact
+import com.sample.android.contact.domain.Contact
 import com.sample.android.contact.ui.ContactsFragment
 import com.sample.android.contact.util.ContactUtil
+import com.sample.android.contact.util.ContactUtil.getContactsCursor
 import com.sample.android.contact.util.Resource
 import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
@@ -30,12 +31,7 @@ class ContactsViewModel(
     }
 
     fun showContacts(selection: String?, selectionArgs: Array<String>?) {
-        val cursor = context.contentResolver.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                ContactsFragment.PROJECTION,
-                selection,
-                selectionArgs,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
+        val cursor = getContactsCursor(selection, selectionArgs, context)
         composeObservable {
             Observable.just(ContactUtil.getContacts(cursor, context))
         }.doFinally {

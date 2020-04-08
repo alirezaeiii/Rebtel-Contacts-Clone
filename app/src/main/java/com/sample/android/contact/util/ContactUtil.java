@@ -9,8 +9,8 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.sample.android.contact.R;
-import com.sample.android.contact.model.Contact;
-import com.sample.android.contact.model.ContactPhoneNumber;
+import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.domain.ContactPhoneNumber;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -23,6 +23,15 @@ import static com.sample.android.contact.ui.ContactsFragment.PROJECTION;
 public class ContactUtil {
 
     private ContactUtil() {
+    }
+
+    public static Cursor getContactsCursor(String selection, String[] selectionArgs, Context context) {
+        return context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC");
     }
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {
@@ -63,7 +72,7 @@ public class ContactUtil {
             int index = contacts.indexOf(contact);
             if (index == -1) {
                 List<Integer> flagResIds = new ArrayList<>();
-                flagResIds.add(phoneNumber.flagResId);
+                flagResIds.add(phoneNumber.getFlagResId());
                 List<ContactPhoneNumber> numbers = new ArrayList<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
@@ -74,8 +83,8 @@ public class ContactUtil {
                 List<Integer> flagResIds = contact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
                     numbers.add(phoneNumber);
-                    if (!flagResIds.contains(phoneNumber.flagResId)) {
-                        flagResIds.add(phoneNumber.flagResId);
+                    if (!flagResIds.contains(phoneNumber.getFlagResId())) {
+                        flagResIds.add(phoneNumber.getFlagResId());
                     }
                 }
             }

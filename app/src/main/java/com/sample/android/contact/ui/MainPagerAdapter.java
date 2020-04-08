@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.sample.android.contact.model.MainPagerItem;
+import com.sample.android.contact.domain.MainPagerItem;
 
 import java.util.ArrayList;
 import java.util.List;

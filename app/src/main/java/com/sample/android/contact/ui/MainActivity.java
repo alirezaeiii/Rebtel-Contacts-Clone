@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.viewpager.widget.ViewPager;
 
 import com.sample.android.contact.R;
-import com.sample.android.contact.model.MainPagerItem;
+import com.sample.android.contact.domain.MainPagerItem;
 import com.sample.android.contact.util.TabIndicatorFollower;
 import com.sample.android.contact.widget.ListenableTabLayout;
 

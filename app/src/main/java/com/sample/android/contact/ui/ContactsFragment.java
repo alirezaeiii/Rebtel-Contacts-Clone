@@ -2,7 +2,10 @@ package com.sample.android.contact.ui;
 
 import android.Manifest;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
-import com.sample.android.contact.model.Contact;
+import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
@@ -40,7 +43,24 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
+import static com.sample.android.contact.ContactsServiceKt.CONTACTS_RECEIVER;
+
 public class ContactsFragment extends DaggerFragment {
+
+    public static final String CONTACTS = "contacts";
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            List<Contact> contacts = intent.getParcelableArrayListExtra(CONTACTS);
+            mContacts = contacts;
+            mAdapter.setItems(contacts, true);
+            mProgressBar.setVisibility(View.GONE);
+            mAppBarLayout.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+    };
 
     @Inject
     ContactsViewModel.Factory factory;
@@ -80,6 +100,18 @@ public class ContactsFragment extends DaggerFragment {
     @Inject
     public ContactsFragment() {
         // Requires empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(CONTACTS_RECEIVER));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -136,19 +168,13 @@ public class ContactsFragment extends DaggerFragment {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            mViewModel.showContacts(null, null);
         }
 
         // Create the observer which updates the UI.
         final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
-                boolean showSeparator = false;
-                if (mContacts == null) {
-                    mContacts = items;
-                    showSeparator = true;
-                }
-                mAdapter.setItems(items, showSeparator);
+                mAdapter.setItems(items, false);
             }
         };
 
@@ -164,7 +190,6 @@ public class ContactsFragment extends DaggerFragment {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                mViewModel.showContacts(null, null);
             } else {
                 mAppBarLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show();
