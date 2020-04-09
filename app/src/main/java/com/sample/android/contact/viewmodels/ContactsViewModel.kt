@@ -19,15 +19,15 @@ class ContactsViewModel(
 
     init {
         _liveData.value = Resource.Loading()
-        setContacts()
+        subscribeContacts()
     }
 
     fun showContacts(selection: String?, selectionArgs: Array<String>?) {
         repository.queryDb(selection, selectionArgs)
-        setContacts()
+        subscribeContacts()
     }
 
-    private fun setContacts() {
+    private fun subscribeContacts() {
         repository.contacts.subscribe {
             _liveData.postValue(Resource.Success(it))
         }.also { compositeDisposable.add(it) }
