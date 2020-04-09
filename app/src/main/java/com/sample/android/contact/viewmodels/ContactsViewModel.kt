@@ -23,7 +23,7 @@ class ContactsViewModel(
     }
 
     fun showContacts(selection: String?, selectionArgs: Array<String>?) {
-        repository.getContacts(selection, selectionArgs)
+        repository.queryDb(selection, selectionArgs)
         setContacts()
     }
 

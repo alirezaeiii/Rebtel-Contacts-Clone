@@ -10,7 +10,7 @@ class SplashViewModel(
     : BaseViewModel() {
 
     init {
-        repository.getContacts(null, null)
+        repository.queryDb(null, null)
     }
 
     /**

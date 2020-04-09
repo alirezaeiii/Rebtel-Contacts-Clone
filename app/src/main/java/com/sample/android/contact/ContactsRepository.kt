@@ -7,6 +7,7 @@ import com.sample.android.contact.util.ContactUtil
 import com.sample.android.contact.util.ContactUtil.PROJECTION
 import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,14 +24,15 @@ class ContactsRepository
 
     lateinit var contacts: Observable<List<Contact>>
 
-    fun getContacts(selection: String?, selectionArgs: Array<String>?) {
+    fun queryDb(selection: String?, selectionArgs: Array<String>?) {
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 PROJECTION,
                 selection,
                 selectionArgs,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
-        contacts = Observable.just(ContactUtil.getContacts(cursor, context))
+        contacts = Observable.create(ObservableOnSubscribe<List<Contact>>
+        { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doFinally { cursor?.close() }
