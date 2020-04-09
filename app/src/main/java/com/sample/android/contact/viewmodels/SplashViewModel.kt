@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class SplashViewModel(
         repository: ContactsRepository)
-    : BaseViewModel() {
+    : ViewModel() {
 
     init {
         repository.queryDb(null, null)
