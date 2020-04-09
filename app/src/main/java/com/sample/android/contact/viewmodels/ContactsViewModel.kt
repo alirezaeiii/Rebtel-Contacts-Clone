@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.ContactsRepository
 import com.sample.android.contact.domain.Contact
 import com.sample.android.contact.util.Resource
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class ContactsViewModel(
         private val repository: ContactsRepository)
-    : BaseViewModel() {
+    : ViewModel() {
+
+    private val compositeDisposable = CompositeDisposable()
 
     private val _liveData = MutableLiveData<Resource<List<Contact>>>()
     val liveData: LiveData<Resource<List<Contact>>>
@@ -31,6 +34,17 @@ class ContactsViewModel(
         repository.contacts.subscribe {
             _liveData.postValue(Resource.Success(it))
         }.also { compositeDisposable.add(it) }
+    }
+
+    /**
+     * Called when the ViewModel is dismantled.
+     * At this point, we want to cancel all disposables;
+     * otherwise we end up with processes that have nowhere to return to
+     * using memory and resources.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 
     /**
