@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="vm"
-            type="com.sample.android.contact.viewmodels.ContactsViewModel" />
+            name="repository"
+            type="com.sample.android.contact.ContactsRepository" />
     </data>
 
     <com.sample.android.contact.widget.NestedCoordinatorLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior=".behavior.QuickHideAppBarBehavior"
-            app:showData="@{vm.liveData}">
+            app:showData="@{repository.liveData}">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -73,14 +73,14 @@
             android:clipToPadding="false"
             android:paddingTop="?attr/actionBarSize"
             app:layoutManager="LinearLayoutManager"
-            app:showData="@{vm.liveData}" />
+            app:showData="@{repository.liveData}" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:showLoading="@{vm.liveData}" />
+            app:showLoading="@{repository.liveData}" />
 
     </com.sample.android.contact.widget.NestedCoordinatorLayout>
 
