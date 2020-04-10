@@ -21,16 +21,14 @@ class ContactsRepository
     @Inject
     lateinit var schedulerProvider: BaseSchedulerProvider
 
-    lateinit var contacts: Observable<List<Contact>>
-
-    fun queryDb(selection: String?, selectionArgs: Array<String>?) {
+    fun queryDb(selection: String?, selectionArgs: Array<String>?): Observable<List<Contact>> {
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 PROJECTION,
                 selection,
                 selectionArgs,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
-        contacts = Observable.create(ObservableOnSubscribe<List<Contact>>
+        return Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())

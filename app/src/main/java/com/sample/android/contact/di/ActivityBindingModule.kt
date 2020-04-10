@@ -13,8 +13,6 @@ abstract class ActivityBindingModule {
     )
     internal abstract fun mainActivity(): MainActivity
 
-    @ContributesAndroidInjector(
-            modules = [SplashModule::class]
-    )
+    @ContributesAndroidInjector
     internal abstract fun splashActivity(): SplashActivity
 }

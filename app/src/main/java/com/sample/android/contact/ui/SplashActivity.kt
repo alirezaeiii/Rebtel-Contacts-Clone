@@ -10,7 +10,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
-import com.sample.android.contact.viewmodels.SplashViewModel
+import com.sample.android.contact.viewmodels.ContactsViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class SplashActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var factory: SplashViewModel.Factory
+    lateinit var factory: ContactsViewModel.Factory
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -33,7 +33,7 @@ class SplashActivity : DaggerAppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else { // Android version is lesser than 6.0 or the permission is already granted.
-            ViewModelProvider(this, factory).get(SplashViewModel::class.java)
+            ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
             startMainActivity()
         }
     }
@@ -42,7 +42,7 @@ class SplashActivity : DaggerAppCompatActivity() {
                                             grantResults: IntArray) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
-                ViewModelProvider(this, factory).get(SplashViewModel::class.java)
+                ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
                 startMainActivity()
             } else {
                 Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show()
