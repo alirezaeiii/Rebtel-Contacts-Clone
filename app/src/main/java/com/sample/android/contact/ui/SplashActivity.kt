@@ -32,6 +32,7 @@ class SplashActivity : DaggerAppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else { // Android version is lesser than 6.0 or the permission is already granted.
+            repository.loadAllContacts()
             startMainActivity()
         }
     }
@@ -40,6 +41,7 @@ class SplashActivity : DaggerAppCompatActivity() {
                                             grantResults: IntArray) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
+                repository.loadAllContacts()
                 startMainActivity()
             } else {
                 Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show()

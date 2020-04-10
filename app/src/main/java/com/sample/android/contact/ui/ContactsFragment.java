@@ -134,6 +134,6 @@ public class ContactsFragment extends DaggerFragment {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        repository.showContacts(selection, selectionArgs);
+        repository.loadContacts(selection, selectionArgs);
     }
 }
