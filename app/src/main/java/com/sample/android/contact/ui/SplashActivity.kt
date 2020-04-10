@@ -48,7 +48,6 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        repository.init()
         handler.postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

@@ -1,7 +1,7 @@
 package com.sample.android.contact.di
 
 import android.app.Application
-import com.sample.android.contact.ContactApp
+import com.sample.android.contact.ContactsApp
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -14,7 +14,7 @@ import javax.inject.Singleton
             AndroidSupportInjectionModule::class,
             BaseModule::class]
 )
-interface AppComponent : AndroidInjector<ContactApp> {
+interface AppComponent : AndroidInjector<ContactsApp> {
 
     @Component.Builder
     interface Builder {

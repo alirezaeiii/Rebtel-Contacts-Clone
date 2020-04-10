@@ -26,7 +26,7 @@ class ContactsRepository @Inject constructor(
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
-    fun init() {
+    init {
         _liveData.value = Resource.Loading()
         showContacts(null, null)
     }
@@ -42,7 +42,10 @@ class ContactsRepository @Inject constructor(
         { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doFinally { cursor?.close() }
+                .doFinally {
+                    cursor?.close()
+                    compositeDisposable.clear()
+                }
                 .subscribe {
                     _liveData.postValue(Resource.Success(it))
                 }.also { compositeDisposable.add(it) }
