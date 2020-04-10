@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -52,12 +51,6 @@ public class ContactsFragment extends DaggerFragment {
 
     @BindView(R.id.search_back)
     ImageButton mSearchBack;
-
-    @BindView(R.id.appBarLayout)
-    View mAppBarLayout;
-
-    @BindView(R.id.progressBar)
-    ProgressBar mProgressBar;
 
     private Unbinder unbinder;
 

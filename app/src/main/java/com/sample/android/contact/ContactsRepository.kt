@@ -15,7 +15,6 @@ import javax.inject.Singleton
 class ContactsRepository
 @Inject constructor() // Requires empty public constructor
 {
-
     @Inject
     lateinit var context: Context
 
