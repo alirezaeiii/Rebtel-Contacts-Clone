@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.sample.android.contact.ContactsRepository
 import com.sample.android.contact.R
+import com.sample.android.contact.repository.ContactsRepository
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -32,7 +32,6 @@ class SplashActivity : DaggerAppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else { // Android version is lesser than 6.0 or the permission is already granted.
-            repository.loadAllContacts()
             startMainActivity()
         }
     }
@@ -41,7 +40,6 @@ class SplashActivity : DaggerAppCompatActivity() {
                                             grantResults: IntArray) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
-                repository.loadAllContacts()
                 startMainActivity()
             } else {
                 Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show()
@@ -50,9 +48,9 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun startMainActivity() {
+        repository.loadAllContacts()
         handler.postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
         }, SPLASH_DELAY.toLong())
     }
 }

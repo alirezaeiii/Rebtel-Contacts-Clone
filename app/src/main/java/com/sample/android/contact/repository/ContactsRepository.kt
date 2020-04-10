@@ -1,4 +1,4 @@
-package com.sample.android.contact
+package com.sample.android.contact.repository
 
 import android.content.Context
 import android.provider.ContactsContract

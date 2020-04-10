@@ -18,7 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.android.contact.BR;
-import com.sample.android.contact.ContactsRepository;
+import com.sample.android.contact.repository.ContactsRepository;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;

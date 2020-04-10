@@ -8,7 +8,7 @@
 
         <variable
             name="repository"
-            type="com.sample.android.contact.ContactsRepository" />
+            type="com.sample.android.contact.repository.ContactsRepository" />
     </data>
 
     <com.sample.android.contact.widget.NestedCoordinatorLayout
