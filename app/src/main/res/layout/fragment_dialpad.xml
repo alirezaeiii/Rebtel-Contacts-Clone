@@ -22,6 +22,7 @@
         <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button1"
             style="@style/PadButtonStyle.DialPadKey"
+            custom:letterGone="false"
             custom:numberText="1" />
 
         <com.sample.android.padlayout.DialPadKey
@@ -75,6 +76,7 @@
         <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button10"
             style="@style/PadButtonStyle.DialPadKey"
+            custom:letterGone="false"
             custom:numberText="*" />
 
         <com.sample.android.padlayout.DialPadKey
@@ -86,6 +88,7 @@
         <com.sample.android.padlayout.DialPadKey
             android:id="@+id/button12"
             style="@style/PadButtonStyle.DialPadKey"
+            custom:letterGone="false"
             custom:numberText="#" />
 
         <View style="@style/PadButtonStyle" />
