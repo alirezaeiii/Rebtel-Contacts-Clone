@@ -1,4 +1,4 @@
-package com.sample.android.contact.repository
+package com.sample.android.contact.data
 
 import android.content.Context
 import android.provider.ContactsContract
@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactsRepository @Inject constructor(
+class ContactsDataSource @Inject constructor(
         private val context: Context,
         private val schedulerProvider: BaseSchedulerProvider) {
 

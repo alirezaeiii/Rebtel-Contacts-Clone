@@ -18,7 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.android.contact.BR;
-import com.sample.android.contact.repository.ContactsRepository;
+import com.sample.android.contact.data.ContactsDataSource;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
@@ -36,7 +36,7 @@ import dagger.android.support.DaggerFragment;
 public class ContactsFragment extends DaggerFragment {
 
     @Inject
-    ContactsRepository repository;
+    ContactsDataSource dataSource;
 
     private ContactsAdapter mAdapter;
 
@@ -65,7 +65,7 @@ public class ContactsFragment extends DaggerFragment {
         unbinder = ButterKnife.bind(this, root);
 
         ViewDataBinding binding = FragmentContactsBinding.bind(root);
-        binding.setVariable(BR.repository, repository);
+        binding.setVariable(BR.dataSource, dataSource);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         mAdapter = new ContactsAdapter();
@@ -119,7 +119,7 @@ public class ContactsFragment extends DaggerFragment {
         };
 
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        repository.getLiveData().observe(this, contactsObserver);
+        dataSource.getLiveData().observe(this, contactsObserver);
 
         return root;
     }
@@ -134,6 +134,6 @@ public class ContactsFragment extends DaggerFragment {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        repository.loadContacts(selection, selectionArgs);
+        dataSource.loadContacts(selection, selectionArgs);
     }
 }

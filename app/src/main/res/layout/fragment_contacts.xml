@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="repository"
-            type="com.sample.android.contact.repository.ContactsRepository" />
+            name="dataSource"
+            type="com.sample.android.contact.data.ContactsDataSource" />
     </data>
 
     <com.sample.android.contact.widget.NestedCoordinatorLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior=".behavior.QuickHideAppBarBehavior"
-            app:showData="@{repository.liveData}">
+            app:showData="@{dataSource.liveData}">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -73,14 +73,14 @@
             android:clipToPadding="false"
             android:paddingTop="?attr/actionBarSize"
             app:layoutManager="LinearLayoutManager"
-            app:showData="@{repository.liveData}" />
+            app:showData="@{dataSource.liveData}" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:showLoading="@{repository.liveData}" />
+            app:showLoading="@{dataSource.liveData}" />
 
     </com.sample.android.contact.widget.NestedCoordinatorLayout>
 

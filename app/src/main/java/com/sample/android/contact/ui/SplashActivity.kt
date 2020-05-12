@@ -9,7 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.sample.android.contact.R
-import com.sample.android.contact.repository.ContactsRepository
+import com.sample.android.contact.data.ContactsDataSource
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class SplashActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var repository: ContactsRepository
+    lateinit var dataSource: ContactsDataSource
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -48,7 +48,7 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        repository.loadAllContacts()
+        dataSource.loadAllContacts()
         handler.postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
         }, SPLASH_DELAY.toLong())
