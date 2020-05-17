@@ -3,4 +3,5 @@
     <string name="search_hint">Search for a contact</string>
     <string name="dialpad">Dialpad</string>
     <string name="splash_app_version">v %s</string>
+    <string name="permission_not_granted_msg">Until you grant the permission, we cannot display the names</string>
 </resources>

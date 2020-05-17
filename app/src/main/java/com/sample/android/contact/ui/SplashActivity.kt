@@ -42,7 +42,7 @@ class SplashActivity : DaggerAppCompatActivity() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
                 startMainActivity()
             } else {
-                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.permission_not_granted_msg), Toast.LENGTH_LONG).show()
             }
         }
     }
