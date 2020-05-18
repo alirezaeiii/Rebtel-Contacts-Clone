@@ -2,11 +2,13 @@ package com.sample.android.contact.ui;
 
 import android.content.Context;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,12 +121,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
 
-        private ViewHolder(View root) {
+        ViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
         }
 
-        private void bind(Contact contact) {
+        void bind(Contact contact) {
 
             Context context = mRecyclerView.getContext();
             final int position = getAdapterPosition();
@@ -355,34 +357,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 }, 100);
             }
 
-        }
-
-        class ChildViewHolder {
-
-            @BindView(R.id.contact_number)
-            TextView contactNumber;
-
-            @BindView(R.id.type)
-            TextView numberType;
-
-            @BindView(R.id.child_line)
-            View childLine;
-
-            @BindView(R.id.child_top_line)
-            View childTopLine;
-
-            @BindView(R.id.frameLayout)
-            View frameLayout;
-
-            @BindView(R.id.relativeLayout)
-            View relativeLayout;
-
-            @BindView(R.id.flagImageView)
-            ImageView flagImageView;
-
-            private ChildViewHolder(View view) {
-                ButterKnife.bind(this, view);
-            }
         }
     }
 }
