@@ -53,6 +53,11 @@ class SplashActivity : DaggerAppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }, SPLASH_DELAY.toLong())
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
+    }
 }
 
 private const val SPLASH_DELAY = 1500
