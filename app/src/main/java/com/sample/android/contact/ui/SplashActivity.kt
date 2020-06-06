@@ -54,8 +54,8 @@ class SplashActivity : DaggerAppCompatActivity() {
         }, SPLASH_DELAY.toLong())
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         handler.removeCallbacksAndMessages(null)
     }
 }
