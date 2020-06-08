@@ -15,14 +15,15 @@ import android.widget.SearchView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.android.contact.BR;
-import com.sample.android.contact.data.ContactsDataSource;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.util.Resource;
+import com.sample.android.contact.viewmodels.ContactsViewModel;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ import dagger.android.support.DaggerFragment;
 public class ContactsFragment extends DaggerFragment {
 
     @Inject
-    ContactsDataSource dataSource;
+    ContactsViewModel.Factory factory;
 
     private ContactsAdapter mAdapter;
 
@@ -53,6 +54,8 @@ public class ContactsFragment extends DaggerFragment {
 
     private List<Contact> mContacts;
 
+    private ContactsViewModel viewModel;
+
     @Inject
     public ContactsFragment() {
         // Requires empty public constructor
@@ -64,8 +67,9 @@ public class ContactsFragment extends DaggerFragment {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, root);
 
+        viewModel = new ViewModelProvider(this, factory).get(ContactsViewModel.class);
         ViewDataBinding binding = FragmentContactsBinding.bind(root);
-        binding.setVariable(BR.dataSource, dataSource);
+        binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         mAdapter = new ContactsAdapter();
@@ -119,7 +123,7 @@ public class ContactsFragment extends DaggerFragment {
         };
 
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        dataSource.getLiveData().observe(this, contactsObserver);
+        viewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
     }
@@ -134,6 +138,6 @@ public class ContactsFragment extends DaggerFragment {
         final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
         final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        dataSource.loadContacts(selection, selectionArgs);
+        viewModel.loadContacts(selection, selectionArgs);
     }
 }

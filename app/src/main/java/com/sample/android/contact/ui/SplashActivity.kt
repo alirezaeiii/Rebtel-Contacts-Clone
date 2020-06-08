@@ -8,8 +8,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
-import com.sample.android.contact.data.ContactsDataSource
+import com.sample.android.contact.viewmodels.ContactsViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -17,13 +18,16 @@ import javax.inject.Inject
 class SplashActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var dataSource: ContactsDataSource
+    lateinit var factory: ContactsViewModel.Factory
 
     private val handler = Handler(Looper.getMainLooper())
+
+    private lateinit var viewModel: ContactsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        viewModel = ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
         val versionName = packageManager.getPackageInfo(packageName, 0).versionName
         tv_splash_app_version.text = getString(R.string.splash_app_version, versionName)
 
@@ -48,7 +52,7 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        dataSource.loadAllContacts()
+        viewModel.loadAllContacts()
         handler.postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
         }, SPLASH_DELAY.toLong())

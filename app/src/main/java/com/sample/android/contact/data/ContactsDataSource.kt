@@ -11,7 +11,7 @@ import com.sample.android.contact.util.Resource
 import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,34 +20,31 @@ class ContactsDataSource @Inject constructor(
         private val context: Context,
         private val schedulerProvider: BaseSchedulerProvider) {
 
-    private val compositeDisposable = CompositeDisposable()
-
     private val _liveData = MutableLiveData<Resource<List<Contact>>>()
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
-    fun loadAllContacts() {
+    fun loadAllContacts() : Disposable {
         _liveData.value = Resource.Loading()
-        loadContacts(null, null)
+        return loadContacts(null, null)
     }
 
-    fun loadContacts(selection: String?, selectionArgs: Array<String>?) {
+    fun loadContacts(selection: String?, selectionArgs: Array<String>?) : Disposable {
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 PROJECTION,
                 selection,
                 selectionArgs,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
-        Observable.create(ObservableOnSubscribe<List<Contact>>
+        return Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doFinally {
+                .doOnComplete {
                     cursor?.close()
-                    compositeDisposable.clear()
                 }
                 .subscribe {
                     _liveData.postValue(Resource.Success(it))
-                }.also { compositeDisposable.add(it) }
+                }
     }
 }
