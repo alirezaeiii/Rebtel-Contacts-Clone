@@ -6,28 +6,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.data.ContactsDataSource
 import com.sample.android.contact.domain.Contact
 import com.sample.android.contact.util.Resource
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class ContactsViewModel(private val dataSource: ContactsDataSource) : ViewModel() {
-
-    private val compositeDisposable = CompositeDisposable()
 
     private val _liveData = dataSource.liveData
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
     fun loadAllContacts() {
-        dataSource.loadAllContacts().also { compositeDisposable.add(it) }
+        dataSource.loadAllContacts()
     }
 
     fun loadContacts(selection: String?, selectionArgs: Array<String>?) {
-        dataSource.loadContacts(selection, selectionArgs).also { compositeDisposable.add(it) }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
+        dataSource.loadContacts(selection, selectionArgs)
     }
 
     /**
