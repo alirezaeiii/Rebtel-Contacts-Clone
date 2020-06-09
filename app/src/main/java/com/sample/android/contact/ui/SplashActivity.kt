@@ -54,7 +54,9 @@ class SplashActivity : DaggerAppCompatActivity() {
     private fun startMainActivity() {
         viewModel.loadContacts()
         handler.postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent =Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }, SPLASH_DELAY.toLong())
     }
 
