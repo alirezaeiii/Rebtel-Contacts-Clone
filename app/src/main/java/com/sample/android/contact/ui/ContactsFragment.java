@@ -3,7 +3,6 @@ package com.sample.android.contact.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,6 +53,8 @@ public class ContactsFragment extends DaggerFragment {
     private Unbinder unbinder;
 
     private List<Contact> mContacts;
+
+    private List<Contact> tempContact = new ArrayList<>();
 
     private ContactsViewModel viewModel;
 
@@ -113,12 +115,8 @@ public class ContactsFragment extends DaggerFragment {
         final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
-                boolean showSeparator = false;
-                if (mContacts == null) {
-                    mContacts = items;
-                    showSeparator = true;
-                }
-                mAdapter.setItems(items, showSeparator);
+                mContacts = items;
+                mAdapter.setItems(items, true);
             }
         };
 
@@ -135,9 +133,14 @@ public class ContactsFragment extends DaggerFragment {
     }
 
     private void search(String query) {
-        final String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ? OR " +
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " LIKE ?";
-        final String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
-        viewModel.loadContacts(selection, selectionArgs);
+        int textLength = query.length();
+        tempContact.clear();
+        for (Contact contact : mContacts) {
+            if (textLength <= contact.getName().length() &&
+                    contact.getName().toLowerCase().contains(query.toLowerCase())) {
+                tempContact.add(contact);
+            }
+        }
+        mAdapter.setItems(tempContact, false);
     }
 }

@@ -26,17 +26,13 @@ class ContactsDataSource @Inject constructor(
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
-    fun loadAllContacts() {
+    fun loadContacts() {
         _liveData.value = Resource.Loading()
-        loadContacts(null, null)
-    }
-
-    fun loadContacts(selection: String?, selectionArgs: Array<String>?) {
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 PROJECTION,
-                selection,
-                selectionArgs,
+                null,
+                null,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
         Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })

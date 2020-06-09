@@ -14,12 +14,8 @@ class ContactsViewModel(private val dataSource: ContactsDataSource) : ViewModel(
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
-    fun loadAllContacts() {
-        dataSource.loadAllContacts()
-    }
-
-    fun loadContacts(selection: String?, selectionArgs: Array<String>?) {
-        dataSource.loadContacts(selection, selectionArgs)
+    fun loadContacts() {
+        dataSource.loadContacts()
     }
 
     /**
