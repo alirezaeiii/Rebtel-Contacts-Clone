@@ -54,9 +54,7 @@ public class ContactsFragment extends DaggerFragment {
 
     private List<Contact> mContacts;
 
-    private List<Contact> tempContact = new ArrayList<>();
-
-    private ContactsViewModel viewModel;
+    private List<Contact> tempContact;
 
     @Inject
     public ContactsFragment() {
@@ -69,7 +67,7 @@ public class ContactsFragment extends DaggerFragment {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, root);
 
-        viewModel = new ViewModelProvider(this, factory).get(ContactsViewModel.class);
+        ContactsViewModel viewModel = new ViewModelProvider(this, factory).get(ContactsViewModel.class);
         ViewDataBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -134,7 +132,11 @@ public class ContactsFragment extends DaggerFragment {
 
     private void search(String query) {
         int textLength = query.length();
-        tempContact.clear();
+        if(tempContact == null) {
+            tempContact = new ArrayList<>();
+        } else {
+            tempContact.clear();
+        }
         for (Contact contact : mContacts) {
             if (textLength <= contact.getName().length() &&
                     contact.getName().toLowerCase().contains(query.toLowerCase())) {
