@@ -37,7 +37,7 @@ import dagger.android.support.DaggerFragment;
 public class ContactsFragment extends DaggerFragment {
 
     @Inject
-    ContactsViewModel.Factory factory;
+    ContactsViewModel.Factory mFactory;
 
     private ContactsAdapter mAdapter;
 
@@ -54,7 +54,7 @@ public class ContactsFragment extends DaggerFragment {
 
     private List<Contact> mContacts;
 
-    private List<Contact> tempContact;
+    private List<Contact> mTempContact;
 
     @Inject
     public ContactsFragment() {
@@ -67,7 +67,7 @@ public class ContactsFragment extends DaggerFragment {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, root);
 
-        ContactsViewModel viewModel = new ViewModelProvider(this, factory).get(ContactsViewModel.class);
+        ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
         ViewDataBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -131,18 +131,18 @@ public class ContactsFragment extends DaggerFragment {
     }
 
     private void search(String query) {
-        int textLength = query.length();
-        if(tempContact == null) {
-            tempContact = new ArrayList<>();
+        if(mTempContact == null) {
+            mTempContact = new ArrayList<>();
         } else {
-            tempContact.clear();
+            mTempContact.clear();
         }
+        int textLength = query.length();
         for (Contact contact : mContacts) {
             if (textLength <= contact.getName().length() &&
                     contact.getName().toLowerCase().contains(query.toLowerCase())) {
-                tempContact.add(contact);
+                mTempContact.add(contact);
             }
         }
-        mAdapter.setItems(tempContact, false);
+        mAdapter.setItems(mTempContact, false);
     }
 }
