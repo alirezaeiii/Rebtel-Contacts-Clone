@@ -1,4 +1,4 @@
-package com.sample.android.contact.data
+package com.sample.android.contact.repository
 
 import android.content.Context
 import android.provider.ContactsContract
@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactsDataSource @Inject constructor(
+class ContactsRepository @Inject constructor(
         private val context: Context,
         private val schedulerProvider: BaseSchedulerProvider) {
 
@@ -26,7 +26,11 @@ class ContactsDataSource @Inject constructor(
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
-    fun loadContacts() {
+    init {
+        loadContacts()
+    }
+
+    private fun loadContacts() {
         _liveData.value = Resource.Loading()
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
