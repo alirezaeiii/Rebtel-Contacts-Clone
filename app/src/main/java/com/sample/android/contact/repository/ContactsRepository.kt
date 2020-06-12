@@ -26,11 +26,7 @@ class ContactsRepository @Inject constructor(
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
-    init {
-        loadContacts()
-    }
-
-    private fun loadContacts() {
+    fun loadContacts() {
         _liveData.value = Resource.Loading()
         val cursor = context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
