@@ -120,11 +120,10 @@ public class ContactsFragment extends DaggerFragment {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
                 mContacts = items;
-                if (mSearchBack.getVisibility() == View.INVISIBLE) {
+                if (isFirstTime) {
                     mAdapter.setItems(items, true);
-                } else {
-                    search(mSearchView.getQuery().toString());
                 }
+                isFirstTime = false;
             }
         };
 
@@ -140,7 +139,6 @@ public class ContactsFragment extends DaggerFragment {
         if (!isFirstTime) {
             mRepository.refreshContacts();
         }
-        isFirstTime = false;
     }
 
     @Override
