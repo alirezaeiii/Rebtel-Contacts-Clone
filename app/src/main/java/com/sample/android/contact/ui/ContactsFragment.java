@@ -21,6 +21,7 @@ import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.repository.ContactsRepository;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
@@ -39,6 +40,9 @@ public class ContactsFragment extends DaggerFragment {
     @Inject
     ContactsViewModel.Factory mFactory;
 
+    @Inject
+    ContactsRepository mRepository;
+
     private ContactsAdapter mAdapter;
 
     @BindView(R.id.recyclerView)
@@ -55,6 +59,8 @@ public class ContactsFragment extends DaggerFragment {
     private List<Contact> mContacts;
 
     private List<Contact> mTempContact;
+
+    private boolean isFirstTime = true;
 
     @Inject
     public ContactsFragment() {
@@ -114,7 +120,11 @@ public class ContactsFragment extends DaggerFragment {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
                 mContacts = items;
-                mAdapter.setItems(items, true);
+                if (mSearchBack.getVisibility() == View.INVISIBLE) {
+                    mAdapter.setItems(items, true);
+                } else {
+                    search(mSearchView.getQuery().toString());
+                }
             }
         };
 
@@ -125,13 +135,22 @@ public class ContactsFragment extends DaggerFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (!isFirstTime) {
+            mRepository.refreshContacts();
+        }
+        isFirstTime = false;
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
     private void search(String query) {
-        if(mTempContact == null) {
+        if (mTempContact == null) {
             mTempContact = new ArrayList<>();
         } else {
             mTempContact.clear();
