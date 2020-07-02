@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +123,11 @@ public class ContactsFragment extends DaggerFragment {
                 mContacts = items;
                 if (isFirstTime || mSearchBack.getVisibility() == View.INVISIBLE) {
                     mAdapter.setItems(items, true);
+                } else {
+                    CharSequence query = mSearchView.getQuery();
+                    if (!TextUtils.isEmpty(query)) {
+                        search(query.toString());
+                    }
                 }
                 isFirstTime = false;
             }
