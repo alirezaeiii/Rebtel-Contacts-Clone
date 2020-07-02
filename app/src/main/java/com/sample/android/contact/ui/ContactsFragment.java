@@ -120,7 +120,7 @@ public class ContactsFragment extends DaggerFragment {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
                 mContacts = items;
-                if (isFirstTime) {
+                if (isFirstTime || mSearchBack.getVisibility() == View.INVISIBLE) {
                     mAdapter.setItems(items, true);
                 }
                 isFirstTime = false;
