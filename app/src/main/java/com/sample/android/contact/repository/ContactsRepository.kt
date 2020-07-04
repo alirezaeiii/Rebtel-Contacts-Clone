@@ -46,7 +46,6 @@ class ContactsRepository @Inject constructor(
         Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
                 .doOnComplete { cursor?.close() }
                 .doFinally { compositeDisposable.clear() }
                 .subscribe {
