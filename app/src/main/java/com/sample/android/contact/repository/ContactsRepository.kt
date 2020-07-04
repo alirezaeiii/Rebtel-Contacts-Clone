@@ -8,6 +8,7 @@ import com.sample.android.contact.domain.Contact
 import com.sample.android.contact.util.ContactUtil
 import com.sample.android.contact.util.ContactUtil.PROJECTION
 import com.sample.android.contact.util.Resource
+import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.disposables.CompositeDisposable
@@ -16,7 +17,8 @@ import javax.inject.Singleton
 
 @Singleton
 class ContactsRepository @Inject constructor(
-        private val context: Context) {
+        private val context: Context,
+        private val schedulerProvider: BaseSchedulerProvider) {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -43,6 +45,8 @@ class ContactsRepository @Inject constructor(
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
         Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .doOnComplete { cursor?.close() }
                 .doFinally { compositeDisposable.clear() }
                 .subscribe {
