@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +40,6 @@ public class ContactsFragment extends DaggerFragment {
     @Inject
     ContactsViewModel.Factory mFactory;
 
-    @Inject
-    ContactsRepository mRepository;
-
     private ContactsAdapter mAdapter;
 
     @BindView(R.id.recyclerView)
@@ -60,8 +56,6 @@ public class ContactsFragment extends DaggerFragment {
     private List<Contact> mContacts;
 
     private List<Contact> mTempContact;
-
-    private boolean isFirstTime = true;
 
     @Inject
     public ContactsFragment() {
@@ -121,15 +115,7 @@ public class ContactsFragment extends DaggerFragment {
             if (resource instanceof Resource.Success) {
                 List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
                 mContacts = items;
-                if (isFirstTime || mSearchBack.getVisibility() == View.INVISIBLE) {
-                    mAdapter.setItems(items, true);
-                } else {
-                    CharSequence query = mSearchView.getQuery();
-                    if (!TextUtils.isEmpty(query)) {
-                        search(query.toString());
-                    }
-                }
-                isFirstTime = false;
+                mAdapter.setItems(items, true);
             }
         };
 
@@ -137,14 +123,6 @@ public class ContactsFragment extends DaggerFragment {
         viewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!isFirstTime) {
-            mRepository.refreshContacts();
-        }
     }
 
     @Override
