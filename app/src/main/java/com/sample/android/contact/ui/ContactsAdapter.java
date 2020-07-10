@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private int[] mSeparatorRowStates;
     private int[] mLineRowStates;
     private boolean mShowSeparator;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     void setItems(List<Contact> contacts, boolean showSeparator) {
         mContacts = contacts;
@@ -351,7 +353,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             notifyItemChanged(getAdapterPosition());
 
             if (contact.isExpanded()) {
-                new Handler().postDelayed(() -> {
+                mHandler.postDelayed(() -> {
                     mSmoothScroller.setTargetPosition(getAdapterPosition());
                     mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
                 }, 100);

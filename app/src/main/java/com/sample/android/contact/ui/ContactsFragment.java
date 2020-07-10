@@ -21,7 +21,6 @@ import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
-import com.sample.android.contact.repository.ContactsRepository;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
@@ -40,8 +39,6 @@ public class ContactsFragment extends DaggerFragment {
     @Inject
     ContactsViewModel.Factory mFactory;
 
-    private ContactsAdapter mAdapter;
-
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -52,6 +49,8 @@ public class ContactsFragment extends DaggerFragment {
     ImageButton mSearchBack;
 
     private Unbinder unbinder;
+
+    private ContactsAdapter mAdapter;
 
     private List<Contact> mContacts;
 
