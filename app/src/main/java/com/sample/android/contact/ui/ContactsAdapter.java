@@ -35,22 +35,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private List<Contact> mContacts;
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
-
-    // State of the row that needs to show separator
-    private static final int SECTIONED_STATE = 1;
-    // State of the row that need not show separator
-    private static final int REGULAR_STATE = 2;
-    // Cache row states based on positions
-    private int[] mSeparatorRowStates;
-    private int[] mLineRowStates;
     private boolean mShowSeparator;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     void setItems(List<Contact> contacts, boolean showSeparator) {
         mContacts = contacts;
         mShowSeparator = showSeparator;
-        mSeparatorRowStates = new int[getItemCount()];
-        mLineRowStates = new int[getItemCount()];
         notifyDataSetChanged();
     }
 
@@ -175,95 +165,24 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     ConstraintSet.START);
             constraintSet.applyTo(detail);
 
-            char[] nameArray = contact.getAccentName().toUpperCase().toCharArray();
-
-            boolean showSeparator = false;
-
             if (mShowSeparator) {
-
-                // Show index separator ?
-                switch (mSeparatorRowStates[position]) {
-
-                    case SECTIONED_STATE:
-                        showSeparator = true;
-                        break;
-
-                    case REGULAR_STATE:
-                        showSeparator = false;
-                        break;
-
-                    default:
-
-                        if (position == 0) {
-                            showSeparator = true;
-                        } else {
-                            Contact previousContact = mContacts.get(position - 1);
-                            char[] previousNameArray = previousContact.getAccentName().toUpperCase().toCharArray();
-
-                            if (Character.isLetter(nameArray[0]) &&
-                                    nameArray[0] != previousNameArray[0]) {
-                                showSeparator = true;
-                            }
-                        }
-
-                        // Cache it
-                        mSeparatorRowStates[position] = showSeparator ? SECTIONED_STATE : REGULAR_STATE;
-
-                        break;
-                }
-            }
-
-            if (showSeparator) {
-                char ch = name.toUpperCase().charAt(0);
-                if (Character.isLetter(ch)) {
-                    separatorText.setText(name.toCharArray(), 0, 1);
+                if (contact.getShowSeparator()) {
+                    char ch = name.toUpperCase().charAt(0);
+                    if (Character.isLetter(ch)) {
+                        separatorText.setText(name.toCharArray(), 0, 1);
+                    } else {
+                        separatorText.setText("&");
+                    }
+                    separatorView.setVisibility(View.VISIBLE);
                 } else {
-                    separatorText.setText("&");
-                }
-                separatorView.setVisibility(View.VISIBLE);
-            } else {
-                separatorView.setVisibility(View.GONE);
-            }
-
-            boolean showLine = true;
-
-            if (mShowSeparator) {
-
-                // Show line separator ?
-                switch (mLineRowStates[position]) {
-
-                    case SECTIONED_STATE:
-                        showLine = false;
-                        break;
-
-                    case REGULAR_STATE:
-                        showLine = true;
-                        break;
-
-                    default:
-
-                        if (position == mContacts.size() - 1) {
-                            showLine = false;
-                        } else {
-                            Contact nextContact = mContacts.get(position + 1);
-                            char[] nextNameArray = nextContact.getAccentName().toUpperCase().toCharArray();
-
-                            if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
-                                    (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
-                                            && nameArray[0] != nextNameArray[0])) {
-                                showLine = false;
-                            }
-                        }
-
-                        // Cache it
-                        mLineRowStates[position] = showLine ? REGULAR_STATE : SECTIONED_STATE;
-
-                        break;
+                    separatorView.setVisibility(View.GONE);
                 }
 
+                line.setVisibility(position != mContacts.size() - 1 &&
+                        contact.getShowLine() ?
+                        View.VISIBLE :
+                        View.GONE);
             }
-
-            line.setVisibility(showLine ? View.VISIBLE : View.GONE);
 
             subItem.removeAllViews();
 
@@ -272,20 +191,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
 
             boolean lineFlag = true;
-
             if (mShowSeparator) {
-
-                if (position == mContacts.size() - 1) {
-                    lineFlag = false;
-                } else {
-                    Contact nextContact = mContacts.get(position + 1);
-                    char[] nextNameArray = nextContact.getAccentName().toUpperCase().toCharArray();
-
-                    if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
-                            && nameArray[0] != nextNameArray[0]) {
-                        lineFlag = false;
-                    }
-                }
+                lineFlag = position == mContacts.size() - 1 ? false : contact.getLineFlag();
             }
 
             boolean expanded = contact.isExpanded();
