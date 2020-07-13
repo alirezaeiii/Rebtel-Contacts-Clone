@@ -1,7 +1,7 @@
 package com.sample.android.contact.domain
 
 class Contact @JvmOverloads constructor(
-        val name: String? = null,
+        val name: String,
         val phoneNumbers: List<ContactPhoneNumber>? = null,
         val briefName: String? = null,
         val accentName: String? = null,
