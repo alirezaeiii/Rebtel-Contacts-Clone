@@ -182,6 +182,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                         contact.getShowLine() ?
                         View.VISIBLE :
                         View.GONE);
+            } else {
+                separatorView.setVisibility(View.GONE);
+                line.setVisibility(View.VISIBLE);
             }
 
             subItem.removeAllViews();
