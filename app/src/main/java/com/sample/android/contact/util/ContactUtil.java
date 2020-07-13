@@ -11,6 +11,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
+import com.sample.android.contact.domain.ContactSeparator;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -78,14 +79,14 @@ public class ContactUtil {
 
                 int prevContactIndex= -1;
                 if (prevContact == null) {
-                    contact.setShowSeparator(true);
+                    contact.setContactSeparator(getContactSeparator(name));
                 } else {
                     prevContactIndex = contacts.indexOf(prevContact);
                     char[] nameArray = contact.getAccentName().toUpperCase().toCharArray();
                     char[] previousNameArray = prevContact.getAccentName().toUpperCase().toCharArray();
                     if (Character.isLetter(nameArray[0]) &&
                             nameArray[0] != previousNameArray[0]) {
-                        contact.setShowSeparator(true);
+                        contact.setContactSeparator(getContactSeparator(name));
                     }
                 }
                 if (prevContactIndex != -1) {
@@ -118,6 +119,12 @@ public class ContactUtil {
             }
         }
         return contacts;
+    }
+
+    private static ContactSeparator getContactSeparator(String name) {
+        char ch = name.toUpperCase().charAt(0);
+        char separatorChar = Character.isLetter(ch) ? ch : '&';
+        return new ContactSeparator(true, separatorChar);
     }
 
     private static String deAccent(String str) {

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
+import com.sample.android.contact.domain.ContactSeparator;
 
 import java.util.List;
 
@@ -166,13 +167,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             constraintSet.applyTo(detail);
 
             if (mShowSeparator) {
-                if (contact.getShowSeparator()) {
-                    char ch = name.toUpperCase().charAt(0);
-                    if (Character.isLetter(ch)) {
-                        separatorText.setText(name.toCharArray(), 0, 1);
-                    } else {
-                        separatorText.setText("&");
-                    }
+                ContactSeparator contactSeparator = contact.getContactSeparator();
+                if (contactSeparator!= null && contactSeparator.getShowSeparator()) {
+                    separatorText.setText(String.valueOf(contactSeparator.getSeparatorChar()));
                     separatorView.setVisibility(View.VISIBLE);
                 } else {
                     separatorView.setVisibility(View.GONE);
