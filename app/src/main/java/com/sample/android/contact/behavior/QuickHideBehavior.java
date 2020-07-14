@@ -2,8 +2,10 @@ package com.sample.android.contact.behavior;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     private int mScrollTrigger;
 
     private ObjectAnimator mAnimator;
+
+    private View mRecyclerView;
 
     protected abstract void directionUpScrolling(View recyclerView);
 
@@ -55,18 +59,20 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     public boolean onNestedFling(CoordinatorLayout coordinatorLayout,
                                  View child, View target, float velocityX, float velocityY,
                                  boolean consumed) {
-        View recyclerView = target.findViewById(R.id.recyclerView);
+        if(mRecyclerView == null) {
+            mRecyclerView = target.findViewById(R.id.recyclerView);
+        }
         //We only care when the target view is already handling the fling
         if (consumed) {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                directionUpScrolling(recyclerView);
+                directionUpScrolling(mRecyclerView);
 
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                directionDownScrolling(recyclerView);
+                directionDownScrolling(mRecyclerView);
             }
         }
         return false;
