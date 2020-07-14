@@ -41,6 +41,7 @@ public class ContactUtil {
         int typeLabelIndex = cursor.getColumnIndex(PROJECTION[3]);
 
         Contact prevContact = null;
+        int prevContactIndex = -1;
 
         while (cursor.moveToNext()) {
 
@@ -77,7 +78,6 @@ public class ContactUtil {
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
 
-                int prevContactIndex= -1;
                 if (prevContact == null) {
                     contact.setContactSeparator(getContactSeparator(name));
                 } else {

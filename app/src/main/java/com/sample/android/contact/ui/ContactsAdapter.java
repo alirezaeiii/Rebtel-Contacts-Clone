@@ -185,7 +185,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
 
             subItem.removeAllViews();
-
             if (numbers.size() == 1) {
                 return;
             }
@@ -229,20 +228,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     rlp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
                     childViewHolder.relativeLayout.setLayoutParams(rlp);
                 } else {
-
                     if (childPosition == 0) {
                         lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
                         rlp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-
                     } else {
-
                         lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
                         rlp.setMarginStart(0);
                     }
                     childViewHolder.frameLayout.setLayoutParams(lp);
                     childViewHolder.relativeLayout.setLayoutParams(rlp);
                 }
-
                 subItem.addView(childView);
             }
         }
@@ -265,7 +260,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
                 }, 100);
             }
-
         }
     }
 }

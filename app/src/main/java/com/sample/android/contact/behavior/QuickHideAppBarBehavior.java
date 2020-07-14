@@ -28,6 +28,7 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
                 (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
     }
 
+    @Override
     protected float getTargetHideValue(ViewGroup parent, View target) {
         return -target.getHeight();
     }
