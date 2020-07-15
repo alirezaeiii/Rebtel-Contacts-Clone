@@ -41,8 +41,6 @@ public class ContactUtil {
         int typeLabelIndex = cursor.getColumnIndex(PROJECTION[3]);
 
         Contact prevContact = null;
-        int prevContactIndex = -1;
-
         while (cursor.moveToNext()) {
 
             String name = cursor.getString(nameIndex);
@@ -81,27 +79,19 @@ public class ContactUtil {
                 if (prevContact == null) {
                     contact.setContactSeparator(getContactSeparator(name));
                 } else {
-                    prevContactIndex = contacts.indexOf(prevContact);
                     char[] nameArray = contact.getAccentName().toUpperCase().toCharArray();
                     char[] previousNameArray = prevContact.getAccentName().toUpperCase().toCharArray();
-                    if (Character.isLetter(nameArray[0]) &&
-                            nameArray[0] != previousNameArray[0]) {
+                    if (Character.isLetter(nameArray[0]) && nameArray[0] != previousNameArray[0]) {
                         contact.setContactSeparator(getContactSeparator(name));
                     }
-                }
-                if (prevContactIndex != -1) {
-                    Contact previousContact = contacts.get(prevContactIndex);
-                    char[] nameArray = previousContact.getAccentName().toUpperCase().toCharArray();
-                    char[] nextNameArray = contact.getAccentName().toUpperCase().toCharArray();
-                    if ((Character.isLetter(nameArray[0]) && nameArray[0] != nextNameArray[0]) ||
-                            (!Character.isLetter(nameArray[0]) && Character.isLetter(nextNameArray[0])
-                                    && nameArray[0] != nextNameArray[0])) {
-                        previousContact.setShowLine(false);
+                    if ((Character.isLetter(previousNameArray[0]) && previousNameArray[0] != nameArray[0]) ||
+                            (!Character.isLetter(previousNameArray[0]) && Character.isLetter(nameArray[0])
+                                    && previousNameArray[0] != nameArray[0])) {
+                        prevContact.setShowLine(false);
                     }
-
-                    if ((Character.isLetter(nameArray[0]) || Character.isLetter(nextNameArray[0]))
-                            && nameArray[0] != nextNameArray[0]) {
-                        previousContact.setLineFlag(false);
+                    if ((Character.isLetter(previousNameArray[0]) || Character.isLetter(nameArray[0]))
+                            && previousNameArray[0] != nameArray[0]) {
+                        prevContact.setLineFlag(false);
                     }
                 }
                 prevContact = contact;
