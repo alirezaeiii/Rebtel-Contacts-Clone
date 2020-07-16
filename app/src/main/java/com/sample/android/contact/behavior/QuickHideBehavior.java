@@ -59,7 +59,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     public boolean onNestedFling(CoordinatorLayout coordinatorLayout,
                                  View child, View target, float velocityX, float velocityY,
                                  boolean consumed) {
-        if(mRecyclerView == null) {
+        if (mRecyclerView == null) {
             mRecyclerView = target.findViewById(R.id.recyclerView);
         }
         //We only care when the target view is already handling the fling
