@@ -41,6 +41,7 @@ public class ContactUtil {
         int typeLabelIndex = cursor.getColumnIndex(PROJECTION[3]);
 
         Contact prevContact = null;
+        char[] previousNameArray = null;
         while (cursor.moveToNext()) {
 
             String name = cursor.getString(nameIndex);
@@ -76,11 +77,10 @@ public class ContactUtil {
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
 
+                char[] nameArray = contact.getAccentName().toUpperCase().toCharArray();
                 if (prevContact == null) {
                     contact.setContactSeparator(getContactSeparator(name));
                 } else {
-                    char[] nameArray = contact.getAccentName().toUpperCase().toCharArray();
-                    char[] previousNameArray = prevContact.getAccentName().toUpperCase().toCharArray();
                     if (Character.isLetter(nameArray[0]) && nameArray[0] != previousNameArray[0]) {
                         contact.setContactSeparator(getContactSeparator(name));
                     }
@@ -95,6 +95,7 @@ public class ContactUtil {
                     }
                 }
                 prevContact = contact;
+                previousNameArray = nameArray;
                 contacts.add(contact);
             } else {
                 contact = contacts.get(index);

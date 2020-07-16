@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
+import com.sample.android.contact.R;
+
 /**
  * Simple scrolling behavior that monitors nested events in the scrolling
  * container to implement a quick hide/show for the attached view.
@@ -24,11 +26,11 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     private ObjectAnimator mAnimator;
 
-    protected View mRecyclerView;
+    private View mRecyclerView;
 
-    protected abstract void directionUpScrolling();
+    protected abstract void directionUpScrolling(View recyclerView);
 
-    protected abstract void directionDownScrolling();
+    protected abstract void directionDownScrolling(View recyclerView);
 
     protected abstract float getTargetHideValue(ViewGroup parent, View target);
 
@@ -57,17 +59,20 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout,
                                  @NonNull View child, @NonNull View target, float velocityX,
                                  float velocityY, boolean consumed) {
+        if (mRecyclerView == null) {
+            mRecyclerView = target.findViewById(R.id.recyclerView);
+        }
         //We only care when the target view is already handling the fling
         if (consumed) {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                directionUpScrolling();
+                directionUpScrolling(mRecyclerView);
 
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                directionDownScrolling();
+                directionDownScrolling(mRecyclerView);
             }
         }
         return false;
@@ -76,11 +81,12 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     /* Helper Methods */
 
     //Helper to trigger hide/show animation
-    protected void restartAnimator(View target, float value) {
+    private void restartAnimator(View target, float value) {
         if (mAnimator != null) {
             mAnimator.cancel();
             mAnimator = null;
         }
+
         mAnimator = ObjectAnimator
                 .ofFloat(target, View.TRANSLATION_Y, value)
                 .setDuration(250);
