@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -15,13 +16,21 @@ import androidx.core.view.ViewCompat;
  */
 public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
 
-    protected static final int DIRECTION_UP = 1;
-    protected static final int DIRECTION_DOWN = -1;
+    private static final int DIRECTION_UP = 1;
+    private static final int DIRECTION_DOWN = -1;
 
     /* Tracking last threshold crossed */
-    protected int mScrollTrigger;
+    private int mScrollTrigger;
 
     private ObjectAnimator mAnimator;
+
+    protected View mRecyclerView;
+
+    protected abstract void directionUpScrolling();
+
+    protected abstract void directionDownScrolling();
+
+    protected abstract float getTargetHideValue(ViewGroup parent, View target);
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -41,6 +50,27 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
                                        @NonNull View target, int nestedScrollAxes, int type) {
         //We have to declare interest in the scroll to receive further events
         return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    }
+
+    //Called after the scrolling child handles the fling
+    @Override
+    public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout,
+                                 @NonNull View child, @NonNull View target, float velocityX,
+                                 float velocityY, boolean consumed) {
+        //We only care when the target view is already handling the fling
+        if (consumed) {
+            if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
+                mScrollTrigger = DIRECTION_UP;
+                restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
+                directionUpScrolling();
+
+            } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
+                mScrollTrigger = DIRECTION_DOWN;
+                restartAnimator(child, 0f);
+                directionDownScrolling();
+            }
+        }
+        return false;
     }
 
     /* Helper Methods */
