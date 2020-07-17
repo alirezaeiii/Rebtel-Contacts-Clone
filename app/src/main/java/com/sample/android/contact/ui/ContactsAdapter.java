@@ -37,6 +37,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private RecyclerView.SmoothScroller mSmoothScroller;
     private boolean mShowSeparator;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private ConstraintSet mConstraintSet = new ConstraintSet();
 
     void setItems(List<Contact> contacts, boolean showSeparator) {
         mContacts = contacts;
@@ -155,7 +156,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             String name = contact.getName();
             List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             String number = "";
-            ConstraintSet constraintSet = new ConstraintSet();
             int viewId;
             if (numbers.size() == 1) {
                 ContactPhoneNumber phoneNumber = numbers.get(0);
@@ -220,12 +220,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     subItem.addView(childView);
                 }
             }
-            constraintSet.clone(detail);
-            constraintSet.connect(R.id.contact_name,
+            mConstraintSet.clone(detail);
+            mConstraintSet.connect(R.id.contact_name,
                     ConstraintSet.END,
                     viewId,
                     ConstraintSet.START);
-            constraintSet.applyTo(detail);
+            mConstraintSet.applyTo(detail);
             contactNameView.setText(name);
             imageText.setText(contact.getBriefName());
             phoneNumberView.setText(number);
