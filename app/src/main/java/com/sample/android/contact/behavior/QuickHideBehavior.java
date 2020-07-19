@@ -45,6 +45,15 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
         super(context, attrs);
     }
 
+    @Override
+    public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull View child,
+                                 int layoutDirection) {
+        if (mRecyclerView == null) {
+            mRecyclerView = parent.findViewById(R.id.recyclerView);
+        }
+        return super.onLayoutChild(parent, child, layoutDirection);
+    }
+
     //Called before a nested scroll event. Return true to declare interest
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
@@ -59,9 +68,6 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout,
                                  @NonNull View child, @NonNull View target, float velocityX,
                                  float velocityY, boolean consumed) {
-        if (mRecyclerView == null) {
-            mRecyclerView = target.findViewById(R.id.recyclerView);
-        }
         //We only care when the target view is already handling the fling
         if (consumed) {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
