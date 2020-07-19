@@ -121,8 +121,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
         void bind(Contact contact) {
             Context context = mRecyclerView.getContext();
-            final int position = getAdapterPosition();
-
             flagItem.removeAllViews();
             for (int flagResId : contact.getFlagResIds()) {
                 ImageView imageView = new ImageView(context);
@@ -167,6 +165,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 viewId = R.id.line_number;
                 boolean expanded = contact.isExpanded();
                 subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+                boolean lineFlag = mShowSeparator ? contact.getLineFlag() : true;
 
                 for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
 
@@ -181,8 +180,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                     childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-                    childViewHolder.childLine.setVisibility(contact.getLineFlag() ? View.VISIBLE : View.GONE);
-                    childViewHolder.childTopLine.setVisibility(contact.getLineFlag() ? View.GONE : View.VISIBLE);
+                    childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
+                    childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
 
                     FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -192,13 +191,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                    if (contact.getLineFlag() || childPosition == 0) {
-                        lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
-                        rlp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                    } else {
-                        lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
-                        rlp.setMarginStart(0);
-                    }
+                    lp.setMarginStart(phoneNumber.getLpMargin());
+                    rlp.setMarginStart(phoneNumber.getRlpMargin());
                     childViewHolder.frameLayout.setLayoutParams(lp);
                     childViewHolder.relativeLayout.setLayoutParams(rlp);
                     subItem.addView(childView);

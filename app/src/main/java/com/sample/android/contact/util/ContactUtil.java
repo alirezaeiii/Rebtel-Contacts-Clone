@@ -73,6 +73,8 @@ public class ContactUtil {
             if (index == -1) {
                 List<Integer> flagResIds = new ArrayList<>();
                 flagResIds.add(phoneNumber.getFlagResId());
+                phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
+                phoneNumber.setRlpMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
                 List<ContactPhoneNumber> numbers = new ArrayList<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
@@ -102,6 +104,8 @@ public class ContactUtil {
                 List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
                 List<Integer> flagResIds = contact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
+                    phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
+                    phoneNumber.setRlpMargin(0);
                     numbers.add(phoneNumber);
                     if (!flagResIds.contains(phoneNumber.getFlagResId())) {
                         flagResIds.add(phoneNumber.getFlagResId());

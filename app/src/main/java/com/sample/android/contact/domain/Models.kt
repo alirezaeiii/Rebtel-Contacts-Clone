@@ -24,10 +24,12 @@ class ContactSeparator(
         var showSeparator: Boolean = false,
         var separatorChar: Char)
 
-class ContactPhoneNumber(
+class ContactPhoneNumber @JvmOverloads constructor(
         var number: String,
         val typeLabel: String,
-        val flagResId: Int) {
+        val flagResId: Int,
+        var lpMargin: Int? = null,
+        var rlpMargin: Int? = null) {
 
     override fun equals(other: Any?): Boolean {
         if (other !is ContactPhoneNumber) {
