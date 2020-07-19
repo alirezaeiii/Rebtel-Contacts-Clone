@@ -143,11 +143,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 } else {
                     separatorView.setVisibility(View.GONE);
                 }
-
-                line.setVisibility(position != mContacts.size() - 1 &&
-                        contact.getShowLine() ?
-                        View.VISIBLE :
-                        View.GONE);
+                line.setVisibility(contact.getShowLine() ? View.VISIBLE : View.GONE);
             } else {
                 separatorView.setVisibility(View.GONE);
                 line.setVisibility(View.VISIBLE);
@@ -169,10 +165,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 phoneNumberType.setVisibility(View.INVISIBLE);
                 lineNumber.setText(String.valueOf(numbers.size()));
                 viewId = R.id.line_number;
-                boolean lineFlag = true;
-                if (mShowSeparator) {
-                    lineFlag = position != mContacts.size() - 1 && contact.getLineFlag();
-                }
                 boolean expanded = contact.isExpanded();
                 subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
@@ -189,8 +181,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                     childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-                    childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
-                    childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
+                    childViewHolder.childLine.setVisibility(contact.getLineFlag() ? View.VISIBLE : View.GONE);
+                    childViewHolder.childTopLine.setVisibility(contact.getLineFlag() ? View.GONE : View.VISIBLE);
 
                     FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -200,23 +192,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                    if (lineFlag) {
+                    if (contact.getLineFlag() || childPosition == 0) {
                         lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
-                        childViewHolder.frameLayout.setLayoutParams(lp);
-
                         rlp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                        childViewHolder.relativeLayout.setLayoutParams(rlp);
                     } else {
-                        if (childPosition == 0) {
-                            lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
-                            rlp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                        } else {
-                            lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
-                            rlp.setMarginStart(0);
-                        }
-                        childViewHolder.frameLayout.setLayoutParams(lp);
-                        childViewHolder.relativeLayout.setLayoutParams(rlp);
+                        lp.setMarginStart((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
+                        rlp.setMarginStart(0);
                     }
+                    childViewHolder.frameLayout.setLayoutParams(lp);
+                    childViewHolder.relativeLayout.setLayoutParams(rlp);
                     subItem.addView(childView);
                 }
             }

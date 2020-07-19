@@ -109,6 +109,8 @@ public class ContactUtil {
                 }
             }
         }
+        prevContact.setShowLine(false);
+        prevContact.setLineFlag(false);
         return contacts;
     }
 
