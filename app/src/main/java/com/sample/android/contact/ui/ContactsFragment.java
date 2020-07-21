@@ -112,9 +112,8 @@ public class ContactsFragment extends DaggerFragment {
         // Create the observer which updates the UI.
         final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
             if (resource instanceof Resource.Success) {
-                List<Contact> items = ((Resource.Success<List<Contact>>) resource).getData();
-                mContacts = items;
-                mAdapter.setItems(items, true);
+                mContacts = ((Resource.Success<List<Contact>>) resource).getData();
+                mAdapter.setItems(mContacts, true);
             }
         };
 
