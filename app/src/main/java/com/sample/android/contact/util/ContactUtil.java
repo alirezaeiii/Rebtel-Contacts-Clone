@@ -69,8 +69,7 @@ public class ContactUtil {
             }
 
             Contact contact = new Contact(name);
-            int index = contacts.indexOf(contact);
-            if (index == -1) {
+            if (!contact.equals(prevContact)) {
                 List<Integer> flagResIds = new ArrayList<>();
                 flagResIds.add(phoneNumber.getFlagResId());
                 List<ContactPhoneNumber> numbers = new ArrayList<>();
@@ -98,7 +97,7 @@ public class ContactUtil {
                 previousNameArray = nameArray;
                 contacts.add(contact);
             } else {
-                contact = contacts.get(index);
+                contact = prevContact;
                 List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
                 List<Integer> flagResIds = contact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
@@ -115,6 +114,7 @@ public class ContactUtil {
                     }
                 }
             }
+
         }
         prevContact.setShowLine(false);
         prevContact.setLineFlag(false);
