@@ -97,9 +97,8 @@ public class ContactUtil {
                 previousNameArray = nameArray;
                 contacts.add(contact);
             } else {
-                contact = prevContact;
-                List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
-                List<Integer> flagResIds = contact.getFlagResIds();
+                List<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
+                List<Integer> flagResIds = prevContact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
                     if(numbers.size() == 1) {
                         ContactPhoneNumber firstPhoneNumber = numbers.get(0);
