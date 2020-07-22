@@ -27,7 +27,7 @@ class ContactSeparator(
 class ContactPhoneNumber @JvmOverloads constructor(
         var number: String,
         val typeLabel: String,
-        val flagResId: Int,
+        var flagResId: Int? = null,
         var lpMargin: Int? = null,
         var rlpMargin: Int? = null) {
 

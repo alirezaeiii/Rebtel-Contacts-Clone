@@ -56,22 +56,19 @@ public class ContactUtil {
             PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
             ContactPhoneNumber phoneNumber;
+            String regionCode = null;
             try {
                 Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
-                String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
-                phoneNumber = new ContactPhoneNumber(phoneUtil.format(numberProto, INTERNATIONAL),
-                        numberType,
-                        getFlagResID(context, regionCode));
+                regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
+                phoneNumber = new ContactPhoneNumber(phoneUtil.format(numberProto, INTERNATIONAL), numberType);
             } catch (NumberParseException e) {
-                phoneNumber = new ContactPhoneNumber(number,
-                        numberType,
-                        getFlagResID(context, null));
+                phoneNumber = new ContactPhoneNumber(number, numberType);
             }
 
             Contact contact = new Contact(name);
             if (!contact.equals(prevContact)) {
                 List<Integer> flagResIds = new ArrayList<>();
-                flagResIds.add(phoneNumber.getFlagResId());
+                flagResIds.add(getFlagResID(context, regionCode));
                 List<ContactPhoneNumber> numbers = new ArrayList<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
@@ -100,12 +97,14 @@ public class ContactUtil {
                 List<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
                 List<Integer> flagResIds = prevContact.getFlagResIds();
                 if (numbers.indexOf(phoneNumber) == -1) {
-                    if(numbers.size() == 1) {
+                    if (numbers.size() == 1) {
                         ContactPhoneNumber firstPhoneNumber = numbers.get(0);
                         firstPhoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
                         firstPhoneNumber.setRlpMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
+                        firstPhoneNumber.setFlagResId(getFlagResID(context, regionCode));
                     }
                     phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
+                    phoneNumber.setFlagResId(getFlagResID(context, regionCode));
                     phoneNumber.setRlpMargin(0);
                     numbers.add(phoneNumber);
                     if (!flagResIds.contains(phoneNumber.getFlagResId())) {
@@ -113,7 +112,6 @@ public class ContactUtil {
                     }
                 }
             }
-
         }
         prevContact.setShowLine(false);
         prevContact.setLineFlag(false);
