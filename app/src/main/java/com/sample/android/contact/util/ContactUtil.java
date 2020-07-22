@@ -101,11 +101,11 @@ public class ContactUtil {
                         ContactPhoneNumber firstPhoneNumber = numbers.get(0);
                         firstPhoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
                         firstPhoneNumber.setRlpMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                        firstPhoneNumber.setFlagResId(getFlagResID(context, regionCode));
+                        firstPhoneNumber.setFlagResId(flagResIds.get(0));
                     }
                     phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
-                    phoneNumber.setFlagResId(getFlagResID(context, regionCode));
                     phoneNumber.setRlpMargin(0);
+                    phoneNumber.setFlagResId(getFlagResID(context, regionCode));
                     numbers.add(phoneNumber);
                     if (!flagResIds.contains(phoneNumber.getFlagResId())) {
                         flagResIds.add(phoneNumber.getFlagResId());
