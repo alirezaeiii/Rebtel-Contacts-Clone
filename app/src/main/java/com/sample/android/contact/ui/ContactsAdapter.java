@@ -24,7 +24,9 @@ import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 import com.sample.android.contact.domain.ContactSeparator;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,11 +150,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
             subItem.removeAllViews();
             String name = contact.getName();
-            List<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
+            Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             String number = "";
             int viewId;
             if (numbers.size() == 1) {
-                ContactPhoneNumber phoneNumber = numbers.get(0);
+                Iterator<ContactPhoneNumber> iterator = numbers.iterator();
+                ContactPhoneNumber phoneNumber = iterator.next();
                 number = phoneNumber.getNumber();
                 phoneNumberType.setVisibility(View.VISIBLE);
                 lineNumber.setVisibility(View.INVISIBLE);
@@ -167,9 +170,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
                 boolean lineFlag = mShowSeparator ? contact.getLineFlag() : true;
 
-                for (int childPosition = 0; childPosition < numbers.size(); childPosition++) {
+                for ( Iterator<ContactPhoneNumber> iterator = numbers.iterator(); iterator.hasNext();) {
 
-                    ContactPhoneNumber phoneNumber = numbers.get(childPosition);
+                    ContactPhoneNumber phoneNumber = iterator.next();
 
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View childView = inflater.inflate(R.layout.child_item, null);

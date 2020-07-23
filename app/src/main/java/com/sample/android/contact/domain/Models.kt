@@ -2,10 +2,10 @@ package com.sample.android.contact.domain
 
 class Contact @JvmOverloads constructor(
         val name: String,
-        val phoneNumbers: List<ContactPhoneNumber>? = null,
+        val phoneNumbers: Set<ContactPhoneNumber>? = null,
         val briefName: String? = null,
         val accentName: String? = null,
-        val flagResIds: List<Int>? = null,
+        val flagResIds: Set<Int>? = null,
         // State of the item
         var isExpanded: Boolean = false,
         var contactSeparator: ContactSeparator? = null,
@@ -17,6 +17,10 @@ class Contact @JvmOverloads constructor(
             return false
         }
         return other.name == name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
     }
 }
 
@@ -37,5 +41,9 @@ class ContactPhoneNumber @JvmOverloads constructor(
         }
         return other.number.replace("\\s".toRegex(), "") ==
                 number.replace("\\s".toRegex(), "")
+    }
+
+    override fun hashCode(): Int {
+        return number.hashCode()
     }
 }

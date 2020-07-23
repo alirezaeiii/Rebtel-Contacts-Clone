@@ -15,7 +15,10 @@ import com.sample.android.contact.domain.ContactSeparator;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
@@ -67,9 +70,9 @@ public class ContactUtil {
 
             Contact contact = new Contact(name);
             if (!contact.equals(prevContact)) {
-                List<Integer> flagResIds = new ArrayList<>();
+                Set<Integer> flagResIds = new LinkedHashSet<>();
                 flagResIds.add(getFlagResID(context, regionCode));
-                List<ContactPhoneNumber> numbers = new ArrayList<>();
+                Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
 
@@ -94,23 +97,20 @@ public class ContactUtil {
                 previousNameArray = nameArray;
                 contacts.add(contact);
             } else {
-                List<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
-                List<Integer> flagResIds = prevContact.getFlagResIds();
-                if (numbers.indexOf(phoneNumber) == -1) {
-                    if (numbers.size() == 1) {
-                        ContactPhoneNumber firstPhoneNumber = numbers.get(0);
-                        firstPhoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
-                        firstPhoneNumber.setRlpMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                        firstPhoneNumber.setFlagResId(flagResIds.get(0));
-                    }
-                    phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
-                    phoneNumber.setRlpMargin(0);
-                    phoneNumber.setFlagResId(getFlagResID(context, regionCode));
-                    numbers.add(phoneNumber);
-                    if (!flagResIds.contains(phoneNumber.getFlagResId())) {
-                        flagResIds.add(phoneNumber.getFlagResId());
-                    }
+                Set<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
+                Set<Integer> flagResIds = prevContact.getFlagResIds();
+                if (numbers.size() == 1) {
+                    Iterator<ContactPhoneNumber> numberIterator = numbers.iterator();
+                    ContactPhoneNumber firstPhoneNumber = numberIterator.next();
+                    firstPhoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
+                    firstPhoneNumber.setRlpMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
+                    firstPhoneNumber.setFlagResId(flagResIds.iterator().next());
                 }
+                phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
+                phoneNumber.setRlpMargin(0);
+                phoneNumber.setFlagResId(getFlagResID(context, regionCode));
+                numbers.add(phoneNumber);
+                flagResIds.add(phoneNumber.getFlagResId());
             }
         }
         prevContact.setShowLine(false);
