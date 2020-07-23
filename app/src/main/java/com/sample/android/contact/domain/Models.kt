@@ -20,7 +20,7 @@ class Contact @JvmOverloads constructor(
     }
 
     override fun hashCode(): Int {
-        return name.hashCode()
+        return javaClass.hashCode()
     }
 }
 
@@ -44,6 +44,6 @@ class ContactPhoneNumber @JvmOverloads constructor(
     }
 
     override fun hashCode(): Int {
-        return number.hashCode()
+        return javaClass.hashCode()
     }
 }
