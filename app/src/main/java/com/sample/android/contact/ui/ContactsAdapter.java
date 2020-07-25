@@ -137,7 +137,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             if (mShowSeparator) {
                 ContactSeparator contactSeparator = contact.getContactSeparator();
-                if (contactSeparator != null && contactSeparator.getShowSeparator()) {
+                if (contactSeparator.getShowSeparator()) {
                     separatorText.setText(String.valueOf(contactSeparator.getSeparatorChar()));
                     separatorView.setVisibility(View.VISIBLE);
                 } else {

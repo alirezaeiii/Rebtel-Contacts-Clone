@@ -8,7 +8,7 @@ class Contact @JvmOverloads constructor(
         val flagResIds: Set<Int>? = null,
         // State of the item
         var isExpanded: Boolean = false,
-        var contactSeparator: ContactSeparator? = null,
+        var contactSeparator: ContactSeparator = ContactSeparator(false),
         var showLine: Boolean = true,
         var lineFlag: Boolean = true) {
 
@@ -24,9 +24,9 @@ class Contact @JvmOverloads constructor(
     }
 }
 
-class ContactSeparator(
-        var showSeparator: Boolean = false,
-        var separatorChar: Char)
+class ContactSeparator @JvmOverloads constructor(
+        var showSeparator: Boolean,
+        var separatorChar: Char? = null)
 
 class ContactPhoneNumber @JvmOverloads constructor(
         var number: String,
