@@ -34,12 +34,12 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
     }
 
     @Override
-    protected void directionUpScrolling(View recyclerView) {
-        recyclerView.setPadding(0, 0, 0, 0);
+    protected void setupMarginsInUpScrolling() {
+        mRecyclerView.setPadding(0, 0, 0, 0);
     }
 
     @Override
-    protected void directionDownScrolling(View recyclerView) {
-        recyclerView.setPadding(0, actionBarHeight, 0, 0);
+    protected void setupMarginsInDownScrolling() {
+        mRecyclerView.setPadding(0, actionBarHeight, 0, 0);
     }
 }

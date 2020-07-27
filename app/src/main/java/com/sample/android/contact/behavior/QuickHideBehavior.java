@@ -26,11 +26,11 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     private ObjectAnimator mAnimator;
 
-    private View mRecyclerView;
+    protected View mRecyclerView;
 
-    protected abstract void directionUpScrolling(View recyclerView);
+    protected abstract void setupMarginsInUpScrolling();
 
-    protected abstract void directionDownScrolling(View recyclerView);
+    protected abstract void setupMarginsInDownScrolling();
 
     protected abstract float getTargetHideValue(ViewGroup parent, View target);
 
@@ -73,12 +73,12 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                directionUpScrolling(mRecyclerView);
+                setupMarginsInUpScrolling();
 
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                directionDownScrolling(mRecyclerView);
+                setupMarginsInDownScrolling();
             }
         }
         return false;
