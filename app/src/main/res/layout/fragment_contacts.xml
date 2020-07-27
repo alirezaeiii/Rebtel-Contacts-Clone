@@ -13,7 +13,8 @@
 
     <com.sample.android.contact.widget.NestedCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -72,6 +73,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingTop="?attr/actionBarSize"
+            android:paddingBottom="@dimen/dimen_recycler_view_spacing"
             app:layoutManager="LinearLayoutManager"
             app:showData="@{vm.liveData}" />
 
