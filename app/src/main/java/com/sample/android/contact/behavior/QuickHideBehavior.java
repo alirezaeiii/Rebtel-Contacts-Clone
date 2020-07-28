@@ -30,6 +30,10 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     protected abstract float getTargetHideValue(ViewGroup parent, View target);
 
+    protected abstract void setMarginUpScroll();
+
+    protected abstract void setMarginDownScroll();
+
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
     public QuickHideBehavior() {
@@ -69,10 +73,12 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
+                setMarginUpScroll();
 
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
+                setMarginDownScroll();
             }
         }
         return false;

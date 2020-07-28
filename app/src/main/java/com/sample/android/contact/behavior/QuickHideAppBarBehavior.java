@@ -22,4 +22,12 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
     protected float getTargetHideValue(ViewGroup parent, View target) {
         return -target.getHeight();
     }
+
+    @Override
+    protected void setMarginUpScroll() {
+    }
+
+    @Override
+    protected void setMarginDownScroll() {
+    }
 }

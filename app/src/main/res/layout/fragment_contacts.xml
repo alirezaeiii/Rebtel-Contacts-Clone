@@ -73,7 +73,6 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingTop="?attr/actionBarSize"
-            android:paddingBottom="@dimen/dimen_recycler_view_spacing"
             app:layoutManager="LinearLayoutManager"
             app:showData="@{vm.liveData}" />
 
