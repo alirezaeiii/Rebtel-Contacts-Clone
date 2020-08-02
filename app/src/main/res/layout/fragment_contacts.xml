@@ -20,7 +20,6 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior=".behavior.QuickHideAppBarBehavior"
             app:showData="@{vm.liveData}">
 
             <FrameLayout
@@ -29,7 +28,8 @@
                 android:elevation="4dp"
                 android:outlineProvider="bounds"
                 android:theme="@style/SearchViewTheme"
-                android:transitionGroup="false">
+                android:transitionGroup="false"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <View
                     android:layout_width="match_parent"
@@ -72,8 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingTop="?attr/actionBarSize"
             app:layoutManager="LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:showData="@{vm.liveData}" />
 
         <ProgressBar
