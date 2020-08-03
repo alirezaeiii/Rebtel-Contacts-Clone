@@ -72,7 +72,8 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
         //We only care when the target view is already handling the fling
         if (consumed) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mRecyclerView.getLayoutParams();
-            if (velocityY > 0 && mScrollTrigger != DIRECTION_UP) {
+            if (velocityY > 0 && mScrollTrigger != DIRECTION_UP
+                    && mRecyclerView.canScrollVertically(1)) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, coordinatorLayout.getHeight() - child.getTop());
                 params.setMargins(0, 0, 0, 0);
