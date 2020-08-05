@@ -2,8 +2,6 @@ package com.sample.android.contact.behavior;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,6 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
 
     private static final int DIRECTION_UP = 1;
     private static final int DIRECTION_DOWN = -1;
-
-    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     /* Tracking last threshold crossed */
     private int mScrollTrigger;
@@ -77,16 +73,12 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, coordinatorLayout.getHeight() - child.getTop());
                 params.setMargins(0, 0, 0, 0);
-                mRecyclerView.setLayoutParams(params);
-
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                mHandler.postDelayed(() -> {
-                    params.setMargins(0, 0, 0, mBottomSpacing);
-                    mRecyclerView.setLayoutParams(params);
-                }, 250);
+                params.setMargins(0, 0, 0, mBottomSpacing);
             }
+            mRecyclerView.setLayoutParams(params);
         }
         return false;
     }
