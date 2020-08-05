@@ -171,14 +171,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 boolean lineFlag = mShowSeparator ? contact.getLineFlag() : true;
 
                 for ( Iterator<ContactPhoneNumber> iterator = numbers.iterator(); iterator.hasNext();) {
-
                     ContactPhoneNumber phoneNumber = iterator.next();
-
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    View childView = inflater.inflate(R.layout.child_item, null);
+                    View childView = inflater.inflate(R.layout.contact_child_item, null);
 
                     ChildViewHolder childViewHolder = new ChildViewHolder(childView);
-
                     childViewHolder.contactNumber.setText(phoneNumber.getNumber());
                     childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                     childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
