@@ -113,8 +113,10 @@ public class ContactUtil {
                 flagResIds.add(phoneNumber.getFlagResId());
             }
         }
-        prevContact.setShowLine(false);
-        prevContact.setLineFlag(false);
+        if (prevContact != null) {
+            prevContact.setShowLine(false);
+            prevContact.setLineFlag(false);
+        }
         return contacts;
     }
 
