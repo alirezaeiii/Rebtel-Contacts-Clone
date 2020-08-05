@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/display" />
+    <include layout="@layout/dialpad_display" />
 
     <com.sample.android.padlayout.PadLayout
         android:id="@+id/padLayout"
