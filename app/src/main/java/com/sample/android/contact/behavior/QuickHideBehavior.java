@@ -69,7 +69,7 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
         if (consumed) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mRecyclerView.getLayoutParams();
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP
-                    && mRecyclerView.canScrollVertically(1)) {
+                    && mRecyclerView.canScrollVertically(DIRECTION_UP)) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, coordinatorLayout.getHeight() - child.getTop());
                 params.setMargins(0, 0, 0, 0);
