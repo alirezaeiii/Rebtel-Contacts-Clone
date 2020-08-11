@@ -33,17 +33,17 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     }
 
     @Override
-    protected void removeSpace() {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mRecyclerView.getLayoutParams();
+    protected void removeSpace(View recyclerView) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
         params.setMargins(0, 0, 0, 0);
-        mRecyclerView.setLayoutParams(params);
+        recyclerView.setLayoutParams(params);
     }
 
     @Override
-    protected void setSpace() {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mRecyclerView.getLayoutParams();
+    protected void setSpace(View recyclerView) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
         mHandler.postDelayed(() -> {
-            mRecyclerView.setLayoutParams(params);
+            recyclerView.setLayoutParams(params);
             params.setMargins(0, 0, 0, bottomSpacing);
         }, 250);
     }

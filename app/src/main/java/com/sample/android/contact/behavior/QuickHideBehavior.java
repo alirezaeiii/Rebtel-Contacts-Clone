@@ -26,15 +26,15 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     private ObjectAnimator mAnimator;
 
-    protected View mRecyclerView;
+    private View mRecyclerView;
 
     private int mVelocity;
 
     protected abstract float getTargetHideValue(ViewGroup parent, View target);
 
-    protected abstract void removeSpace();
+    protected abstract void removeSpace(View recyclerView);
 
-    protected abstract void setSpace();
+    protected abstract void setSpace(View recyclerView);
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -78,11 +78,11 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
                     && Math.abs(velocityY) > mVelocity) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                removeSpace();
+                removeSpace(mRecyclerView);
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                setSpace();
+                setSpace(mRecyclerView);
             }
         }
         return false;
