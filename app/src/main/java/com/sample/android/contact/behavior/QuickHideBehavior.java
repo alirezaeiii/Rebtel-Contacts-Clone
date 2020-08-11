@@ -16,7 +16,7 @@ import com.sample.android.contact.R;
  * Simple scrolling behavior that monitors nested events in the scrolling
  * container to implement a quick hide/show for the attached view.
  */
-public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
+public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
 
     private static final int DIRECTION_UP = 1;
     private static final int DIRECTION_DOWN = -1;
@@ -26,9 +26,15 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
 
     private ObjectAnimator mAnimator;
 
-    private View mRecyclerView;
+    protected View mRecyclerView;
 
-    private int mBottomSpacing;
+    private int mVelocity;
+
+    protected abstract float getTargetHideValue(ViewGroup parent, View target);
+
+    protected abstract void removeSpace();
+
+    protected abstract void setSpace();
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -39,7 +45,7 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
     @SuppressWarnings("unused")
     public QuickHideBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mBottomSpacing = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+        mVelocity = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing) * 48;
     }
 
     @Override
@@ -67,18 +73,17 @@ public class QuickHideBehavior extends CoordinatorLayout.Behavior<View> {
                                  float velocityY, boolean consumed) {
         //We only care when the target view is already handling the fling
         if (consumed) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mRecyclerView.getLayoutParams();
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP
-                    && mRecyclerView.canScrollVertically(DIRECTION_UP)) {
+                    && mRecyclerView.canScrollVertically(DIRECTION_UP)
+                    && Math.abs(velocityY) > mVelocity) {
                 mScrollTrigger = DIRECTION_UP;
-                restartAnimator(child, coordinatorLayout.getHeight() - child.getTop());
-                params.setMargins(0, 0, 0, 0);
+                restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
+                removeSpace();
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                params.setMargins(0, 0, 0, mBottomSpacing);
+                setSpace();
             }
-            mRecyclerView.setLayoutParams(params);
         }
         return false;
     }
