@@ -75,7 +75,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
         if (consumed) {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP
                     && mRecyclerView.canScrollVertically(DIRECTION_UP)
-                    && Math.abs(velocityY) > mVelocity) {
+                    && velocityY > mVelocity) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
                 removeSpace(mRecyclerView);
