@@ -35,11 +35,11 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void removeSpace(View recyclerView) {
-        recyclerView.setPadding(0, 0,0,0);
+        recyclerView.setPadding(0, 0, 0, 0);
     }
 
     @Override
     protected void setSpace(View recyclerView) {
-        recyclerView.setPadding(0, actionBarHeight,0,0);
+        recyclerView.setPadding(0, actionBarHeight, 0, 0);
     }
 }
