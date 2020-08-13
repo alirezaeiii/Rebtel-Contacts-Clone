@@ -26,7 +26,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position).fragment;
+        return fragments.get(position).getFragment();
     }
 
     @Override
@@ -37,6 +37,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return fragments.get(position).title;
+        return fragments.get(position).getTitle();
     }
 }
