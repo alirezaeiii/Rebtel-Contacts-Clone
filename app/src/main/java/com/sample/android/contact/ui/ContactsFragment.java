@@ -54,7 +54,7 @@ public class ContactsFragment extends DaggerFragment {
 
     private List<Contact> mContacts;
 
-    private List<Contact> mTempContact;
+    private List<Contact> mTempContacts;
 
     @Inject
     public ContactsFragment() {
@@ -130,18 +130,18 @@ public class ContactsFragment extends DaggerFragment {
     }
 
     private void search(String query) {
-        if (mTempContact == null) {
-            mTempContact = new ArrayList<>();
+        if (mTempContacts == null) {
+            mTempContacts = new ArrayList<>();
         } else {
-            mTempContact.clear();
+            mTempContacts.clear();
         }
         int textLength = query.length();
         for (Contact contact : mContacts) {
             if (textLength <= contact.getName().length() &&
                     contact.getName().toLowerCase().contains(query.toLowerCase())) {
-                mTempContact.add(contact);
+                mTempContacts.add(contact);
             }
         }
-        mAdapter.setItems(mTempContact, false);
+        mAdapter.setItems(mTempContacts, false);
     }
 }

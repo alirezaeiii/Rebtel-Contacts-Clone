@@ -19,7 +19,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
-    void addItem(MainPagerItem mainPagerItem) {
+    public void addItem(MainPagerItem mainPagerItem) {
         fragments.add(mainPagerItem);
     }
 
