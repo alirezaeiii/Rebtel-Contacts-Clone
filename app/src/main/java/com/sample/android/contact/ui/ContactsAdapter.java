@@ -41,6 +41,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private ConstraintSet mConstraintSet = new ConstraintSet();
 
+    public ContactsAdapter(List<Contact> contacts) {
+        mContacts = contacts;
+        mShowSeparator = true;
+    }
+
     void setItems(List<Contact> contacts, boolean showSeparator) {
         mContacts = contacts;
         mShowSeparator = showSeparator;

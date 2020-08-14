@@ -72,7 +72,7 @@ public class ContactsFragment extends DaggerFragment {
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        mAdapter = new ContactsAdapter();
+        mAdapter = new ContactsAdapter(mContacts);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
 
