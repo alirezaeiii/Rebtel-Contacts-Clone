@@ -1,5 +1,9 @@
 package com.sample.android.contact.domain
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class Contact @JvmOverloads constructor(
         val name: String,
         val phoneNumbers: Set<ContactPhoneNumber>? = null,
@@ -10,7 +14,7 @@ class Contact @JvmOverloads constructor(
         var isExpanded: Boolean = false,
         var contactSeparator: ContactSeparator = ContactSeparator(false),
         var showLine: Boolean = true,
-        var lineFlag: Boolean = true) {
+        var lineFlag: Boolean = true) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other !is Contact) {
@@ -24,16 +28,18 @@ class Contact @JvmOverloads constructor(
     }
 }
 
+@Parcelize
 class ContactSeparator @JvmOverloads constructor(
         var showSeparator: Boolean,
-        var separatorChar: Char? = null)
+        var separatorChar: Char? = null) : Parcelable
 
+@Parcelize
 class ContactPhoneNumber @JvmOverloads constructor(
         var number: String,
         val typeLabel: String,
         var flagResId: Int? = null,
         var lpMargin: Int? = null,
-        var rlpMargin: Int? = null) {
+        var rlpMargin: Int? = null) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other !is ContactPhoneNumber) {

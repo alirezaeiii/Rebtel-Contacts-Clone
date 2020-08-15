@@ -3,6 +3,7 @@ package com.sample.android.contact.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
@@ -35,6 +37,8 @@ import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
 public class ContactsFragment extends DaggerFragment {
+
+    private static final String CONTACTS = "contacts";
 
     @Inject
     ContactsViewModel.Factory mFactory;
@@ -71,6 +75,21 @@ public class ContactsFragment extends DaggerFragment {
         ViewDataBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
+
+        if (savedInstanceState == null) {
+            // Create the observer which updates the UI.
+            final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
+                if (resource instanceof Resource.Success) {
+                    mContacts = ((Resource.Success<List<Contact>>) resource).getData();
+                    mAdapter.setItems(mContacts, true);
+                }
+            };
+
+            // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
+            viewModel.getLiveData().observe(this, contactsObserver);
+        } else {
+            mContacts = savedInstanceState.getParcelableArrayList(CONTACTS);
+        }
 
         mAdapter = new ContactsAdapter(mContacts);
         mRecyclerView.setAdapter(mAdapter);
@@ -109,17 +128,6 @@ public class ContactsFragment extends DaggerFragment {
             mSearchView.setQuery("", false);
         });
 
-        // Create the observer which updates the UI.
-        final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
-            if (resource instanceof Resource.Success) {
-                mContacts = ((Resource.Success<List<Contact>>) resource).getData();
-                mAdapter.setItems(mContacts, true);
-            }
-        };
-
-        // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        viewModel.getLiveData().observe(this, contactsObserver);
-
         return root;
     }
 
@@ -143,5 +151,11 @@ public class ContactsFragment extends DaggerFragment {
             }
         }
         mAdapter.setItems(mTempContacts, false);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
     }
 }
