@@ -175,7 +175,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
                 boolean lineFlag = mShowSeparator ? contact.getLineFlag() : true;
 
-                for ( Iterator<ContactPhoneNumber> iterator = numbers.iterator(); iterator.hasNext();) {
+                for (Iterator<ContactPhoneNumber> iterator = numbers.iterator(); iterator.hasNext(); ) {
                     ContactPhoneNumber phoneNumber = iterator.next();
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View childView = inflater.inflate(R.layout.contact_child_item, null);
@@ -232,6 +232,34 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
                 }, 100);
             }
+        }
+    }
+
+    static class ChildViewHolder {
+
+        @BindView(R.id.contact_number)
+        TextView contactNumber;
+
+        @BindView(R.id.type)
+        TextView numberType;
+
+        @BindView(R.id.child_line)
+        View childLine;
+
+        @BindView(R.id.child_top_line)
+        View childTopLine;
+
+        @BindView(R.id.frameLayout)
+        View frameLayout;
+
+        @BindView(R.id.relativeLayout)
+        View relativeLayout;
+
+        @BindView(R.id.flagImageView)
+        ImageView flagImageView;
+
+        ChildViewHolder(View view) {
+            ButterKnife.bind(this, view);
         }
     }
 }
