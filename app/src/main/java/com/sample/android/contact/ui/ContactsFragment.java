@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ import dagger.android.support.DaggerFragment;
 
 public class ContactsFragment extends DaggerFragment {
 
+    private static final String TAG = ContactsFragment.class.getSimpleName();
+
     private static final String CONTACTS = "contacts";
 
     @Inject
@@ -68,6 +71,7 @@ public class ContactsFragment extends DaggerFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, root);
 
@@ -84,7 +88,6 @@ public class ContactsFragment extends DaggerFragment {
                     mAdapter.setItems(mContacts, true);
                 }
             };
-
             // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
             viewModel.getLiveData().observe(this, contactsObserver);
         } else {
@@ -92,8 +95,8 @@ public class ContactsFragment extends DaggerFragment {
         }
 
         mAdapter = new ContactsAdapter(mContacts);
-        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
@@ -133,6 +136,7 @@ public class ContactsFragment extends DaggerFragment {
 
     @Override
     public void onDestroyView() {
+        Log.d(TAG, "onDestroyView()");
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -143,10 +147,8 @@ public class ContactsFragment extends DaggerFragment {
         } else {
             mTempContacts.clear();
         }
-        int textLength = query.length();
         for (Contact contact : mContacts) {
-            if (textLength <= contact.getName().length() &&
-                    contact.getName().toLowerCase().contains(query.toLowerCase())) {
+            if (contact.getName().toLowerCase().trim().contains(query.toLowerCase().trim())) {
                 mTempContacts.add(contact);
             }
         }
@@ -155,6 +157,7 @@ public class ContactsFragment extends DaggerFragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
     }
