@@ -1,6 +1,7 @@
 package com.sample.android.contact.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
@@ -18,6 +19,8 @@ import butterknife.Unbinder;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class MainActivity extends DaggerAppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Inject
     ContactsFragment contactsFragment;
@@ -38,6 +41,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
@@ -53,6 +57,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy()");
         super.onDestroy();
         unbinder.unbind();
     }
