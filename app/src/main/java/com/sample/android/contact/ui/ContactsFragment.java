@@ -80,17 +80,7 @@ public class ContactsFragment extends DaggerFragment {
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        if (savedInstanceState == null) {
-            // Create the observer which updates the UI.
-            final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
-                if (resource instanceof Resource.Success) {
-                    mContacts = ((Resource.Success<List<Contact>>) resource).getData();
-                    mAdapter.setItems(mContacts, true);
-                }
-            };
-            // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-            viewModel.getLiveData().observe(this, contactsObserver);
-        } else {
+        if (savedInstanceState != null) {
             mContacts = savedInstanceState.getParcelableArrayList(CONTACTS);
         }
 
@@ -130,6 +120,16 @@ public class ContactsFragment extends DaggerFragment {
             mSearchBack.setVisibility(View.INVISIBLE);
             mSearchView.setQuery("", false);
         });
+
+        // Create the observer which updates the UI.
+        final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
+            if (resource instanceof Resource.Success) {
+                mContacts = ((Resource.Success<List<Contact>>) resource).getData();
+                mAdapter.setItems(mContacts, true);
+            }
+        };
+        // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
+        viewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
     }
