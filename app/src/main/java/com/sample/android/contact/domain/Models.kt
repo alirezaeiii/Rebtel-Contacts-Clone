@@ -13,8 +13,8 @@ class Contact @JvmOverloads constructor(
         // State of the item
         var isExpanded: Boolean = false,
         var contactSeparator: ContactSeparator = ContactSeparator(false),
-        var showLine: Boolean = true,
-        var lineFlag: Boolean = true) : Parcelable {
+        var showBottomLine: Boolean = true,
+        var showChildBottomLine: Boolean = true) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other !is Contact) {

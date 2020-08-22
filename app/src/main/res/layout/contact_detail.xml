@@ -90,7 +90,7 @@
         tools:text="2" />
 
     <View
-        android:id="@+id/line"
+        android:id="@+id/bottomLine"
         style="@style/LineStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_text" />

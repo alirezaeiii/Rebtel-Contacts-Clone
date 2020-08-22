@@ -9,16 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
@@ -32,9 +29,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
 public class ContactsFragment extends DaggerFragment {
@@ -45,17 +39,6 @@ public class ContactsFragment extends DaggerFragment {
 
     @Inject
     ContactsViewModel.Factory mFactory;
-
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-
-    @BindView(R.id.search_view)
-    SearchView mSearchView;
-
-    @BindView(R.id.search_back)
-    ImageButton mSearchBack;
-
-    private Unbinder unbinder;
 
     private ContactsAdapter mAdapter;
 
@@ -73,10 +56,8 @@ public class ContactsFragment extends DaggerFragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
-        unbinder = ButterKnife.bind(this, root);
-
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
-        ViewDataBinding binding = FragmentContactsBinding.bind(root);
+        FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -85,15 +66,15 @@ public class ContactsFragment extends DaggerFragment {
         }
 
         mAdapter = new ContactsAdapter(mContacts);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mAdapter);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setAdapter(mAdapter);
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         // hint, inputType & ime options seem to be ignored from XML! Set in code
-        mSearchView.setQueryHint(getString(R.string.search_hint));
-        mSearchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.searchView.setQueryHint(getString(R.string.search_hint));
+        binding.searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 search(query);
@@ -103,7 +84,7 @@ public class ContactsFragment extends DaggerFragment {
             @Override
             public boolean onQueryTextChange(String query) {
                 if (!query.isEmpty()) {
-                    mSearchBack.setVisibility(View.VISIBLE);
+                    binding.searchBack.setVisibility(View.VISIBLE);
                     search(query);
                 }
                 return true;
@@ -111,14 +92,14 @@ public class ContactsFragment extends DaggerFragment {
         });
 
         int searchCloseIconButtonId = getResources().getIdentifier("android:id/search_close_btn", null, null);
-        ImageView searchClose = mSearchView.findViewById(searchCloseIconButtonId);
+        ImageView searchClose = binding.searchView.findViewById(searchCloseIconButtonId);
         int searchCloseIconColor = ResourcesCompat.getColor(getResources(), R.color.color3, null);
         searchClose.setColorFilter(searchCloseIconColor);
 
-        mSearchBack.setOnClickListener(view -> {
+        binding.searchBack.setOnClickListener(view -> {
             mAdapter.setItems(mContacts, true);
-            mSearchBack.setVisibility(View.INVISIBLE);
-            mSearchView.setQuery("", false);
+            binding.searchBack.setVisibility(View.INVISIBLE);
+            binding.searchView.setQuery("", false);
         });
 
         // Create the observer which updates the UI.
@@ -132,13 +113,6 @@ public class ContactsFragment extends DaggerFragment {
         viewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
-    }
-
-    @Override
-    public void onDestroyView() {
-        Log.d(TAG, "onDestroyView()");
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     private void search(String query) {
@@ -160,5 +134,11 @@ public class ContactsFragment extends DaggerFragment {
         Log.d(TAG, "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        super.onDestroy();
     }
 }

@@ -86,11 +86,11 @@ public class ContactUtil {
                     if ((Character.isLetter(previousNameArray[0]) && previousNameArray[0] != nameArray[0]) ||
                             (!Character.isLetter(previousNameArray[0]) && Character.isLetter(nameArray[0])
                                     && previousNameArray[0] != nameArray[0])) {
-                        prevContact.setShowLine(false);
+                        prevContact.setShowBottomLine(false);
                     }
                     if ((Character.isLetter(previousNameArray[0]) || Character.isLetter(nameArray[0]))
                             && previousNameArray[0] != nameArray[0]) {
-                        prevContact.setLineFlag(false);
+                        prevContact.setShowChildBottomLine(false);
                     }
                 }
                 prevContact = contact;
@@ -114,8 +114,8 @@ public class ContactUtil {
             }
         }
         if (prevContact != null) {
-            prevContact.setShowLine(false);
-            prevContact.setLineFlag(false);
+            prevContact.setShowBottomLine(false);
+            prevContact.setShowChildBottomLine(false);
         }
         return contacts;
     }

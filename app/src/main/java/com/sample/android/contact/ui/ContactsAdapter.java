@@ -115,8 +115,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.separator_text)
         TextView separatorText;
 
-        @BindView(R.id.line)
-        View line;
+        @BindView(R.id.bottomLine)
+        View bottomLine;
 
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
@@ -148,10 +148,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 } else {
                     separatorView.setVisibility(View.GONE);
                 }
-                line.setVisibility(contact.getShowLine() ? View.VISIBLE : View.GONE);
+                bottomLine.setVisibility(contact.getShowBottomLine() ? View.VISIBLE : View.GONE);
             } else {
                 separatorView.setVisibility(View.GONE);
-                line.setVisibility(View.VISIBLE);
+                bottomLine.setVisibility(View.VISIBLE);
             }
             subItem.removeAllViews();
             String name = contact.getName();
@@ -173,7 +173,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 viewId = R.id.line_number;
                 boolean expanded = contact.isExpanded();
                 subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-                boolean lineFlag = mShowSeparator ? contact.getLineFlag() : true;
+                boolean showChildBottomLine = mShowSeparator ? contact.getShowChildBottomLine() : true;
 
                 for (Iterator<ContactPhoneNumber> iterator = numbers.iterator(); iterator.hasNext(); ) {
                     ContactPhoneNumber phoneNumber = iterator.next();
@@ -185,8 +185,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                     childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-                    childViewHolder.childLine.setVisibility(lineFlag ? View.VISIBLE : View.GONE);
-                    childViewHolder.childTopLine.setVisibility(lineFlag ? View.GONE : View.VISIBLE);
+                    childViewHolder.childLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
+                    childViewHolder.childTopLine.setVisibility(showChildBottomLine ? View.GONE : View.VISIBLE);
 
                     FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
