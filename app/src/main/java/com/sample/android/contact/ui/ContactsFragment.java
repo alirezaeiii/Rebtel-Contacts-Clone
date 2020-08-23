@@ -61,7 +61,17 @@ public class ContactsFragment extends DaggerFragment {
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            // Create the observer which updates the UI.
+            final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
+                if (resource instanceof Resource.Success) {
+                    mContacts = ((Resource.Success<List<Contact>>) resource).getData();
+                    mAdapter.setItems(mContacts, true);
+                }
+            };
+            // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
+            viewModel.getLiveData().observe(this, contactsObserver);
+        } else {
             mContacts = savedInstanceState.getParcelableArrayList(CONTACTS);
         }
 
@@ -90,7 +100,6 @@ public class ContactsFragment extends DaggerFragment {
                 return true;
             }
         });
-
         int searchCloseIconButtonId = getResources().getIdentifier("android:id/search_close_btn", null, null);
         ImageView searchClose = binding.searchView.findViewById(searchCloseIconButtonId);
         int searchCloseIconColor = ResourcesCompat.getColor(getResources(), R.color.color3, null);
@@ -101,17 +110,6 @@ public class ContactsFragment extends DaggerFragment {
             binding.searchBack.setVisibility(View.INVISIBLE);
             binding.searchView.setQuery("", false);
         });
-
-        // Create the observer which updates the UI.
-        final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
-            if (resource instanceof Resource.Success) {
-                mContacts = ((Resource.Success<List<Contact>>) resource).getData();
-                mAdapter.setItems(mContacts, true);
-            }
-        };
-        // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        viewModel.getLiveData().observe(this, contactsObserver);
-
         return root;
     }
 
