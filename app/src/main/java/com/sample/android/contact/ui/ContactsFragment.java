@@ -133,10 +133,4 @@ public class ContactsFragment extends DaggerFragment {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
     }
-
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
-        super.onDestroy();
-    }
 }
