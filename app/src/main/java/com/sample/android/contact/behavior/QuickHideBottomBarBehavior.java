@@ -40,7 +40,7 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     }
 
     @Override
-    protected void setSpace(View recyclerView) {
+    protected void addSpace(View recyclerView) {
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
         mHandler.postDelayed(() -> {
             recyclerView.setLayoutParams(params);

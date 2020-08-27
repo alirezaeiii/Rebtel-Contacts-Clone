@@ -34,7 +34,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     protected abstract void removeSpace(View recyclerView);
 
-    protected abstract void setSpace(View recyclerView);
+    protected abstract void addSpace(View recyclerView);
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -82,7 +82,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                setSpace(mRecyclerView);
+                addSpace(mRecyclerView);
             }
         }
         return false;
