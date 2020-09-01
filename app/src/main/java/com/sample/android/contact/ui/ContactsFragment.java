@@ -47,7 +47,7 @@ public class ContactsFragment extends DaggerFragment {
 
     private List<Contact> mTempContacts;
 
-    private ContactsViewModel viewModel;
+    private ContactsViewModel mViewModel;
 
     @Inject
     public ContactsFragment() {
@@ -59,11 +59,11 @@ public class ContactsFragment extends DaggerFragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
-        viewModel = new ViewModelProvider(this,
+        mViewModel = new ViewModelProvider(this,
                 new ContactsViewModel.Factory(mRepository, this, null))
                 .get(ContactsViewModel.class);
         FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
-        binding.setVariable(BR.vm, viewModel);
+        binding.setVariable(BR.vm, mViewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         if (savedInstanceState != null) {
@@ -114,12 +114,15 @@ public class ContactsFragment extends DaggerFragment {
             }
         };
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        viewModel.getLiveData().observe(this, contactsObserver);
+        mViewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
     }
 
     private void search(String query) {
+        if(mContacts == null) {
+            return;
+        }
         if (mTempContacts == null) {
             mTempContacts = new ArrayList<>();
         } else {
@@ -138,6 +141,6 @@ public class ContactsFragment extends DaggerFragment {
         Log.d(TAG, "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
-        viewModel.saveState();
+        mViewModel.saveState();
     }
 }
