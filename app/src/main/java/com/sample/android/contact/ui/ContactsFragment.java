@@ -21,6 +21,7 @@ import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.repository.ContactsRepository;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
@@ -38,13 +39,15 @@ public class ContactsFragment extends DaggerFragment {
     private static final String CONTACTS = "contacts";
 
     @Inject
-    ContactsViewModel.Factory mFactory;
+    ContactsRepository mRepository;
 
     private ContactsAdapter mAdapter;
 
     private List<Contact> mContacts;
 
     private List<Contact> mTempContacts;
+
+    private ContactsViewModel viewModel;
 
     @Inject
     public ContactsFragment() {
@@ -56,22 +59,14 @@ public class ContactsFragment extends DaggerFragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
-        ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
+        viewModel = new ViewModelProvider(this,
+                new ContactsViewModel.Factory(mRepository, this, null))
+                .get(ContactsViewModel.class);
         FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        if (savedInstanceState == null) {
-            // Create the observer which updates the UI.
-            final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
-                if (resource instanceof Resource.Success) {
-                    mContacts = ((Resource.Success<List<Contact>>) resource).getData();
-                    mAdapter.setItems(mContacts, true);
-                }
-            };
-            // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-            viewModel.getLiveData().observe(this, contactsObserver);
-        } else {
+        if (savedInstanceState != null) {
             mContacts = savedInstanceState.getParcelableArrayList(CONTACTS);
         }
 
@@ -110,6 +105,17 @@ public class ContactsFragment extends DaggerFragment {
             binding.searchBack.setVisibility(View.INVISIBLE);
             binding.searchView.setQuery("", false);
         });
+
+        // Create the observer which updates the UI.
+        final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
+            if (resource instanceof Resource.Success) {
+                mContacts = ((Resource.Success<List<Contact>>) resource).getData();
+                mAdapter.setItems(mContacts, true);
+            }
+        };
+        // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
+        viewModel.getLiveData().observe(this, contactsObserver);
+
         return root;
     }
 
@@ -132,5 +138,6 @@ public class ContactsFragment extends DaggerFragment {
         Log.d(TAG, "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
+        viewModel.saveState();
     }
 }
