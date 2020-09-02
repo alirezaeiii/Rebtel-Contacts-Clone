@@ -3,7 +3,6 @@ package com.sample.android.contact.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +19,6 @@ import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
-import com.sample.android.contact.repository.ContactsRepository;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
@@ -36,18 +33,14 @@ public class ContactsFragment extends DaggerFragment {
 
     private static final String TAG = ContactsFragment.class.getSimpleName();
 
-    private static final String CONTACTS = "contacts";
-
     @Inject
-    ContactsRepository mRepository;
+    ContactsViewModel.Factory mFactory;
 
     private ContactsAdapter mAdapter;
 
     private List<Contact> mContacts;
 
     private List<Contact> mTempContacts;
-
-    private ContactsViewModel mViewModel;
 
     @Inject
     public ContactsFragment() {
@@ -59,16 +52,10 @@ public class ContactsFragment extends DaggerFragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
-        mViewModel = new ViewModelProvider(this,
-                new ContactsViewModel.Factory(mRepository, this, null))
-                .get(ContactsViewModel.class);
+        ContactsViewModel viewModel = new ViewModelProvider(this,mFactory).get(ContactsViewModel.class);
         FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
-        binding.setVariable(BR.vm, mViewModel);
+        binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-
-        if (savedInstanceState != null) {
-            mContacts = savedInstanceState.getParcelableArrayList(CONTACTS);
-        }
 
         mAdapter = new ContactsAdapter(mContacts);
         binding.recyclerView.setHasFixedSize(true);
@@ -114,7 +101,7 @@ public class ContactsFragment extends DaggerFragment {
             }
         };
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        mViewModel.getLiveData().observe(this, contactsObserver);
+        viewModel.getLiveData().observe(this, contactsObserver);
 
         return root;
     }
@@ -134,13 +121,5 @@ public class ContactsFragment extends DaggerFragment {
             }
         }
         mAdapter.setItems(mTempContacts, false);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState()");
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(CONTACTS, (ArrayList<? extends Parcelable>) mContacts);
-        mViewModel.saveState();
     }
 }
