@@ -1,13 +1,13 @@
 package com.sample.android.contact.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.MainPagerItem;
 import com.sample.android.contact.util.TabIndicatorFollower;
@@ -24,7 +24,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private static final String SELECTED_ITEM = "selected_item";
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Inject
     ContactsFragment contactsFragment;
@@ -57,18 +57,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         TabIndicatorFollower.setupWith(mTabLayout, mTriangle);
-
-        if (savedInstanceState != null) {
-            TabLayout.Tab tab = mTabLayout.getTabAt(savedInstanceState.getInt(SELECTED_ITEM));
-            tab.select();
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState()");
-        super.onSaveInstanceState(outState);
-        outState.putInt(SELECTED_ITEM, mTabLayout.getSelectedTabPosition());
+        mHandler.postDelayed(() -> mTabLayout.getTabAt(0).select(), 10);
     }
 
     @Override
