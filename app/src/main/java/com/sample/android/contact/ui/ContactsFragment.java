@@ -115,8 +115,9 @@ public class ContactsFragment extends DaggerFragment {
         } else {
             mTempContacts.clear();
         }
+        query = query.toLowerCase().trim();
         for (Contact contact : mContacts) {
-            if (contact.getName().toLowerCase().trim().contains(query.toLowerCase().trim())) {
+            if (contact.getName().toLowerCase().trim().contains(query)) {
                 mTempContacts.add(contact);
             }
         }

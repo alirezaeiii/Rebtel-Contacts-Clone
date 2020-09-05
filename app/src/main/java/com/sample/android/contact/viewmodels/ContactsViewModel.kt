@@ -16,7 +16,7 @@ class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
 
     init {
         // Reload contacts in case of system initiated process death
-        if(repository.liveData.value == null) {
+        if(liveData.value == null) {
             repository.loadContacts()
         }
     }
