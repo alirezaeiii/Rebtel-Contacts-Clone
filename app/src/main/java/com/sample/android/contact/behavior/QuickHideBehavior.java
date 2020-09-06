@@ -37,12 +37,10 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     protected abstract void addSpace(View recyclerView);
 
     //Required to instantiate as a default behavior
-    @SuppressWarnings("unused")
     public QuickHideBehavior() {
     }
 
     //Required to attach behavior via XML
-    @SuppressWarnings("unused")
     public QuickHideBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         mVelocity = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing) * 48;
