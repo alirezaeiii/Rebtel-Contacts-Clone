@@ -52,7 +52,7 @@ public class ContactsFragment extends DaggerFragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
-        ContactsViewModel viewModel = new ViewModelProvider(this,mFactory).get(ContactsViewModel.class);
+        ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
         FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -107,7 +107,7 @@ public class ContactsFragment extends DaggerFragment {
     }
 
     private void search(String query) {
-        if(mContacts == null) {
+        if (mContacts == null) {
             return;
         }
         if (mTempContacts == null) {

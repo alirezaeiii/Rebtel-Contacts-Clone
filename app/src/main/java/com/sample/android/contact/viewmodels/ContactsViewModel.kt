@@ -25,7 +25,7 @@ class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
      * Factory for constructing ContactsViewModel with parameter
      */
     class Factory @Inject constructor(
-            private val repository: ContactsRepository
+            val repository: ContactsRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ContactsViewModel::class.java)) {

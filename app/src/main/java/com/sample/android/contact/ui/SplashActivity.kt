@@ -51,6 +51,7 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun navigateToNextPage() {
+        factory.repository.loadContacts()
         handler.postDelayed({ startMainActivity() }, SPLASH_DEFAULT_DELAY.toLong())
         val viewModel = ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
         viewModel.liveData.observe(this, Observer {
