@@ -8,8 +8,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
-import com.sample.android.contact.repository.ContactsRepository
+import com.sample.android.contact.util.Resource
+import com.sample.android.contact.viewmodels.ContactsViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -17,7 +20,7 @@ import javax.inject.Inject
 class SplashActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var repository: ContactsRepository
+    lateinit var factory: ContactsViewModel.Factory
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -32,7 +35,7 @@ class SplashActivity : DaggerAppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else { // Android version is lesser than 6.0 or the permission is already granted.
-            startMainActivity()
+            navigateToNextPage()
         }
     }
 
@@ -40,20 +43,28 @@ class SplashActivity : DaggerAppCompatActivity() {
                                             grantResults: IntArray) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
-                startMainActivity()
+                navigateToNextPage()
             } else {
                 Toast.makeText(this, getString(R.string.permission_not_granted_msg), Toast.LENGTH_LONG).show()
             }
         }
     }
 
+    private fun navigateToNextPage() {
+        handler.postDelayed({ startMainActivity() }, SPLASH_DEFAULT_DELAY.toLong())
+        val viewModel = ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
+        viewModel.liveData.observe(this, Observer {
+            if (it is Resource.Success) {
+                handler.postDelayed({ startMainActivity() }, SPLASH_SUCCESS_DELAY.toLong())
+            }
+        })
+    }
+
     private fun startMainActivity() {
-        repository.loadContacts()
-        handler.postDelayed({
-            val intent =Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, SPLASH_DELAY.toLong())
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onStop() {
@@ -62,6 +73,8 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 }
 
-private const val SPLASH_DELAY = 1500
+private const val SPLASH_DEFAULT_DELAY = 1500
+private const val SPLASH_SUCCESS_DELAY = 10
+
 // Request code for READ_CONTACTS. It can be any number > 0.
 private const val PERMISSIONS_REQUEST_READ_CONTACTS = 100
