@@ -46,7 +46,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         mShowSeparator = true;
     }
 
-    void setItems(List<Contact> contacts, boolean showSeparator) {
+    public void setItems(List<Contact> contacts, boolean showSeparator) {
         mContacts = contacts;
         mShowSeparator = showSeparator;
         notifyDataSetChanged();

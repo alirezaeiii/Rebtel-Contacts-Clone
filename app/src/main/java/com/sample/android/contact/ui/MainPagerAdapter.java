@@ -13,10 +13,11 @@ import java.util.List;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    private List<MainPagerItem> fragments = new ArrayList<>();
+    private List<MainPagerItem> fragments;
 
-    MainPagerAdapter(FragmentManager fm) {
+    public MainPagerAdapter(FragmentManager fm) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        fragments = new ArrayList<>();
     }
 
     public void addItem(MainPagerItem mainPagerItem) {

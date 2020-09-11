@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Component(
         modules = [ActivityBindingModule::class,
             AndroidSupportInjectionModule::class,
-            BaseModule::class]
+            AppModule::class]
 )
 interface AppComponent : AndroidInjector<ContactsApp> {
 
