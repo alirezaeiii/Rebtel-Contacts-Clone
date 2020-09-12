@@ -56,7 +56,7 @@ class SplashActivity : DaggerAppCompatActivity() {
         val viewModel = ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
         viewModel.liveData.observe(this, Observer {
             if (it is Resource.Success) {
-                handler.postDelayed({ startMainActivity() }, SPLASH_SUCCESS_DELAY.toLong())
+                handler.post { startMainActivity() }
             }
         })
     }
@@ -75,7 +75,6 @@ class SplashActivity : DaggerAppCompatActivity() {
 }
 
 private const val SPLASH_DEFAULT_DELAY = 1500
-private const val SPLASH_SUCCESS_DELAY = 10
 
 // Request code for READ_CONTACTS. It can be any number > 0.
 private const val PERMISSIONS_REQUEST_READ_CONTACTS = 100
