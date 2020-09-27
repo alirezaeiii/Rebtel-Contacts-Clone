@@ -9,10 +9,9 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
+import com.sample.android.contact.repository.ContactsRepository
 import com.sample.android.contact.util.Resource
-import com.sample.android.contact.viewmodels.ContactsViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class SplashActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var factory: ContactsViewModel.Factory
+    lateinit var repository: ContactsRepository
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -51,10 +50,9 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun navigateToNextPage() {
-        factory.repository.loadContacts()
+        repository.loadContacts()
         handler.postDelayed({ startMainActivity() }, SPLASH_DEFAULT_DELAY.toLong())
-        val viewModel = ViewModelProvider(this, factory).get(ContactsViewModel::class.java)
-        viewModel.liveData.observe(this, Observer {
+        repository.liveData.observe(this, Observer {
             if (it is Resource.Success) {
                 handler.post { startMainActivity() }
             }

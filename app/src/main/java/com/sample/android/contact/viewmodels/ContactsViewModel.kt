@@ -16,7 +16,7 @@ class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
 
     init {
         // Reload contacts in case of system initiated process death
-        if(liveData.value == null) {
+        if (liveData.value == null) {
             repository.loadContacts()
         }
     }
@@ -25,7 +25,7 @@ class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
      * Factory for constructing ContactsViewModel with parameter
      */
     class Factory @Inject constructor(
-            val repository: ContactsRepository
+            private val repository: ContactsRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ContactsViewModel::class.java)) {
