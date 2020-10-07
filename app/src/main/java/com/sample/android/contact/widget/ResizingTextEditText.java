@@ -22,7 +22,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
 import com.sample.android.contact.R;
-import com.sample.android.contact.util.ViewUtil;
+import com.sample.android.contact.util.ViewUtils;
 
 /**
  * EditText which resizes dynamically with respect to text length.
@@ -43,12 +43,12 @@ public class ResizingTextEditText extends AppCompatEditText {
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        ViewUtil.resizeText(this, mOriginalTextSize, mMinTextSize);
+        ViewUtils.resizeText(this, mOriginalTextSize, mMinTextSize);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        ViewUtil.resizeText(this, mOriginalTextSize, mMinTextSize);
+        ViewUtils.resizeText(this, mOriginalTextSize, mMinTextSize);
     }
 }

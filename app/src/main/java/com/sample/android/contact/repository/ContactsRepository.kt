@@ -5,8 +5,8 @@ import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sample.android.contact.domain.Contact
-import com.sample.android.contact.util.ContactUtil
-import com.sample.android.contact.util.ContactUtil.PROJECTION
+import com.sample.android.contact.util.ContactUtils
+import com.sample.android.contact.util.ContactUtils.PROJECTION
 import com.sample.android.contact.util.Resource
 import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
@@ -35,7 +35,7 @@ class ContactsRepository @Inject constructor(
                 null,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
         Observable.create(ObservableOnSubscribe<List<Contact>>
-        { emitter -> emitter.onNext(ContactUtil.getContacts(cursor, context)) })
+        { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
                 .doOnComplete { cursor?.close() }
                 .doFinally { compositeDisposable.clear() }

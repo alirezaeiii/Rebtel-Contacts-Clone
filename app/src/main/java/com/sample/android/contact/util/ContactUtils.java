@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 
-public class ContactUtil {
+public class ContactUtils {
 
     public static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
@@ -32,7 +32,7 @@ public class ContactUtil {
             ContactsContract.CommonDataKinds.Phone.LABEL
     };
 
-    private ContactUtil() {
+    private ContactUtils() {
     }
 
     public static List<Contact> getContacts(Cursor cursor, Context context) {

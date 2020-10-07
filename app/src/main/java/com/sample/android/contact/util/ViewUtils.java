@@ -23,9 +23,9 @@ import android.widget.TextView;
 /**
  * Provides static functions to work with views
  */
-public class ViewUtil {
+public class ViewUtils {
 
-    private ViewUtil() {
+    private ViewUtils() {
     }
 
     public static void resizeText(TextView textView, int originalTextSize, int minTextSize) {
