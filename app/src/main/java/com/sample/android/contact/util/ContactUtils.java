@@ -120,6 +120,8 @@ public class ContactUtils {
         return contacts;
     }
 
+    /* Helper Methods */
+
     private static ContactSeparator getContactSeparator(String name) {
         char ch = name.toUpperCase().charAt(0);
         char separatorChar = Character.isLetter(ch) ? ch : '&';
