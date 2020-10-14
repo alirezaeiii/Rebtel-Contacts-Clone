@@ -10,7 +10,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.sample.android.contact.R
-import com.sample.android.contact.repository.ContactsHelper
+import com.sample.android.contact.util.ContactsHelper
 import com.sample.android.contact.util.Resource
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*

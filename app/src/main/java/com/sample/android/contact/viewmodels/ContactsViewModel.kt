@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.domain.Contact
-import com.sample.android.contact.repository.ContactsHelper
+import com.sample.android.contact.util.ContactsHelper
 import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
