@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactsRepository @Inject constructor(
+class ContactsHelper @Inject constructor(
         private val context: Context,
         private val schedulerProvider: BaseSchedulerProvider) {
 

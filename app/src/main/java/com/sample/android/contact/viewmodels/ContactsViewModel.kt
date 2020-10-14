@@ -4,20 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.domain.Contact
-import com.sample.android.contact.repository.ContactsRepository
+import com.sample.android.contact.repository.ContactsHelper
 import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
-class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
+class ContactsViewModel(contactHelper: ContactsHelper) : ViewModel() {
 
-    private val _liveData = repository.liveData
+    private val _liveData = contactHelper.liveData
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
     init {
         // Reload contacts in case of system initiated process death
         if (liveData.value == null) {
-            repository.loadContacts()
+            contactHelper.loadContacts()
         }
     }
 
@@ -25,12 +25,12 @@ class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
      * Factory for constructing ContactsViewModel with parameter
      */
     class Factory @Inject constructor(
-            private val repository: ContactsRepository
+            private val contactsHelper: ContactsHelper
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ContactsViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return ContactsViewModel(repository) as T
+                return ContactsViewModel(contactsHelper) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
