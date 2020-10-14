@@ -8,16 +8,16 @@ import com.sample.android.contact.util.ContactsHelper
 import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
-class ContactsViewModel(contactHelper: ContactsHelper) : ViewModel() {
+class ContactsViewModel(contactsHelper: ContactsHelper) : ViewModel() {
 
-    private val _liveData = contactHelper.liveData
+    private val _liveData = contactsHelper.liveData
     val liveData: LiveData<Resource<List<Contact>>>
         get() = _liveData
 
     init {
         // Reload contacts in case of system initiated process death
         if (liveData.value == null) {
-            contactHelper.loadContacts()
+            contactsHelper.loadContacts()
         }
     }
 
