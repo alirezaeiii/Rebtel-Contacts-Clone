@@ -7,6 +7,7 @@ buildscript {
         version_rxandroid = '2.1.1'
         version_dagger = '2.26'
         version_lifecycle = '2.2.0'
+        version_leakcanary ='2.5'
     }
 
     repositories {
