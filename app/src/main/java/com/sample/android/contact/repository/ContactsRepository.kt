@@ -1,11 +1,13 @@
-package com.sample.android.contact.util
+package com.sample.android.contact.repository
 
 import android.content.Context
 import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sample.android.contact.domain.Contact
+import com.sample.android.contact.util.ContactUtils
 import com.sample.android.contact.util.ContactUtils.PROJECTION
+import com.sample.android.contact.util.Resource
 import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -14,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactsHelper @Inject constructor(
+class ContactsRepository @Inject constructor(
         private val context: Context,
         private val schedulerProvider: BaseSchedulerProvider) {
 

@@ -9,9 +9,10 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
-import com.sample.android.contact.util.ContactsHelper
 import com.sample.android.contact.util.Resource
+import com.sample.android.contact.viewmodels.SplashViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -19,9 +20,13 @@ import javax.inject.Inject
 class SplashActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var contactsHelper: ContactsHelper
+    lateinit var factory: SplashViewModel.Factory
 
     private val handler = Handler(Looper.getMainLooper())
+
+    private val viewModel: SplashViewModel by lazy {
+        ViewModelProvider(this, factory).get(SplashViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +43,10 @@ class SplashActivity : DaggerAppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+            requestCode: Int, permissions: Array<String?>,
+            grantResults: IntArray
+    ) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
                 navigateToNextPage()
@@ -50,9 +57,9 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun navigateToNextPage() {
-        contactsHelper.loadContacts()
+        viewModel.loadContacts()
         handler.postDelayed({ startMainActivity() }, SPLASH_DEFAULT_DELAY.toLong())
-        contactsHelper.liveData.observe(this, Observer {
+        viewModel.liveData.observe(this, Observer {
             if (it is Resource.Success) {
                 handler.post { startMainActivity() }
             }
