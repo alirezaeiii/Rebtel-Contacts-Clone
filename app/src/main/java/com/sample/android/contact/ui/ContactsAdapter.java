@@ -41,17 +41,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private ConstraintSet mConstraintSet = new ConstraintSet();
 
-    public ContactsAdapter(List<Contact> contacts) {
-        mContacts = contacts;
-        mShowSeparator = true;
-    }
-
-    public void setItems(List<Contact> contacts, boolean showSeparator) {
-        mContacts = contacts;
-        mShowSeparator = showSeparator;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -84,6 +73,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 return 150f / displayMetrics.densityDpi;
             }
         };
+    }
+
+    public void setItems(List<Contact> contacts, boolean showSeparator) {
+        mContacts = contacts;
+        mShowSeparator = showSeparator;
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
