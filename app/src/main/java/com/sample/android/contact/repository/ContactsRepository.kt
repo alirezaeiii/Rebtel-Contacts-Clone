@@ -18,7 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class ContactsRepository @Inject constructor(
         private val context: Context,
-        private val schedulerProvider: BaseSchedulerProvider) {
+        private val schedulerProvider: BaseSchedulerProvider
+) {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -37,10 +38,11 @@ class ContactsRepository @Inject constructor(
         Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
-                .doOnComplete { cursor?.close() }
-                .doFinally { compositeDisposable.clear() }
-                .subscribe {
-                    _liveData.postValue(Resource.Success(it))
-                }.also { compositeDisposable.add(it) }
+                .doFinally {
+                    cursor?.close()
+                    compositeDisposable.clear()
+                }
+                .subscribe { _liveData.postValue(Resource.Success(it)) }
+                .also { compositeDisposable.add(it) }
     }
 }
