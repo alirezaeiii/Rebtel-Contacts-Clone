@@ -70,9 +70,7 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            app:onRefreshListener="@{vm::refresh}"
-            app:refreshing="@{vm.liveData}">
+            android:layout_marginTop="?attr/actionBarSize">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
