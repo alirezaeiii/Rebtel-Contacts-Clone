@@ -83,6 +83,7 @@ public class ContactsFragment extends DaggerFragment {
             public boolean onQueryTextChange(String query) {
                 if (!query.isEmpty()) {
                     binding.searchBack.setVisibility(View.VISIBLE);
+                    binding.swipeRefresh.setEnabled(false);
                     search(query);
                 }
                 return true;
@@ -96,6 +97,7 @@ public class ContactsFragment extends DaggerFragment {
         binding.searchBack.setOnClickListener(view -> {
             mAdapter.setItems(mContacts, true);
             binding.searchBack.setVisibility(View.INVISIBLE);
+            binding.swipeRefresh.setEnabled(true);
             binding.searchView.setQuery("", false);
         });
 
