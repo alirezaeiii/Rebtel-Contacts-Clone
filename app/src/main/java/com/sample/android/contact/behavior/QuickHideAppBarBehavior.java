@@ -34,12 +34,18 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
     }
 
     @Override
-    protected void removeSpace(View recyclerView) {
-        recyclerView.setPadding(0, 0, 0, 0);
+    protected void removeSpace(View swipeRefreshLayout) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) swipeRefreshLayout.getLayoutParams();
+        params.setMargins(0, 0, 0, 0);
+        swipeRefreshLayout.setLayoutParams(params);
     }
 
     @Override
-    protected void addSpace(View recyclerView) {
-        recyclerView.setPadding(0, actionBarHeight, 0, 0);
+    protected void addSpace(View swipeRefreshLayout) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) swipeRefreshLayout.getLayoutParams();
+        mHandler.postDelayed(() -> {
+            swipeRefreshLayout.setLayoutParams(params);
+            params.setMargins(0, actionBarHeight, 0, 0);
+        }, 100);
     }
 }

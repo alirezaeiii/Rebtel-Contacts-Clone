@@ -8,7 +8,7 @@ import com.sample.android.contact.repository.ContactsRepository
 import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
-class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
+class ContactsViewModel(private val repository: ContactsRepository) : ViewModel() {
 
     private val _liveData = repository.liveData
     val liveData: LiveData<Resource<List<Contact>>>
@@ -17,8 +17,12 @@ class ContactsViewModel(repository: ContactsRepository) : ViewModel() {
     init {
         // Reload contacts in case of system initiated process death
         if (liveData.value == null) {
-            repository.loadContacts()
+            loadContacts()
         }
+    }
+
+    fun loadContacts() {
+        repository.loadContacts()
     }
 
     /**

@@ -2,6 +2,8 @@ package com.sample.android.contact.behavior;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,16 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     private static final int DIRECTION_UP = 1;
     private static final int DIRECTION_DOWN = -1;
 
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
+
     /* Tracking last threshold crossed */
     private int mScrollTrigger;
 
     private ObjectAnimator mAnimator;
 
     private View mRecyclerView;
+
+    private View mSwipeRefreshLayout;
 
     private int mVelocity;
 
@@ -52,6 +58,9 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
         if (mRecyclerView == null) {
             mRecyclerView = parent.findViewById(R.id.recyclerView);
         }
+        if(mSwipeRefreshLayout == null) {
+            mSwipeRefreshLayout = parent.findViewById(R.id.swipe_refresh);
+        }
         return super.onLayoutChild(parent, child, layoutDirection);
     }
 
@@ -76,11 +85,11 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
                     && mRecyclerView.canScrollVertically(DIRECTION_UP)) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                removeSpace(mRecyclerView);
+                removeSpace(mSwipeRefreshLayout);
             } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                addSpace(mRecyclerView);
+                addSpace(mSwipeRefreshLayout);
             }
         }
         return false;
