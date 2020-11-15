@@ -62,10 +62,6 @@ public class ContactsFragment extends DaggerFragment {
         binding.recyclerView.setAdapter(mAdapter);
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
-        binding.swipeRefresh.setOnRefreshListener(() -> {
-            viewModel.loadContacts();
-            binding.swipeRefresh.setRefreshing(false);
-        });
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));

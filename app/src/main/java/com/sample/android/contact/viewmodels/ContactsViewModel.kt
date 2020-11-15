@@ -17,12 +17,12 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     init {
         // Reload contacts in case of system initiated process death
         if (liveData.value == null) {
-            loadContacts()
+            repository.loadContacts()
         }
     }
 
-    fun loadContacts() {
-        repository.loadContacts()
+    fun refresh() {
+        repository.refreshContacts()
     }
 
     /**
