@@ -21,7 +21,7 @@ class ContactsRepository @Inject constructor(
         private val schedulerProvider: BaseSchedulerProvider
 ) {
 
-    private val compositeDisposable = CompositeDisposable()
+    val compositeDisposable = CompositeDisposable()
 
     private val _liveData = MutableLiveData<Resource<List<Contact>>>()
     val liveData: LiveData<Resource<List<Contact>>>
@@ -38,11 +38,14 @@ class ContactsRepository @Inject constructor(
         Observable.create(ObservableOnSubscribe<List<Contact>>
         { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
-                .doFinally {
-                    cursor?.close()
-                    compositeDisposable.clear()
-                }
+                .doOnComplete { cursor?.close() }
+                .doFinally { compositeDisposable.clear() }
                 .subscribe { _liveData.postValue(Resource.Success(it)) }
                 .also { compositeDisposable.add(it) }
+    }
+
+    fun refreshContacts() {
+        compositeDisposable.clear()
+        loadContacts()
     }
 }
