@@ -19,8 +19,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior=".behavior.QuickHideAppBarBehavior"
-            app:showData="@{vm.liveData}">
+            app:layout_behavior=".behavior.QuickHideAppBarBehavior">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -42,7 +41,8 @@
                     android:layout_marginEnd="16dp"
                     android:iconifiedByDefault="false"
                     android:theme="@style/SearchViewStyle"
-                    android:transitionGroup="true" />
+                    android:transitionGroup="true"
+                    app:showData="@{vm.liveData}"/>
 
                 <FrameLayout
                     android:layout_width="96dp"
@@ -70,8 +70,7 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            app:showData="@{vm.liveData}">
+            android:layout_marginTop="?attr/actionBarSize">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -79,7 +78,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/dimen_recycler_view_spacing"
                 android:clipToPadding="false"
-                app:layoutManager="LinearLayoutManager" />
+                app:layoutManager="LinearLayoutManager"
+                app:showData="@{vm.liveData}" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

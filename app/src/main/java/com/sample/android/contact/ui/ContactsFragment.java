@@ -66,7 +66,7 @@ public class ContactsFragment extends DaggerFragment {
             viewModel.refresh();
             binding.swipeRefresh.setRefreshing(false);
         });
-        
+
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         // hint, inputType & ime options seem to be ignored from XML! Set in code
