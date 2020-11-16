@@ -24,6 +24,7 @@ import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 import com.sample.android.contact.domain.ContactSeparator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
-    private List<Contact> mContacts;
+    private List<Contact> mContacts = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
     private boolean mShowSeparator;
