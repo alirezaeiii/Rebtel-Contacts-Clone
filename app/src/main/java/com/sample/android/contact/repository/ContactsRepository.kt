@@ -39,7 +39,7 @@ class ContactsRepository @Inject constructor(
         { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
                 .subscribeOn(schedulerProvider.io())
                 .doOnComplete { cursor?.close() }
-                .doFinally { compositeDisposable.clear() }
+                .doFinally { clear() }
                 .subscribe { _liveData.postValue(Resource.Success(it)) }
                 .also { compositeDisposable.add(it) }
     }
