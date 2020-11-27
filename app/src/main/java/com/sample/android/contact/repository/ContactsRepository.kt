@@ -21,7 +21,7 @@ class ContactsRepository @Inject constructor(
         private val schedulerProvider: BaseSchedulerProvider
 ) {
 
-    val compositeDisposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
 
     private val _liveData = MutableLiveData<Resource<List<Contact>>>()
     val liveData: LiveData<Resource<List<Contact>>>
@@ -45,7 +45,11 @@ class ContactsRepository @Inject constructor(
     }
 
     fun refreshContacts() {
-        compositeDisposable.clear()
+        clear()
         loadContacts()
+    }
+
+    fun clear() {
+        compositeDisposable.clear()
     }
 }

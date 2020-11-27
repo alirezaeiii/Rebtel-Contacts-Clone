@@ -27,7 +27,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        repository.compositeDisposable.clear()
+        repository.clear()
     }
 
     /**
