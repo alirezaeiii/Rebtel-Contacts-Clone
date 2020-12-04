@@ -30,10 +30,6 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     private ObjectAnimator mAnimator;
 
-    private View mRecyclerView;
-
-    private View mSwipeRefreshLayout;
-
     private int mVelocity;
 
     protected abstract float getTargetHideValue(ViewGroup parent, View target);
@@ -52,18 +48,6 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
         mVelocity = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing) * 48;
     }
 
-    @Override
-    public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull View child,
-                                 int layoutDirection) {
-        if (mRecyclerView == null) {
-            mRecyclerView = parent.findViewById(R.id.recyclerView);
-        }
-        if(mSwipeRefreshLayout == null) {
-            mSwipeRefreshLayout = parent.findViewById(R.id.swipe_refresh);
-        }
-        return super.onLayoutChild(parent, child, layoutDirection);
-    }
-
     //Called before a nested scroll event. Return true to declare interest
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
@@ -80,16 +64,15 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
                                  float velocityY, boolean consumed) {
         //We only care when the target view is already handling the fling
         if (consumed) {
-            if (velocityY > 0 && mScrollTrigger != DIRECTION_UP
-                    && velocityY > mVelocity
-                    && mRecyclerView.canScrollVertically(DIRECTION_UP)) {
+            if (velocityY > 0 && mScrollTrigger != DIRECTION_UP && velocityY > mVelocity) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));
-                removeSpace(mSwipeRefreshLayout);
-            } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN) {
+                removeSpace(target);
+            } else if (velocityY < 0 && mScrollTrigger != DIRECTION_DOWN &&
+                    velocityY < (float) -mVelocity / 2) {
                 mScrollTrigger = DIRECTION_DOWN;
                 restartAnimator(child, 0f);
-                addSpace(mSwipeRefreshLayout);
+                addSpace(target);
             }
         }
         return false;
