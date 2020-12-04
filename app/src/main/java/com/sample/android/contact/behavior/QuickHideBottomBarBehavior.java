@@ -29,13 +29,13 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     }
 
     @Override
-    protected void removeSpace(View swipeRefreshLayout) {
-        swipeRefreshLayout.setPadding(0, 0, 0, 0);
+    protected void removeSpace(View view) {
+        view.setPadding(0, 0, 0, 0);
     }
 
     @Override
-    protected void addSpace(View swipeRefreshLayout) {
+    protected void addSpace(View view) {
         mHandler.postDelayed(() ->
-                swipeRefreshLayout.setPadding(0, 0, 0, bottomSpacing), 200);
+                view.setPadding(0, 0, 0, bottomSpacing), 200);
     }
 }
