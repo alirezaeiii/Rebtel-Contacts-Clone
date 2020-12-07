@@ -115,9 +115,6 @@ public class ContactsFragment extends DaggerFragment {
     }
 
     private void search(String query) {
-        if (mContacts == null) {
-            return;
-        }
         if (mTempContacts == null) {
             mTempContacts = new ArrayList<>();
         } else {
