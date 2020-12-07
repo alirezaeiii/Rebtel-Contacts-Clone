@@ -64,7 +64,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
                                  @NonNull View child, @NonNull View target, float velocityX,
                                  float velocityY, boolean consumed) {
         //We only care when the target view is already handling the fling
-        if (consumed && !(target instanceof RecyclerView)) {
+        if (consumed) {
             if (velocityY > 0 && mScrollTrigger != DIRECTION_UP && velocityY > mVelocity) {
                 mScrollTrigger = DIRECTION_UP;
                 restartAnimator(child, getTargetHideValue(coordinatorLayout, child));

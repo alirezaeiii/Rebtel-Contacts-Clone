@@ -6,6 +6,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.sample.android.contact.R;
 
 public class QuickHideAppBarBehavior extends QuickHideBehavior {
@@ -26,6 +30,16 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
         actionBarHeight = context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
                 TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics()) :
                 (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+    }
+
+    @Override
+    public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child,
+                                 @NonNull View target, float velocityX, float velocityY,
+                                 boolean consumed) {
+        if (!(target instanceof RecyclerView)) {
+            return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
+        }
+        return false;
     }
 
     @Override
