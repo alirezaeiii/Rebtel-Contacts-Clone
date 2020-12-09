@@ -39,8 +39,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
     private boolean mShowSeparator;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-    private ConstraintSet mConstraintSet = new ConstraintSet();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private final ConstraintSet mConstraintSet = new ConstraintSet();
 
     @NonNull
     @Override
@@ -117,7 +117,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
 
-        ViewHolder(View root) {
+        public ViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
         }
@@ -254,7 +254,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.flagImageView)
         ImageView flagImageView;
 
-        ChildViewHolder(View view) {
+        public ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
