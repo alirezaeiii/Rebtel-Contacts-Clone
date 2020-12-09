@@ -5,6 +5,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.sample.android.contact.R;
 
 public class QuickHideBottomBarBehavior extends QuickHideBehavior {
@@ -21,6 +25,17 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     public QuickHideBottomBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         bottomSpacing = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+    }
+
+    @Override
+    public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child,
+                                 @NonNull View target, float velocityX, float velocityY,
+                                 boolean consumed) {
+        if (!(target instanceof RecyclerView) ||
+                (target instanceof RecyclerView && target.canScrollVertically(1))) {
+            return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
+        }
+        return false;
     }
 
     @Override
