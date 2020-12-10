@@ -70,7 +70,6 @@ class SplashActivity : DaggerAppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
-        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onStop() {
