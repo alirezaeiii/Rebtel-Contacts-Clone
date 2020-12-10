@@ -1,18 +1,11 @@
 package com.sample.android.contact.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sample.android.contact.domain.Contact
 import com.sample.android.contact.repository.ContactsRepository
-import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
 class SplashViewModel(private val repository: ContactsRepository) : ViewModel() {
-
-    private val _liveData = repository.liveData
-    val liveData: LiveData<Resource<List<Contact>>>
-        get() = _liveData
 
     fun loadContacts() {
         repository.loadContacts()
