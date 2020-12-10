@@ -8,10 +8,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
-import com.sample.android.contact.util.Resource
 import com.sample.android.contact.viewmodels.SplashViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -58,18 +56,12 @@ class SplashActivity : DaggerAppCompatActivity() {
 
     private fun navigateToNextPage() {
         viewModel.loadContacts()
-        handler.postDelayed({ startMainActivity() }, SPLASH_DEFAULT_DELAY.toLong())
-        viewModel.liveData.observe(this, Observer {
-            if (it is Resource.Success) {
-                handler.post { startMainActivity() }
-            }
-        })
-    }
+        handler.postDelayed({
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, SPLASH_DEFAULT_DELAY.toLong())
 
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     override fun onStop() {
