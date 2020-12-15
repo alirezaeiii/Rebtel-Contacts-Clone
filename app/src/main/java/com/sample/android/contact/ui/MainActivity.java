@@ -24,7 +24,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Inject
     ContactsFragment contactsFragment;
@@ -51,7 +51,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         unbinder = ButterKnife.bind(this);
 
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addItem(new MainPagerItem(contactsFragment, getString(R.string.app_name)));
+        pagerAdapter.addItem(new MainPagerItem(contactsFragment, getString(R.string.contacts)));
         pagerAdapter.addItem(new MainPagerItem(dialpadFragment, getString(R.string.dialpad)));
 
         mViewPager.setAdapter(pagerAdapter);

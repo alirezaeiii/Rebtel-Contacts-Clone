@@ -23,7 +23,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     private static final int DIRECTION_UP = 1;
     private static final int DIRECTION_DOWN = -1;
 
-    protected Handler mHandler = new Handler(Looper.getMainLooper());
+    protected final Handler mHandler = new Handler(Looper.getMainLooper());
 
     /* Tracking last threshold crossed */
     private int mScrollTrigger;

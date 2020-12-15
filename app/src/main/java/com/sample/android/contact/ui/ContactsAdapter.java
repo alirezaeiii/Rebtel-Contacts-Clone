@@ -181,16 +181,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                     childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-                    childViewHolder.childLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
+                    childViewHolder.childBottomLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
                     childViewHolder.childTopLine.setVisibility(showChildBottomLine ? View.GONE : View.VISIBLE);
 
                     FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             (int) context.getResources().getDimension(R.dimen.dimen_child_contact_item_height));
 
-                    rlp.setMarginStart(phoneNumber.getRlpMargin());
-                    childViewHolder.frameLayout.setPadding(phoneNumber.getLpStartPadding(), 0, 0, 0);
+                    rlp.setMarginStart(phoneNumber.getStartMargin());
                     childViewHolder.relativeLayout.setLayoutParams(rlp);
+                    childViewHolder.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
                     subItem.addView(childView);
                 }
             }
@@ -234,8 +234,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.type)
         TextView numberType;
 
-        @BindView(R.id.child_line)
-        View childLine;
+        @BindView(R.id.child_bottom_line)
+        View childBottomLine;
 
         @BindView(R.id.child_top_line)
         View childTopLine;

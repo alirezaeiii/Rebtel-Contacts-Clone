@@ -38,8 +38,8 @@ class ContactPhoneNumber @JvmOverloads constructor(
         var number: String,
         val typeLabel: String,
         var flagResId: Int? = null,
-        var lpStartPadding: Int? = null,
-        var rlpMargin: Int? = null) : Parcelable {
+        var startPadding: Int? = null,
+        var startMargin: Int? = null) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other !is ContactPhoneNumber) {

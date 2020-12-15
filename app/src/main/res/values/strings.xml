@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Contacts</string>
+    <string name="contacts">Contacts</string>
     <string name="search_hint">Search for a contact</string>
     <string name="dialpad">Dialpad</string>
     <string name="splash_app_version">v %s</string>

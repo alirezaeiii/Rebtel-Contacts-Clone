@@ -46,7 +46,7 @@
             tools:text="Mobile" />
 
         <View
-            android:id="@+id/child_line"
+            android:id="@+id/child_bottom_line"
             style="@style/LineStyle"
             android:layout_alignParentBottom="true" />
 
