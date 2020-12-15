@@ -184,17 +184,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     childViewHolder.childLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
                     childViewHolder.childTopLine.setVisibility(showChildBottomLine ? View.GONE : View.VISIBLE);
 
-                    FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.WRAP_CONTENT,
-                            FrameLayout.LayoutParams.WRAP_CONTENT);
-
                     FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            (int) context.getResources().getDimension(R.dimen.dimen_child_contact_item_height));
 
-                    lp.setMarginStart(phoneNumber.getLpMargin());
                     rlp.setMarginStart(phoneNumber.getRlpMargin());
-                    childViewHolder.frameLayout.setLayoutParams(lp);
+                    childViewHolder.frameLayout.setPadding(phoneNumber.getLpStartPadding(), 0, 0, 0);
                     childViewHolder.relativeLayout.setLayoutParams(rlp);
                     subItem.addView(childView);
                 }

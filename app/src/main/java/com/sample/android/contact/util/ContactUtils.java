@@ -102,11 +102,11 @@ public class ContactUtils {
                 if (numbers.size() == 1) {
                     Iterator<ContactPhoneNumber> numberIterator = numbers.iterator();
                     ContactPhoneNumber firstPhoneNumber = numberIterator.next();
-                    firstPhoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
+                    firstPhoneNumber.setLpStartPadding((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
                     firstPhoneNumber.setRlpMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
                     firstPhoneNumber.setFlagResId(flagResIds.iterator().next());
                 }
-                phoneNumber.setLpMargin((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
+                phoneNumber.setLpStartPadding((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
                 phoneNumber.setRlpMargin(0);
                 phoneNumber.setFlagResId(getFlagResID(context, regionCode));
                 numbers.add(phoneNumber);

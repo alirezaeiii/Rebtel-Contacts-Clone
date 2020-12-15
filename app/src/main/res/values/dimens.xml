@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <dimen name="dimen_frame_margin_default">64dp</dimen>
     <dimen name="dimen_relative_margin_default">22dp</dimen>
-
     <dimen name="dimen_flag_image_view_width">20dp</dimen>
     <dimen name="dimen_flag_image_view_height">20dp</dimen>
     <dimen name="dimen_flag_image_view_margin_end">6dp</dimen>
-
     <dimen name="dimen_frame_margin">86dp</dimen>
-
+    <dimen name="dimen_child_contact_item_height">48dp</dimen>
     <dimen name="dimen_recycler_view_spacing">48dp</dimen>
-
     <dimen name="dialpad_key_number_margin_bottom">1dp</dimen>
     <dimen name="dialpad_key_numbers_size">36sp</dimen>
     <dimen name="dialpad_key_letters_size">12sp</dimen>
-
     <dimen name="dimen_triangle_bottom_margin">-2.2dp</dimen>
 </resources>
