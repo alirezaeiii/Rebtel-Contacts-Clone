@@ -169,10 +169,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 viewId = R.id.line_number;
                 boolean expanded = contact.isExpanded();
                 subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-                boolean showChildBottomLine = mShowSeparator ? contact.getShowChildBottomLine() : true;
+                boolean showChildBottomLine = !mShowSeparator || contact.getShowChildBottomLine();
 
-                for (Iterator<ContactPhoneNumber> iterator = numbers.iterator(); iterator.hasNext(); ) {
-                    ContactPhoneNumber phoneNumber = iterator.next();
+                for (ContactPhoneNumber phoneNumber : numbers) {
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View childView = inflater.inflate(R.layout.contact_child_item, null);
 
