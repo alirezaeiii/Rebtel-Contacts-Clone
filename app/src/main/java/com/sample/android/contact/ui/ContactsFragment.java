@@ -58,7 +58,6 @@ public class ContactsFragment extends DaggerFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         mAdapter = new ContactsAdapter();
-        binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setAdapter(mAdapter);
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
