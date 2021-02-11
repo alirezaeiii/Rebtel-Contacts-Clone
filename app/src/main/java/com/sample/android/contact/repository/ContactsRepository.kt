@@ -1,6 +1,7 @@
 package com.sample.android.contact.repository
 
 import android.content.Context
+import android.database.Cursor
 import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,16 +30,18 @@ class ContactsRepository @Inject constructor(
 
     fun loadContacts() {
         _liveData.value = Resource.Loading()
-        val cursor = context.contentResolver.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                PROJECTION,
-                null,
-                null,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE UNICODE ASC")
-        Observable.create(ObservableOnSubscribe<List<Contact>>
-        { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
-                .subscribeOn(schedulerProvider.io())
-                .doOnComplete { cursor?.close() }
+        Observable.fromCallable<Cursor> {
+            context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    PROJECTION,
+                    null,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME +
+                            " COLLATE UNICODE ASC")
+        }.flatMap { cursor ->
+            Observable.create(ObservableOnSubscribe<List<Contact>>
+            { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
+                    .doOnComplete { cursor.close() }
+        }.subscribeOn(schedulerProvider.io())
                 .doFinally { clear() }
                 .subscribe { _liveData.postValue(Resource.Success(it)) }
                 .also { compositeDisposable.add(it) }
