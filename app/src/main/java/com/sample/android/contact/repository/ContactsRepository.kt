@@ -11,7 +11,6 @@ import com.sample.android.contact.util.ContactUtils.PROJECTION
 import com.sample.android.contact.util.Resource
 import com.sample.android.contact.util.schedulars.BaseSchedulerProvider
 import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -38,8 +37,8 @@ class ContactsRepository @Inject constructor(
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME +
                             " COLLATE UNICODE ASC")
         }.flatMap { cursor ->
-            Observable.create(ObservableOnSubscribe<List<Contact>>
-            { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) })
+            Observable.create<List<Contact>>
+            { emitter -> emitter.onNext(ContactUtils.getContacts(cursor, context)) }
                     .doOnComplete { cursor.close() }
         }.subscribeOn(schedulerProvider.io())
                 .doFinally { clear() }
