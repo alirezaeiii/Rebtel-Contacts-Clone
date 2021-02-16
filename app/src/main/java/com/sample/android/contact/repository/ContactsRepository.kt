@@ -53,6 +53,6 @@ class ContactsRepository @Inject constructor(
         compositeDisposable.clear()
     }
 
-    private fun <T> composeObservable(task: () -> T): Observable<T> =
+    private inline fun <T> composeObservable(crossinline task: () -> T): Observable<T> =
             Observable.fromCallable<T> { task() }
 }
