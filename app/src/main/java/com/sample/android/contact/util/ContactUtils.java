@@ -10,6 +10,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 import com.sample.android.contact.domain.ContactSeparator;
 
@@ -35,8 +36,8 @@ public class ContactUtils {
     private ContactUtils() {
     }
 
-    public static List<Contact> getContacts(Cursor cursor, Context context) {
-        List<Contact> contacts = new ArrayList<>();
+    public static List<ContactItem> getContacts(Cursor cursor, Context context) {
+        List<ContactItem> contacts = new ArrayList<>();
 
         int nameIndex = cursor.getColumnIndex(PROJECTION[0]);
         int numberIndex = cursor.getColumnIndex(PROJECTION[1]);
@@ -70,18 +71,17 @@ public class ContactUtils {
 
             Contact contact = new Contact(name);
             if (!contact.equals(prevContact)) {
-                Set<Integer> flagResIds = new LinkedHashSet<>();
-                flagResIds.add(getFlagResID(context, regionCode));
-                Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
-                numbers.add(phoneNumber);
-                contact = new Contact(name, numbers, getBriefName(name), deAccent(name), flagResIds);
-
-                char[] nameArray = contact.getAccentName().toUpperCase().toCharArray();
+                String accentName = deAccent(name);
+                char[] nameArray = accentName.toUpperCase().toCharArray();
                 if (prevContact == null) {
-                    contact.setContactSeparator(getContactSeparator(name));
+                    ContactItem contactItem = new ContactItem();
+                    contactItem.setContactSeparator(getContactSeparator(name));
+                    contacts.add(contactItem);
                 } else {
                     if (Character.isLetter(nameArray[0]) && nameArray[0] != previousNameArray[0]) {
-                        contact.setContactSeparator(getContactSeparator(name));
+                        ContactItem contactItem = new ContactItem();
+                        contactItem.setContactSeparator(getContactSeparator(name));
+                        contacts.add(contactItem);
                     }
                     if ((Character.isLetter(previousNameArray[0]) && previousNameArray[0] != nameArray[0]) ||
                             (!Character.isLetter(previousNameArray[0]) && Character.isLetter(nameArray[0])
@@ -93,9 +93,18 @@ public class ContactUtils {
                         prevContact.setShowChildBottomLine(false);
                     }
                 }
+
+                Set<Integer> flagResIds = new LinkedHashSet<>();
+                flagResIds.add(getFlagResID(context, regionCode));
+                Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
+                numbers.add(phoneNumber);
+                contact = new Contact(name, numbers, getBriefName(name), accentName, flagResIds);
+                ContactItem contactItem = new ContactItem();
+                contactItem.setContact(contact);
+
                 prevContact = contact;
                 previousNameArray = nameArray;
-                contacts.add(contact);
+                contacts.add(contactItem);
             } else {
                 Set<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
                 Set<Integer> flagResIds = prevContact.getFlagResIds();

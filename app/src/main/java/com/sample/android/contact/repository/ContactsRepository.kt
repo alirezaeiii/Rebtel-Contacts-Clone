@@ -4,7 +4,7 @@ import android.content.Context
 import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sample.android.contact.domain.Contact
+import com.sample.android.contact.domain.ContactItem
 import com.sample.android.contact.util.ContactUtils
 import com.sample.android.contact.util.ContactUtils.PROJECTION
 import com.sample.android.contact.util.Resource
@@ -22,8 +22,8 @@ class ContactsRepository @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _liveData = MutableLiveData<Resource<List<Contact>>>()
-    val liveData: LiveData<Resource<List<Contact>>>
+    private val _liveData = MutableLiveData<Resource<List<ContactItem>>>()
+    val liveData: LiveData<Resource<List<ContactItem>>>
         get() = _liveData
 
     fun loadContacts() {

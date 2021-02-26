@@ -19,6 +19,7 @@ import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 
@@ -38,9 +39,9 @@ public class ContactsFragment extends DaggerFragment {
 
     private ContactsAdapter mAdapter;
 
-    private List<Contact> mContacts;
+    private List<ContactItem> mContacts;
 
-    private List<Contact> mTempContacts;
+    private List<ContactItem> mTempContacts;
 
     @Inject
     public ContactsFragment() {
@@ -101,9 +102,9 @@ public class ContactsFragment extends DaggerFragment {
         });
 
         // Create the observer which updates the UI.
-        final Observer<Resource<List<Contact>>> contactsObserver = resource -> {
+        final Observer<Resource<List<ContactItem>>> contactsObserver = resource -> {
             if (resource instanceof Resource.Success) {
-                mContacts = ((Resource.Success<List<Contact>>) resource).getData();
+                mContacts = ((Resource.Success<List<ContactItem>>) resource).getData();
                 mAdapter.setItems(mContacts, true);
             }
         };
@@ -120,9 +121,10 @@ public class ContactsFragment extends DaggerFragment {
             mTempContacts.clear();
         }
         query = query.toLowerCase().trim();
-        for (Contact contact : mContacts) {
-            if (contact.getName().toLowerCase().trim().contains(query)) {
-                mTempContacts.add(contact);
+        for (ContactItem contactItem : mContacts) {
+            Contact contact = contactItem.getContact();
+            if (contact != null && contact.getName().toLowerCase().trim().contains(query)) {
+                mTempContacts.add(contactItem);
             }
         }
         mAdapter.setItems(mTempContacts, false);

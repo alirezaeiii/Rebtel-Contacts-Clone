@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
+import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 import com.sample.android.contact.domain.ContactSeparator;
 
@@ -33,9 +34,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Contact> mContacts = new ArrayList<>();
+    private static final int TYPE_SEPARATOR = 1;
+    private static final int TYPE_CONTACT = 2;
+    private List<ContactItem> mContacts = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
     private boolean mShowSeparator;
@@ -44,17 +47,44 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.contact_item, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        switch (viewType) {
+            case TYPE_CONTACT: {
+                View view = layoutInflater
+                        .inflate(R.layout.contact_item, parent, false);
+                return new ContactViewHolder(view);
+            }
+            case TYPE_SEPARATOR: {
+                View view = layoutInflater
+                        .inflate(R.layout.contact_separator, parent, false);
+                return new SeparatorViewHolder(view);
+            }
+            default:
+                throw new RuntimeException("You must supply a valid type for this adapter");
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Contact contact = mContacts.get(position);
-        holder.bind(contact);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        final ContactItem contactItem = mContacts.get(position);
+        switch (holder.getItemViewType()) {
+            case TYPE_CONTACT:
+                ((ContactViewHolder) holder).bind(contactItem.getContact());
+                break;
+            case TYPE_SEPARATOR:
+                ((SeparatorViewHolder) holder).bind(contactItem.getContactSeparator());
+                break;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        ContactItem contactItem = mContacts.get(position);
+        if (contactItem.getContactSeparator() == null) {
+            return TYPE_CONTACT;
+        }
+        return TYPE_SEPARATOR;
     }
 
     @Override
@@ -76,13 +106,36 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         };
     }
 
-    public void setItems(List<Contact> contacts, boolean showSeparator) {
+    public void setItems(List<ContactItem> contacts, boolean showSeparator) {
         mContacts = contacts;
         mShowSeparator = showSeparator;
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class SeparatorViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.separator)
+        View separatorView;
+
+        @BindView(R.id.separator_text)
+        TextView separatorText;
+
+        public SeparatorViewHolder(@NonNull View root) {
+            super(root);
+            ButterKnife.bind(this, root);
+        }
+
+        void bind(ContactSeparator contactSeparator) {
+            if (mShowSeparator) {
+                separatorText.setText(String.valueOf(contactSeparator.getSeparatorChar()));
+                separatorView.setVisibility(View.VISIBLE);
+            } else {
+                separatorView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    class ContactViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.detail)
         ConstraintLayout detail;
@@ -105,19 +158,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @BindView(R.id.image_text)
         TextView imageText;
 
-        @BindView(R.id.separator)
-        View separatorView;
-
-        @BindView(R.id.separator_text)
-        TextView separatorText;
-
         @BindView(R.id.bottomLine)
         View bottomLine;
 
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
 
-        public ViewHolder(View root) {
+        public ContactViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
         }
@@ -137,16 +184,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
 
             if (mShowSeparator) {
-                ContactSeparator contactSeparator = contact.getContactSeparator();
-                if (contactSeparator.getShowSeparator()) {
-                    separatorText.setText(String.valueOf(contactSeparator.getSeparatorChar()));
-                    separatorView.setVisibility(View.VISIBLE);
-                } else {
-                    separatorView.setVisibility(View.GONE);
-                }
                 bottomLine.setVisibility(contact.getShowBottomLine() ? View.VISIBLE : View.GONE);
             } else {
-                separatorView.setVisibility(View.GONE);
                 bottomLine.setVisibility(View.VISIBLE);
             }
             subItem.removeAllViews();
@@ -206,7 +245,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
         @OnClick(R.id.detail)
         void onClick() {
-            final Contact contact = mContacts.get(getAdapterPosition());
+            final Contact contact = mContacts.get(getAdapterPosition()).getContact();
 
             if (contact.getPhoneNumbers().size() == 1) {
                 return;

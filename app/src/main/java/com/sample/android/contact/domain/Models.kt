@@ -4,6 +4,12 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+class ContactItem @JvmOverloads constructor(
+        var contact: Contact? = null,
+        var contactSeparator: ContactSeparator? = null
+) : Parcelable
+
+@Parcelize
 class Contact @JvmOverloads constructor(
         val name: String,
         val phoneNumbers: Set<ContactPhoneNumber>? = null,
@@ -12,9 +18,9 @@ class Contact @JvmOverloads constructor(
         val flagResIds: Set<Int>? = null,
         // State of the item
         var isExpanded: Boolean = false,
-        var contactSeparator: ContactSeparator = ContactSeparator(false),
         var showBottomLine: Boolean = true,
-        var showChildBottomLine: Boolean = true) : Parcelable {
+        var showChildBottomLine: Boolean = true
+) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other !is Contact) {
@@ -31,7 +37,8 @@ class Contact @JvmOverloads constructor(
 @Parcelize
 class ContactSeparator @JvmOverloads constructor(
         var showSeparator: Boolean,
-        var separatorChar: Char? = null) : Parcelable
+        var separatorChar: Char? = null
+) : Parcelable
 
 @Parcelize
 class ContactPhoneNumber @JvmOverloads constructor(
@@ -39,7 +46,8 @@ class ContactPhoneNumber @JvmOverloads constructor(
         val typeLabel: String,
         var flagResId: Int? = null,
         var startPadding: Int? = null,
-        var startMargin: Int? = null) : Parcelable {
+        var startMargin: Int? = null
+) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (other !is ContactPhoneNumber) {

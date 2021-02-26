@@ -5,8 +5,6 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/contact_separator" />
-
     <include layout="@layout/contact_detail" />
 
     <LinearLayout
