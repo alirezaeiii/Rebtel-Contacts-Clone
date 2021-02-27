@@ -12,7 +12,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.domain.ContactSeparator;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -98,7 +97,7 @@ public class ContactUtils {
                 flagResIds.add(getFlagResID(context, regionCode));
                 Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
                 numbers.add(phoneNumber);
-                contact = new Contact(name, numbers, getBriefName(name), accentName, flagResIds);
+                contact = new Contact(name, numbers, getBriefName(name), flagResIds);
                 ContactItem contactItem = new ContactItem();
                 contactItem.setContact(contact);
 
@@ -131,10 +130,10 @@ public class ContactUtils {
 
     /* Helper Methods */
 
-    private static ContactSeparator getContactSeparator(String name) {
+    private static char getContactSeparator(String name) {
         char ch = name.toUpperCase().charAt(0);
         char separatorChar = Character.isLetter(ch) ? ch : '&';
-        return new ContactSeparator(true, separatorChar);
+        return separatorChar;
     }
 
     private static String deAccent(String str) {

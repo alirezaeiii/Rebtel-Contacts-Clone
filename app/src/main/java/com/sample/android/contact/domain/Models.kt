@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class ContactItem @JvmOverloads constructor(
         var contact: Contact? = null,
-        var contactSeparator: ContactSeparator? = null
+        var contactSeparator: Char? = null
 ) : Parcelable
 
 @Parcelize
@@ -14,7 +14,6 @@ class Contact @JvmOverloads constructor(
         val name: String,
         val phoneNumbers: Set<ContactPhoneNumber>? = null,
         val briefName: String? = null,
-        val accentName: String? = null,
         val flagResIds: Set<Int>? = null,
         // State of the item
         var isExpanded: Boolean = false,
@@ -33,12 +32,6 @@ class Contact @JvmOverloads constructor(
         return javaClass.hashCode()
     }
 }
-
-@Parcelize
-class ContactSeparator @JvmOverloads constructor(
-        var showSeparator: Boolean,
-        var separatorChar: Char? = null
-) : Parcelable
 
 @Parcelize
 class ContactPhoneNumber @JvmOverloads constructor(

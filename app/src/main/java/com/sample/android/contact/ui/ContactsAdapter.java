@@ -23,7 +23,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.domain.ContactSeparator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -125,9 +124,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ButterKnife.bind(this, root);
         }
 
-        void bind(ContactSeparator contactSeparator) {
+        void bind(char contactSeparator) {
             if (mShowSeparator) {
-                separatorText.setText(String.valueOf(contactSeparator.getSeparatorChar()));
+                separatorText.setText(String.valueOf(contactSeparator));
                 separatorView.setVisibility(View.VISIBLE);
             } else {
                 separatorView.setVisibility(View.GONE);
