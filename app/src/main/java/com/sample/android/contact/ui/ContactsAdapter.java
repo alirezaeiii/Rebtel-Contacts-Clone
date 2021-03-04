@@ -171,19 +171,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void bind(Contact contact) {
             Iterator<Integer> flags = contact.getFlagResIds().iterator();
             flagImageView.setImageResource(flags.next());
-            if (mShowSeparator) {
-                bottomLine.setVisibility(contact.getShowBottomLine() ? View.VISIBLE : View.GONE);
-            } else {
-                bottomLine.setVisibility(View.VISIBLE);
-            }
+            visibleGone(bottomLine, contact.getShowBottomLine());
             Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             Iterator<ContactPhoneNumber> iterator = numbers.iterator();
             ContactPhoneNumber phoneNumber = iterator.next();
-            String number = phoneNumber.getNumber();
             phoneNumberType.setText(phoneNumber.getTypeLabel());
             contactNameView.setText(contact.getName());
             imageText.setText(contact.getBriefName());
-            phoneNumberView.setText(number);
+            phoneNumberView.setText(phoneNumber.getNumber());
         }
     }
 
@@ -225,12 +220,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 imageView.setImageResource(flagResId);
                 flagItem.addView(imageView);
             }
-
-            if (mShowSeparator) {
-                bottomLine.setVisibility(contact.getShowBottomLine() ? View.VISIBLE : View.GONE);
-            } else {
-                bottomLine.setVisibility(View.VISIBLE);
-            }
+            visibleGone(bottomLine, contact.getShowBottomLine());
             subItem.removeAllViews();
             Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             lineNumber.setText(String.valueOf(numbers.size()));
@@ -275,6 +265,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
                 }, 100);
             }
+        }
+    }
+
+    private void visibleGone(View view, boolean showBottomLine) {
+        if (mShowSeparator) {
+            view.setVisibility(showBottomLine ? View.VISIBLE : View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
         }
     }
 
