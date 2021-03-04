@@ -14,8 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,12 +35,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final int TYPE_SEPARATOR = 1;
     private static final int TYPE_CONTACT = 2;
+    private static final int TYPE_CONTACT_MULTIPLE = 3;
     private List<ContactItem> mContacts = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
     private boolean mShowSeparator;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-    private final ConstraintSet mConstraintSet = new ConstraintSet();
 
     @NonNull
     @Override
@@ -59,6 +57,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .inflate(R.layout.contact_separator, parent, false);
                 return new SeparatorViewHolder(view);
             }
+            case TYPE_CONTACT_MULTIPLE: {
+                View view = layoutInflater
+                        .inflate(R.layout.contact_multiple_items, parent, false);
+                return new ContactMultipleViewHolder(view);
+            }
             default:
                 throw new RuntimeException("You must supply a valid type for this adapter");
         }
@@ -74,6 +77,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TYPE_SEPARATOR:
                 ((SeparatorViewHolder) holder).bind(contactItem.getContactSeparator());
                 break;
+            case TYPE_CONTACT_MULTIPLE:
+                ((ContactMultipleViewHolder) holder).bind(contactItem.getContact());
+                break;
         }
     }
 
@@ -81,7 +87,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemViewType(int position) {
         ContactItem contactItem = mContacts.get(position);
         if (contactItem.getContactSeparator() == null) {
-            return TYPE_CONTACT;
+            if (contactItem.getContact().getPhoneNumbers().size() == 1) {
+                return TYPE_CONTACT;
+            }
+            return TYPE_CONTACT_MULTIPLE;
         }
         return TYPE_SEPARATOR;
     }
@@ -136,9 +145,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class ContactViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.detail)
-        ConstraintLayout detail;
-
         @BindView(R.id.contact_name)
         TextView contactNameView;
 
@@ -147,6 +153,44 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @BindView(R.id.phone_type)
         TextView phoneNumberType;
+
+        @BindView(R.id.flagItem)
+        ImageView flagImageView;
+
+        @BindView(R.id.image_text)
+        TextView imageText;
+
+        @BindView(R.id.bottomLine)
+        View bottomLine;
+
+        public ContactViewHolder(View root) {
+            super(root);
+            ButterKnife.bind(this, root);
+        }
+
+        void bind(Contact contact) {
+            Iterator<Integer> flags = contact.getFlagResIds().iterator();
+            flagImageView.setImageResource(flags.next());
+            if (mShowSeparator) {
+                bottomLine.setVisibility(contact.getShowBottomLine() ? View.VISIBLE : View.GONE);
+            } else {
+                bottomLine.setVisibility(View.VISIBLE);
+            }
+            Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
+            Iterator<ContactPhoneNumber> iterator = numbers.iterator();
+            ContactPhoneNumber phoneNumber = iterator.next();
+            String number = phoneNumber.getNumber();
+            phoneNumberType.setText(phoneNumber.getTypeLabel());
+            contactNameView.setText(contact.getName());
+            imageText.setText(contact.getBriefName());
+            phoneNumberView.setText(number);
+        }
+    }
+
+    class ContactMultipleViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.contact_name)
+        TextView contactNameView;
 
         @BindView(R.id.line_number)
         TextView lineNumber;
@@ -163,7 +207,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.flagItem)
         LinearLayout flagItem;
 
-        public ContactViewHolder(View root) {
+        public ContactMultipleViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
         }
@@ -188,67 +232,38 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 bottomLine.setVisibility(View.VISIBLE);
             }
             subItem.removeAllViews();
-            String name = contact.getName();
             Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
-            String number = "";
-            int viewId;
-            if (numbers.size() == 1) {
-                Iterator<ContactPhoneNumber> iterator = numbers.iterator();
-                ContactPhoneNumber phoneNumber = iterator.next();
-                number = phoneNumber.getNumber();
-                phoneNumberType.setVisibility(View.VISIBLE);
-                lineNumber.setVisibility(View.INVISIBLE);
-                phoneNumberType.setText(phoneNumber.getTypeLabel());
-                viewId = R.id.phone_type;
-            } else {
-                lineNumber.setVisibility(View.VISIBLE);
-                phoneNumberType.setVisibility(View.INVISIBLE);
-                lineNumber.setText(String.valueOf(numbers.size()));
-                viewId = R.id.line_number;
-                boolean expanded = contact.isExpanded();
-                subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-                boolean showChildBottomLine = !mShowSeparator || contact.getShowChildBottomLine();
-
-                for (ContactPhoneNumber phoneNumber : numbers) {
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    View childView = inflater.inflate(R.layout.contact_child_item, null);
-
-                    ChildViewHolder childViewHolder = new ChildViewHolder(childView);
-                    childViewHolder.contactNumber.setText(phoneNumber.getNumber());
-                    childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
-                    childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
-
-                    childViewHolder.childBottomLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
-                    childViewHolder.childTopLine.setVisibility(showChildBottomLine ? View.GONE : View.VISIBLE);
-
-                    FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            (int) context.getResources().getDimension(R.dimen.dimen_child_contact_item_height));
-
-                    rlp.setMarginStart(phoneNumber.getStartMargin());
-                    childViewHolder.relativeLayout.setLayoutParams(rlp);
-                    childViewHolder.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
-                    subItem.addView(childView);
-                }
-            }
-            mConstraintSet.clone(detail);
-            mConstraintSet.connect(R.id.contact_name,
-                    ConstraintSet.END,
-                    viewId,
-                    ConstraintSet.START);
-            mConstraintSet.applyTo(detail);
-            contactNameView.setText(name);
+            lineNumber.setText(String.valueOf(numbers.size()));
+            contactNameView.setText(contact.getName());
             imageText.setText(contact.getBriefName());
-            phoneNumberView.setText(number);
+            subItem.setVisibility(contact.isExpanded() ? View.VISIBLE : View.GONE);
+            boolean showChildBottomLine = !mShowSeparator || contact.getShowChildBottomLine();
+            for (ContactPhoneNumber phoneNumber : numbers) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View childView = inflater.inflate(R.layout.contact_child_item, null);
+
+                ChildViewHolder childViewHolder = new ChildViewHolder(childView);
+                childViewHolder.contactNumber.setText(phoneNumber.getNumber());
+                childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
+                childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
+
+                childViewHolder.childBottomLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
+                childViewHolder.childTopLine.setVisibility(showChildBottomLine ? View.GONE : View.VISIBLE);
+
+                FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        (int) context.getResources().getDimension(R.dimen.dimen_child_contact_item_height));
+
+                rlp.setMarginStart(phoneNumber.getStartMargin());
+                childViewHolder.relativeLayout.setLayoutParams(rlp);
+                childViewHolder.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
+                subItem.addView(childView);
+            }
         }
 
         @OnClick(R.id.detail)
         void onClick() {
             final Contact contact = mContacts.get(getAdapterPosition()).getContact();
-
-            if (contact.getPhoneNumbers().size() == 1) {
-                return;
-            }
 
             boolean expanded = contact.isExpanded();
             contact.setExpanded(!expanded);
