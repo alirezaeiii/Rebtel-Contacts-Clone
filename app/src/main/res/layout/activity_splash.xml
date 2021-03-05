@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_new_blue"
@@ -11,10 +10,10 @@
         android:layout_width="99dp"
         android:layout_height="99dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_logo_vector" />
+        android:src="@drawable/ic_logo_vector"
+        tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/tv_splash_app_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_splash_app_version"
