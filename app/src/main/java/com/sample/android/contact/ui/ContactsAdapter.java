@@ -47,21 +47,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case TYPE_CONTACT: {
-                View view = layoutInflater
-                        .inflate(R.layout.contact_item, parent, false);
-                return new ContactViewHolder(view);
-            }
-            case TYPE_SEPARATOR: {
-                View view = layoutInflater
-                        .inflate(R.layout.contact_separator, parent, false);
-                return new SeparatorViewHolder(view);
-            }
-            case TYPE_CONTACT_MULTIPLE: {
-                View view = layoutInflater
-                        .inflate(R.layout.contact_multiple_items, parent, false);
-                return new ContactMultipleViewHolder(view);
-            }
+            case TYPE_CONTACT:
+                return new ContactViewHolder(layoutInflater
+                        .inflate(R.layout.contact_item, parent, false));
+            case TYPE_SEPARATOR:
+                return new SeparatorViewHolder(layoutInflater
+                        .inflate(R.layout.contact_separator, parent, false));
+            case TYPE_CONTACT_MULTIPLE:
+                return new ContactMultipleViewHolder(layoutInflater
+                        .inflate(R.layout.contact_multiple_items, parent, false));
             default:
                 throw new RuntimeException("You must supply a valid type for this adapter");
         }
