@@ -61,7 +61,6 @@ class SplashActivity : DaggerAppCompatActivity() {
             startActivity(intent)
             finish()
         }, SPLASH_DEFAULT_DELAY.toLong())
-
     }
 
     override fun onStop() {
