@@ -132,8 +132,7 @@ public class ContactUtils {
 
     private static char getContactSeparator(String name) {
         char ch = name.toUpperCase().charAt(0);
-        char separatorChar = Character.isLetter(ch) ? ch : '&';
-        return separatorChar;
+        return Character.isLetter(ch) ? ch : '&';
     }
 
     private static String deAccent(String str) {
