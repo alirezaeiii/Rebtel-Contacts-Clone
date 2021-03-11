@@ -165,7 +165,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void bind(Contact contact) {
             Iterator<Integer> flags = contact.getFlagResIds().iterator();
             flagImageView.setImageResource(flags.next());
-            visibleGone(bottomLine, contact.getShowBottomLine());
+            toVisibility(bottomLine, contact.getShowBottomLine());
             Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             Iterator<ContactPhoneNumber> iterator = numbers.iterator();
             ContactPhoneNumber phoneNumber = iterator.next();
@@ -214,7 +214,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 imageView.setImageResource(flagResId);
                 flagItem.addView(imageView);
             }
-            visibleGone(bottomLine, contact.getShowBottomLine());
+            toVisibility(bottomLine, contact.getShowBottomLine());
             subItem.removeAllViews();
             Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
             lineNumber.setText(String.valueOf(numbers.size()));
@@ -262,7 +262,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void visibleGone(View view, boolean showBottomLine) {
+    private void toVisibility(View view, boolean showBottomLine) {
         if (mShowSeparator) {
             view.setVisibility(showBottomLine ? View.VISIBLE : View.GONE);
         } else {
