@@ -231,8 +231,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
                 childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-                childViewHolder.childBottomLine.setVisibility(showChildBottomLine ? View.VISIBLE : View.GONE);
-                childViewHolder.childTopLine.setVisibility(showChildBottomLine ? View.GONE : View.VISIBLE);
+                if (showChildBottomLine) {
+                    childViewHolder.childBottomLine.setVisibility(View.VISIBLE);
+                    childViewHolder.childTopLine.setVisibility(View.GONE);
+                } else {
+                    childViewHolder.childTopLine.setVisibility(View.VISIBLE);
+                    childViewHolder.childBottomLine.setVisibility(View.GONE);
+                }
 
                 FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
