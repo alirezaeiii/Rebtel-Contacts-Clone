@@ -40,6 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:iconifiedByDefault="false"
+                    android:queryHint="@string/search_hint"
                     android:theme="@style/SearchViewStyle"
                     android:transitionGroup="true"
                     app:showData="@{vm.liveData}"/>
