@@ -19,7 +19,7 @@ A sample to showcase a customized contact list divided into sections with group 
 ## Licence
     MIT License
 
-    Copyright (c) 2019 Mohammadali Rezaei
+    Copyright (c) 2018 Mohammadali Rezaei
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
