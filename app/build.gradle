@@ -47,7 +47,6 @@ dependencies {
 
     //Android RX
     implementation "io.reactivex.rxjava2:rxjava:$version_rxjava"
-    implementation "io.reactivex.rxjava2:rxandroid:$version_rxandroid"
 
     // Dagger
     implementation "com.google.dagger:dagger:$version_dagger"
