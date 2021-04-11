@@ -42,9 +42,6 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
         super.onDrawOver(c, parent, state);
 
         View topChild = parent.getChildAt(0);
-        if (topChild == null) {
-            return;
-        }
 
         int topChildPosition = parent.getChildAdapterPosition(topChild);
         if (topChildPosition == RecyclerView.NO_POSITION) {
@@ -55,9 +52,6 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
         fixLayoutSize(parent, currentHeader);
         int contactPoint = currentHeader.getBottom();
         View childInContact = getChildInContact(parent, contactPoint);
-        if (childInContact == null) {
-            return;
-        }
 
         if (mListener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(c, currentHeader, childInContact);
