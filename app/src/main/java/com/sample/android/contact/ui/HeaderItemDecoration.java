@@ -2,43 +2,24 @@ package com.sample.android.contact.ui;
 
 import android.graphics.Canvas;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
 
-    private StickyHeaderInterface mListener;
-    private int mStickyHeaderHeight;
+    private final StickyHeaderInterface mListener;
 
-    public HeaderItemDecoration(RecyclerView recyclerView, @NonNull StickyHeaderInterface listener) {
+    public HeaderItemDecoration(@NonNull StickyHeaderInterface listener) {
         mListener = listener;
-
-        // On Sticky Header Click
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                if (motionEvent.getY() <= mStickyHeaderHeight) {
-                    // Handle the clicks on the header here ...
-                    return true;
-                }
-                return false;
-            }
-
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
-            }
-
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
     }
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDrawOver(@NotNull Canvas c, @NotNull RecyclerView parent, @NotNull RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
 
         View topChild = parent.getChildAt(0);
@@ -115,7 +96,7 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
 
         view.measure(childWidthSpec, childHeightSpec);
 
-        view.layout(0, 0, view.getMeasuredWidth(), mStickyHeaderHeight = view.getMeasuredHeight());
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
     }
 
     public interface StickyHeaderInterface {
