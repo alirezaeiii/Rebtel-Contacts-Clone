@@ -53,7 +53,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .inflate(R.layout.contact_item, parent, false));
             case TYPE_SEPARATOR:
                 return new SeparatorViewHolder(layoutInflater
-                        .inflate(R.layout.header_view, parent, false));
+                        .inflate(R.layout.contact_separator, parent, false));
             case TYPE_CONTACT_MULTIPLE:
                 return new ContactMultipleViewHolder(layoutInflater
                         .inflate(R.layout.contact_multiple_items, parent, false));
@@ -68,6 +68,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (holder.getItemViewType()) {
             case TYPE_CONTACT:
                 ((ContactViewHolder) holder).bind(contactItem.getContact());
+                break;
+            case TYPE_SEPARATOR:
+                ((SeparatorViewHolder) holder).bind(contactItem.getContactSeparator());
                 break;
             case TYPE_CONTACT_MULTIPLE:
                 ((ContactMultipleViewHolder) holder).bind(contactItem.getContact());
@@ -114,8 +117,24 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class SeparatorViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.separator)
+        View separatorView;
+
+        @BindView(R.id.separator_text)
+        TextView separatorText;
+
         public SeparatorViewHolder(@NonNull View root) {
             super(root);
+            ButterKnife.bind(this, root);
+        }
+
+        void bind(char contactSeparator) {
+            if (mShowSeparator) {
+                separatorText.setText(String.valueOf(contactSeparator));
+                separatorView.setVisibility(View.VISIBLE);
+            } else {
+                separatorView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -270,12 +289,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void bindHeaderData(View header, int headerPosition) {
         TextView separatorText = header.findViewById(R.id.separator_text);
-        View separator = header.findViewById(R.id.separator);
+        View separatorView = header.findViewById(R.id.separator_view);
         if (mShowSeparator) {
             ContactItem contact = mContacts.get(headerPosition);
             separatorText.setText(String.valueOf(contact.getContactSeparator()));
         } else {
-            separator.setVisibility(View.GONE);
+            separatorView.setVisibility(View.GONE);
             separatorText.setVisibility(View.GONE);
         }
     }
