@@ -57,6 +57,7 @@ public class ContactsFragment extends DaggerFragment {
 
         mAdapter = new ContactsAdapter();
         binding.recyclerView.setAdapter(mAdapter);
+        binding.recyclerView.addItemDecoration(new HeaderItemDecoration(binding.recyclerView, mAdapter));
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
         binding.swipeRefresh.setOnRefreshListener(() -> {
