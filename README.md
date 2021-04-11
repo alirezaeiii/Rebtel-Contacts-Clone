@@ -1,6 +1,6 @@
 # LibertyContacts
 A sample to showcase a customized contact list divided into sections with group header. It needed to parse contact provider items in a background thread using RxJava. This sample used [getItemViewType](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#getItemViewType(int)) in order to create RecyclerView with multiple view types.
-In [this branch](https://github.com/Ali-Rezaei/LibertyContacts/tree/StickyHeader) sticky header is implemented base on the answer which elaborated by [Sevastyan Savanyuk](https://stackoverflow.com/questions/32949971/how-can-i-make-sticky-headers-in-recyclerview-without-external-lib).
+In [this branch](https://github.com/Ali-Rezaei/LibertyContacts/tree/StickyHeader) sticky header is implemented base on the [answer](https://stackoverflow.com/questions/32949971/how-can-i-make-sticky-headers-in-recyclerview-without-external-lib) which elaborated by Sevastyan Savanyuk.
 
 ## Features
 * MVVM Architecture + Repository design Pattern.
