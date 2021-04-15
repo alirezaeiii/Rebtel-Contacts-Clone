@@ -31,7 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements HeaderItemDecoration.StickyHeaderInterface {
 
     private static final int TYPE_SEPARATOR = 1;
     private static final int TYPE_CONTACT = 2;
@@ -265,6 +266,43 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }, 100);
             }
         }
+    }
+
+    @Override
+    public int getHeaderPositionForItem(int itemPosition) {
+        int headerPosition = 0;
+        do {
+            if (this.isHeader(itemPosition)) {
+                headerPosition = itemPosition;
+                break;
+            }
+            itemPosition -= 1;
+        } while (itemPosition >= 0);
+        return headerPosition;
+    }
+
+    @Override
+    public int getHeaderLayout(int headerPosition) {
+        return R.layout.contact_separator;
+    }
+
+    @Override
+    public void bindHeaderData(View header, int headerPosition) {
+        TextView separatorText = header.findViewById(R.id.separator_text);
+        View separatorView = header.findViewById(R.id.separator_view);
+        if (mShowSeparator) {
+            ContactItem contact = mContacts.get(headerPosition);
+            separatorText.setText(String.valueOf(contact.getContactSeparator()));
+        } else {
+            separatorView.setVisibility(View.GONE);
+            separatorText.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public boolean isHeader(int itemPosition) {
+        ContactItem contactItem = mContacts.get(itemPosition);
+        return contactItem.getContactSeparator() != null;
     }
 
     private void toVisibility(View view, boolean showBottomLine) {

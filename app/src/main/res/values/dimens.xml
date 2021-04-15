@@ -12,4 +12,5 @@
     <dimen name="dialpad_key_numbers_size">36sp</dimen>
     <dimen name="dialpad_key_letters_size">12sp</dimen>
     <dimen name="dimen_triangle_bottom_margin">-2dp</dimen>
+    <dimen name="contact_separator_height">32dp</dimen>
 </resources>
