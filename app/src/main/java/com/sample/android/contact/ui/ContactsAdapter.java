@@ -65,17 +65,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final ContactItem contactItem = mContacts.get(position);
-        switch (holder.getItemViewType()) {
-            case TYPE_CONTACT:
-                ((ContactViewHolder) holder).bind(contactItem.getContact());
-                break;
-            case TYPE_SEPARATOR:
-                ((SeparatorViewHolder) holder).bind(contactItem.getContactSeparator());
-                break;
-            case TYPE_CONTACT_MULTIPLE:
-                ((ContactMultipleViewHolder) holder).bind(contactItem.getContact());
-                break;
-        }
+        ((BaseViewHolder) holder).bind(contactItem);
     }
 
     @Override
@@ -115,7 +105,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    class SeparatorViewHolder extends RecyclerView.ViewHolder {
+    abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+
+        public BaseViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        protected abstract void bind(ContactItem contactItem);
+    }
+
+    class SeparatorViewHolder extends BaseViewHolder {
 
         @BindView(R.id.separator)
         View separatorView;
@@ -128,9 +127,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ButterKnife.bind(this, root);
         }
 
-        void bind(char contactSeparator) {
+        protected void bind(ContactItem contactItem) {
             if (mShowSeparator) {
-                separatorText.setText(String.valueOf(contactSeparator));
+                separatorText.setText(String.valueOf(contactItem.getContactSeparator()));
                 separatorView.setVisibility(View.VISIBLE);
             } else {
                 separatorView.setVisibility(View.GONE);
@@ -138,7 +137,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    class ContactViewHolder extends RecyclerView.ViewHolder {
+    class ContactViewHolder extends BaseViewHolder {
 
         @BindView(R.id.contact_name)
         TextView contactNameView;
@@ -163,7 +162,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ButterKnife.bind(this, root);
         }
 
-        void bind(Contact contact) {
+        protected void bind(ContactItem contactItem) {
+            Contact contact = contactItem.getContact();
             Iterator<Integer> flags = contact.getFlagResIds().iterator();
             flagImageView.setImageResource(flags.next());
             toVisibility(bottomLine, contact.getShowBottomLine());
@@ -177,7 +177,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    class ContactMultipleViewHolder extends RecyclerView.ViewHolder {
+    class ContactMultipleViewHolder extends BaseViewHolder {
 
         @BindView(R.id.contact_name)
         TextView contactNameView;
@@ -202,7 +202,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ButterKnife.bind(this, root);
         }
 
-        void bind(Contact contact) {
+        protected void bind(ContactItem contactItem) {
+            Contact contact = contactItem.getContact();
             Context context = mRecyclerView.getContext();
             flagItem.removeAllViews();
             for (int flagResId : contact.getFlagResIds()) {
