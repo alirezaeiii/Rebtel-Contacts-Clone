@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.BaseViewHolder>
         implements HeaderItemDecoration.StickyHeaderInterface {
 
     private static final int TYPE_SEPARATOR = 1;
@@ -45,7 +45,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case TYPE_CONTACT:
@@ -63,9 +63,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         final ContactItem contactItem = mContacts.get(position);
-        ((BaseViewHolder) holder).bind(contactItem);
+        holder.bind(contactItem);
     }
 
     @Override
