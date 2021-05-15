@@ -127,6 +127,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.BaseVi
             ButterKnife.bind(this, root);
         }
 
+        @Override
         protected void bind(ContactItem contactItem) {
             if (mShowSeparator) {
                 separatorText.setText(String.valueOf(contactItem.getContactSeparator()));
@@ -162,6 +163,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.BaseVi
             ButterKnife.bind(this, root);
         }
 
+        @Override
         protected void bind(ContactItem contactItem) {
             Contact contact = contactItem.getContact();
             Iterator<Integer> flags = contact.getFlagResIds().iterator();
@@ -202,6 +204,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.BaseVi
             ButterKnife.bind(this, root);
         }
 
+        @Override
         protected void bind(ContactItem contactItem) {
             Contact contact = contactItem.getContact();
             Context context = mRecyclerView.getContext();
