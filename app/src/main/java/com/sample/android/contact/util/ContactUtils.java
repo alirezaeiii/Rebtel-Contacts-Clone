@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.view.View;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -126,6 +127,14 @@ public class ContactUtils {
             prevContact.setShowChildBottomLine(false);
         }
         return contacts;
+    }
+
+    public static void toVisibility(boolean showSeparator, View view, boolean showBottomLine) {
+        if (showSeparator) {
+            view.setVisibility(showBottomLine ? View.VISIBLE : View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
+        }
     }
 
     /* Helper Methods */
