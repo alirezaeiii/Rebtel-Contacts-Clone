@@ -37,7 +37,7 @@ class SplashActivity : DaggerAppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else { // Android version is lesser than 6.0 or the permission is already granted.
-            navigateToNextPage()
+            startMainActivity()
         }
     }
 
@@ -47,14 +47,14 @@ class SplashActivity : DaggerAppCompatActivity() {
     ) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
-                navigateToNextPage()
+                startMainActivity()
             } else {
                 Toast.makeText(this, getString(R.string.permission_not_granted_msg), Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun navigateToNextPage() {
+    private fun startMainActivity() {
         viewModel.loadContacts()
         handler.postDelayed({
             val intent = Intent(this, MainActivity::class.java)

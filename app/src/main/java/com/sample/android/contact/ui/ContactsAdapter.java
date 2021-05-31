@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
-import com.sample.android.contact.util.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
-        implements ClickListener, HeaderItemDecoration.StickyHeaderInterface {
+        implements ContactMultipleViewHolder.ClickListener,
+        HeaderItemDecoration.StickyHeaderInterface {
 
     private static final int TYPE_SEPARATOR = 1;
     private static final int TYPE_CONTACT = 2;

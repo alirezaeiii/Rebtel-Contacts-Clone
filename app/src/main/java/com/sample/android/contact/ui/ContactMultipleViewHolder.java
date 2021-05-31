@@ -13,7 +13,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.util.ClickListener;
 
 import java.util.Set;
 
@@ -138,5 +137,9 @@ class ContactMultipleViewHolder extends BaseViewHolder {
         public ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    public interface ClickListener {
+        void onClick(int position);
     }
 }
