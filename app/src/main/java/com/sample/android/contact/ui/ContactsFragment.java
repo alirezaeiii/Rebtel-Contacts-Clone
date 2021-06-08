@@ -104,15 +104,13 @@ public class ContactsFragment extends DaggerFragment {
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
         viewModel.getLiveData().observe(this, contactsObserver);
 
+        this.mSearchedContacts = new ArrayList<>();
+
         return root;
     }
 
     private void search(String query) {
-        if (mSearchedContacts == null) {
-            mSearchedContacts = new ArrayList<>();
-        } else {
-            mSearchedContacts.clear();
-        }
+        mSearchedContacts.clear();
         query = query.toLowerCase().trim();
         for (ContactItem contactItem : mContacts) {
             Contact contact = contactItem.getContact();
