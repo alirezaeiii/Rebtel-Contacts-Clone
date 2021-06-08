@@ -39,17 +39,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         switch (viewType) {
             case TYPE_CONTACT:
                 return new ContactViewHolder(layoutInflater
-                        .inflate(R.layout.contact_item, parent, false),
-                        mShowSeparator);
+                        .inflate(R.layout.contact_item, parent, false));
             case TYPE_SEPARATOR:
                 return new SeparatorViewHolder(layoutInflater
-                        .inflate(R.layout.contact_separator, parent, false),
-                        mShowSeparator);
+                        .inflate(R.layout.contact_separator, parent, false));
             case TYPE_CONTACT_MULTIPLE:
                 return new ContactMultipleViewHolder(layoutInflater
-                        .inflate(R.layout.contact_multiple_items, parent, false),
-                        mShowSeparator,
-                        this);
+                        .inflate(R.layout.contact_multiple_items, parent, false), this);
             default:
                 throw new RuntimeException("You must supply a valid type for this adapter");
         }
@@ -58,7 +54,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         final ContactItem contactItem = mContacts.get(position);
-        holder.bind(contactItem);
+        holder.bind(contactItem, mShowSeparator);
     }
 
     @Override

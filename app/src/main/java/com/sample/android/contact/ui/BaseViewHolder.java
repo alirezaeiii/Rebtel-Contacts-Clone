@@ -13,5 +13,5 @@ abstract class BaseViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    protected abstract void bind(ContactItem contactItem);
+    protected abstract void bind(ContactItem contactItem, boolean showSeparator);
 }

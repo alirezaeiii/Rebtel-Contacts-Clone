@@ -37,16 +37,13 @@ class ContactViewHolder extends BaseViewHolder {
     @BindView(R.id.bottomLine)
     View bottomLine;
 
-    private final boolean showSeparator;
-
-    public ContactViewHolder(View root, boolean showSeparator) {
+    public ContactViewHolder(View root) {
         super(root);
-        this.showSeparator = showSeparator;
         ButterKnife.bind(this, root);
     }
 
     @Override
-    protected void bind(ContactItem contactItem) {
+    protected void bind(ContactItem contactItem, boolean showSeparator) {
         Contact contact = contactItem.getContact();
         Iterator<Integer> flags = contact.getFlagResIds().iterator();
         flagImageView.setImageResource(flags.next());

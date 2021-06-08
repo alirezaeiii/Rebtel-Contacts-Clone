@@ -44,20 +44,17 @@ class ContactMultipleViewHolder extends BaseViewHolder {
 
     private final Context context;
 
-    private final boolean showSeparator;
-
     private final ClickListener clickListener;
 
-    public ContactMultipleViewHolder(View root, boolean showSeparator, ClickListener clickListener) {
+    public ContactMultipleViewHolder(View root, ClickListener clickListener) {
         super(root);
         context = root.getContext();
-        this.showSeparator = showSeparator;
         this.clickListener = clickListener;
         ButterKnife.bind(this, root);
     }
 
     @Override
-    protected void bind(ContactItem contactItem) {
+    protected void bind(ContactItem contactItem, boolean showSeparator) {
         Contact contact = contactItem.getContact();
         flagItem.removeAllViews();
         for (int flagResId : contact.getFlagResIds()) {

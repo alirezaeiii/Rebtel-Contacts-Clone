@@ -19,16 +19,13 @@ class SeparatorViewHolder extends BaseViewHolder {
     @BindView(R.id.separator_text)
     TextView separatorText;
 
-    private final boolean showSeparator;
-
-    public SeparatorViewHolder(@NonNull View root, boolean showSeparator) {
+    public SeparatorViewHolder(@NonNull View root) {
         super(root);
-        this.showSeparator = showSeparator;
         ButterKnife.bind(this, root);
     }
 
     @Override
-    protected void bind(ContactItem contactItem) {
+    protected void bind(ContactItem contactItem, boolean showSeparator) {
         if (showSeparator) {
             separatorText.setText(String.valueOf(contactItem.getContactSeparator()));
             separatorView.setVisibility(View.VISIBLE);
