@@ -103,17 +103,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         contact.setExpanded(!expanded);
         notifyItemChanged(position);
 
-        if (contact.isExpanded()) {
+        if (expanded) {
             mHandler.postDelayed(() -> {
                 mSmoothScroller.setTargetPosition(position);
                 mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
             }, 100);
         }
-
-        mHandler.postDelayed(() -> {
-            mSmoothScroller.setTargetPosition(position);
-            mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
-        }, 100);
     }
 
     @Override
