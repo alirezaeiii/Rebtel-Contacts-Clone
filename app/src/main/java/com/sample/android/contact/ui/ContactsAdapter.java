@@ -102,8 +102,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         boolean expanded = contact.isExpanded();
         contact.setExpanded(!expanded);
         notifyItemChanged(position);
-
-        if (expanded) {
+        if (!expanded) {
             mHandler.postDelayed(() -> {
                 mSmoothScroller.setTargetPosition(position);
                 mRecyclerView.getLayoutManager().startSmoothScroll(mSmoothScroller);
