@@ -39,18 +39,14 @@ class ContactsRepository @Inject constructor(
             composeObservable { ContactUtils.getContacts(cursor, context) }
                     .doOnComplete { cursor.close() }
         }.subscribeOn(schedulerProvider.io())
-                .doFinally { clear() }
+                .doFinally { compositeDisposable.clear() }
                 .subscribe { _liveData.postValue(Resource.Success(it)) }
                 .also { compositeDisposable.add(it) }
     }
 
     fun refreshContacts() {
-        clear()
-        loadContacts()
-    }
-
-    fun clear() {
         compositeDisposable.clear()
+        loadContacts()
     }
 
     private inline fun <T> composeObservable(crossinline task: () -> T): Observable<T> =

@@ -26,11 +26,6 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         repository.refreshContacts()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        repository.clear()
-    }
-
     /**
      * Factory for constructing ContactsViewModel with parameter
      */
