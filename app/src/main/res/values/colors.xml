@@ -17,8 +17,6 @@
 
     <color name="colorLine">#DCDCDC</color>
 
-    <color name="display_background_color">#FFF</color>
-
     <color name="call_button_default">#00cc00</color>
     <color name="call_button_pressed">#009900</color>
 
