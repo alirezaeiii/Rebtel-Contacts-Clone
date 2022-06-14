@@ -1,6 +1,12 @@
 # DignityContacts
 A sample to showcase a customized contact list divided into sections with group header. It needed to parse contact provider items in a background thread using RxJava. This sample used [getItemViewType](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#getItemViewType(int)) in order to create RecyclerView with multiple view types. Contact items are separated by sticky header.
 
+## Screenshots
+<p float="left">
+  <img src="https://github.com/alirezaeiii/DignityContacts/blob/master/screenshots/screenshot1.gif" width="250" />
+  <img src="https://github.com/alirezaeiii/DignityContacts/blob/master/screenshots/screenshot2.gif" width="250" />
+</p>
+
 ## Features
 * MVVM Architecture + Repository design Pattern.
 * Jetpack Libraries and Architecture Components.
