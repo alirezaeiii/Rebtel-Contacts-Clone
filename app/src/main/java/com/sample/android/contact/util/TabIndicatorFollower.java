@@ -21,11 +21,9 @@ public class TabIndicatorFollower {
 
     public TabIndicatorFollower setTabLayout(ListenableTabLayout listenableTabLayout){
         if(this.tabLayout != null){
-            this.tabLayout.removeScrollListener(scrollListener);
             this.tabLayout.removeOnAddedToViewPagerListener(onAddedToViewPager);
         }
         this.tabLayout = listenableTabLayout;
-        this.tabLayout.addScrollListener(scrollListener);
         this.tabLayout.addOnAddedToViewPagerListener(onAddedToViewPager);
         return this;
     }
@@ -34,15 +32,6 @@ public class TabIndicatorFollower {
         this.indicatorView = view;
         return this;
     }
-
-    private final ListenableTabLayout.ScrollListener scrollListener = new ListenableTabLayout.ScrollListener() {
-        @Override
-        public void onScrollChanged(ListenableTabLayout listenableTabLayout, int l, int t, int oldl, int oldt) {
-            if (indicatorView != null) {
-                indicatorView.setTranslationX(l);
-            }
-        }
-    };
 
     private final ListenableTabLayout.OnAddedToViewPager onAddedToViewPager = new ListenableTabLayout.OnAddedToViewPager() {
         @Override
