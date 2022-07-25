@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:editTextColor">@color/color3</item>
+        <item name="android:windowBackground">@color/color_new_blue</item>
+    </style>
+
+    <style name="DefaultTheme" parent="AppTheme">
+        <item name="android:windowBackground">?android:colorBackground</item>
     </style>
 
     <style name="LineStyle">
