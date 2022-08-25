@@ -20,7 +20,7 @@ A sample to showcase a customized contact list divided into sections with group 
 * [RxJava](https://github.com/ReactiveX/RxJava) is a library for composing asynchronous code using observable sequences.
 * [Butterknife](https://github.com/JakeWharton/butterknife) which Binds Android views and callbacks to fields and methods.
 * [libphonenumber](https://github.com/google/libphonenumber) Google library for parsing, formatting, and validating international phone numbers.
-* [CharityLayout](https://github.com/Ali-Rezaei/CharityLayout) is a Custom ViewGroup that lays out child views with equal distance.
+* [Dialpad-CustomView](https://github.com/Ali-Rezaei/CharityLayout) is a Custom ViewGroup that lays out child views with equal distance.
 
 ## Licence
     MIT License
