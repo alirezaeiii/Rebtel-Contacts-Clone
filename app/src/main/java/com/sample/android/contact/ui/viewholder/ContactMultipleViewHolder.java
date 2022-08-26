@@ -1,4 +1,6 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.viewholder;
+
+import static com.sample.android.contact.util.ContactUtils.*;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,11 +20,9 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import butterknife.OnClick;;
 
-import static com.sample.android.contact.util.ContactUtils.toVisibility;
-
-class ContactMultipleViewHolder extends BaseViewHolder {
+public class ContactMultipleViewHolder extends BaseViewHolder {
 
     @BindView(R.id.contact_name)
     TextView contactNameView;
@@ -54,7 +54,7 @@ class ContactMultipleViewHolder extends BaseViewHolder {
     }
 
     @Override
-    protected void bind(ContactItem contactItem, boolean showSeparator) {
+    public void bind(ContactItem contactItem, boolean showSeparator) {
         Contact contact = contactItem.getContact();
         flagItem.removeAllViews();
         for (int flagResId : contact.getFlagResIds()) {

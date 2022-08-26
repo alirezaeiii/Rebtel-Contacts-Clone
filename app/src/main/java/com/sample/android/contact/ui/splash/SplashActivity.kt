@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui
+package com.sample.android.contact.ui.splash
 
 import android.Manifest
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.R
+import com.sample.android.contact.ui.contact.MainActivity
 import com.sample.android.contact.viewmodels.SplashViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -72,7 +73,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
     override fun onBackPressed() {
         handler.removeCallbacksAndMessages(null)
-        super.onBackPressed();
+        super.onBackPressed()
     }
 }
 

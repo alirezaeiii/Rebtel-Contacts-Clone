@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.contact;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

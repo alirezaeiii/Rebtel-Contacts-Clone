@@ -1,7 +1,7 @@
 package com.sample.android.contact.di
 
-import com.sample.android.contact.ui.ContactsFragment
-import com.sample.android.contact.ui.DialpadFragment
+import com.sample.android.contact.ui.contact.ContactsFragment
+import com.sample.android.contact.ui.contact.DialpadFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.viewholder;
 
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +11,7 @@ import com.sample.android.contact.domain.ContactItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class SeparatorViewHolder extends BaseViewHolder {
+public class SeparatorViewHolder extends BaseViewHolder {
 
     @BindView(R.id.separator)
     View separatorView;
@@ -25,7 +25,7 @@ class SeparatorViewHolder extends BaseViewHolder {
     }
 
     @Override
-    protected void bind(ContactItem contactItem, boolean showSeparator) {
+    public void bind(ContactItem contactItem, boolean showSeparator) {
         if (showSeparator) {
             separatorText.setText(String.valueOf(contactItem.getContactSeparator()));
             separatorView.setVisibility(View.VISIBLE);

@@ -3,7 +3,6 @@ package com.sample.android.contact.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sample.android.contact.domain.Contact
 import com.sample.android.contact.domain.ContactItem
 import com.sample.android.contact.repository.ContactsRepository
 import com.sample.android.contact.util.Resource

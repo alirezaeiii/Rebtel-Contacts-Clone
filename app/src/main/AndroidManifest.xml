@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:noHistory="true"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.contact.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/DefaultTheme"
             android:windowSoftInputMode="adjustPan" />

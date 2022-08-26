@@ -1,7 +1,7 @@
 package com.sample.android.contact.di
 
-import com.sample.android.contact.ui.MainActivity
-import com.sample.android.contact.ui.SplashActivity
+import com.sample.android.contact.ui.contact.MainActivity
+import com.sample.android.contact.ui.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.adapter;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
+import com.sample.android.contact.ui.viewholder.BaseViewHolder;
+import com.sample.android.contact.ui.viewholder.ContactMultipleViewHolder;
+import com.sample.android.contact.ui.viewholder.ContactViewHolder;
+import com.sample.android.contact.ui.viewholder.SeparatorViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

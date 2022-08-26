@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.contact;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +17,8 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
+import com.sample.android.contact.ui.adapter.ContactsAdapter;
+import com.sample.android.contact.ui.adapter.HeaderItemDecoration;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 

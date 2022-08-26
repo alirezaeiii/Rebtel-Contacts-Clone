@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 
 import static com.sample.android.contact.util.ContactUtils.toVisibility;
 
-class ContactViewHolder extends BaseViewHolder {
+public class ContactViewHolder extends BaseViewHolder {
 
     @BindView(R.id.contact_name)
     TextView contactNameView;
@@ -43,7 +43,7 @@ class ContactViewHolder extends BaseViewHolder {
     }
 
     @Override
-    protected void bind(ContactItem contactItem, boolean showSeparator) {
+    public void bind(ContactItem contactItem, boolean showSeparator) {
         Contact contact = contactItem.getContact();
         Iterator<Integer> flags = contact.getFlagResIds().iterator();
         flagImageView.setImageResource(flags.next());

@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.adapter;
 
 import android.graphics.Canvas;
 import android.view.LayoutInflater;

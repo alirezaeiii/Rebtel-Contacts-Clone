@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui;
+package com.sample.android.contact.ui.contact;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.MainPagerItem;
+import com.sample.android.contact.ui.adapter.MainPagerAdapter;
 import com.sample.android.contact.util.TabIndicatorFollower;
 import com.sample.android.contact.widget.ListenableTabLayout;
 
