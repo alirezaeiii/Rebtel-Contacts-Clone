@@ -1,7 +1,6 @@
 package com.sample.android.contact.ui.contact;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +30,6 @@ import dagger.android.support.DaggerFragment;
 
 public class ContactsFragment extends DaggerFragment {
 
-    private static final String TAG = ContactsFragment.class.getSimpleName();
-
     @Inject
     ContactsViewModel.Factory mFactory;
 
@@ -50,7 +47,6 @@ public class ContactsFragment extends DaggerFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
         FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
