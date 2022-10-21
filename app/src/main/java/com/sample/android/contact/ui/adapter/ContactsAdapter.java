@@ -19,6 +19,7 @@ import com.sample.android.contact.ui.viewholder.BaseViewHolder;
 import com.sample.android.contact.ui.viewholder.ContactMultipleViewHolder;
 import com.sample.android.contact.ui.viewholder.ContactViewHolder;
 import com.sample.android.contact.ui.viewholder.SeparatorViewHolder;
+import com.sample.android.contact.widget.HeaderItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

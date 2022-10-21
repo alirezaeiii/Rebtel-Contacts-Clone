@@ -7,11 +7,10 @@ import androidx.core.view.NestedScrollingChildHelper;
 import android.util.AttributeSet;
 import android.view.View;
 
-
 @SuppressWarnings("unused")
 public class NestedCoordinatorLayout extends CoordinatorLayout implements NestedScrollingChild {
 
-    private NestedScrollingChildHelper mChildHelper;
+    private final NestedScrollingChildHelper mChildHelper;
 
     public NestedCoordinatorLayout(Context context) {
         super(context);

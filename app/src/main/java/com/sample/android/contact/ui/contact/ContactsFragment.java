@@ -17,7 +17,7 @@ import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.ui.adapter.ContactsAdapter;
-import com.sample.android.contact.ui.adapter.HeaderItemDecoration;
+import com.sample.android.contact.widget.HeaderItemDecoration;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 

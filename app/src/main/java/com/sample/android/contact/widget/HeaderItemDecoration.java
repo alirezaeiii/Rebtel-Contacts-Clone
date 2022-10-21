@@ -1,4 +1,4 @@
-package com.sample.android.contact.ui.adapter;
+package com.sample.android.contact.widget;
 
 import android.graphics.Canvas;
 import android.view.LayoutInflater;
