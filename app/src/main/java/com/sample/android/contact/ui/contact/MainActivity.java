@@ -3,10 +3,13 @@ package com.sample.android.contact.ui.contact;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.MainPagerItem;
 import com.sample.android.contact.ui.adapter.MainPagerAdapter;
@@ -41,6 +44,8 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private Unbinder unbinder;
 
+    private int mSelectedPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,43 @@ public class MainActivity extends DaggerAppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         TabIndicatorFollower.setupWith(mTabLayout, mTriangle);
         mHandler.postDelayed(() -> mTabLayout.getTabAt(0).select(), 10);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mSelectedPosition = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
+        final View tabStrip = mTabLayout.getChildAt(0);
+        int childCount = ((ViewGroup) tabStrip).getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View tabView = ((ViewGroup) tabStrip).getChildAt(i);
+            final int tabIndex = i;
+            tabView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (mSelectedPosition == tabIndex) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            mHandler.postDelayed(() -> mTriangle.setPressed(true), 250);
+                        } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                            mHandler.postDelayed(() -> mTriangle.setPressed(false), 120);
+                        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                            mHandler.postDelayed(() -> mTriangle.setPressed(false), 120);
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
