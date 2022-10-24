@@ -44,7 +44,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private Unbinder unbinder;
 
-    private int mSelectedPosition = 0;
+    private int selectedPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mSelectedPosition = tab.getPosition();
+                selectedPosition = tab.getPosition();
             }
 
             @Override
@@ -84,19 +84,23 @@ public class MainActivity extends DaggerAppCompatActivity {
             tabView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (mSelectedPosition == tabIndex) {
+                    if (selectedPosition == tabIndex) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            mHandler.postDelayed(() -> mTriangle.setPressed(true), 250);
+                            setTrianglePressed(true);
                         } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                            mHandler.postDelayed(() -> mTriangle.setPressed(false), 120);
+                            setTrianglePressed(false);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                            mHandler.postDelayed(() -> mTriangle.setPressed(false), 120);
+                            setTrianglePressed(false);
                         }
                     }
                     return false;
                 }
             });
         }
+    }
+
+    private void setTrianglePressed(boolean isPressed) {
+        mHandler.postDelayed(() -> mTriangle.setPressed(isPressed), 175);
     }
 
     @Override
