@@ -16,6 +16,8 @@ import com.sample.android.contact.ui.adapter.MainPagerAdapter;
 import com.sample.android.contact.util.TabIndicatorFollower;
 import com.sample.android.contact.widget.ListenableTabLayout;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -82,25 +84,30 @@ public class MainActivity extends DaggerAppCompatActivity {
             View tabView = ((ViewGroup) tabStrip).getChildAt(i);
             final int tabIndex = i;
             tabView.setOnTouchListener(new View.OnTouchListener() {
+
+                private static final int MAX_CLICK_DURATION = 200;
+                private long startClickTime;
+
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (selectedPosition == tabIndex) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            setTrianglePressed(true);
+                            startClickTime = Calendar.getInstance().getTimeInMillis();
+                            mHandler.postDelayed(() -> mTriangle.setPressed(true), 100);
                         } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                            setTrianglePressed(false);
+                            mTriangle.setPressed(false);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                            setTrianglePressed(false);
+                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+                            if(clickDuration < MAX_CLICK_DURATION) {
+                                mHandler.removeCallbacksAndMessages(null);
+                            }
+                            mTriangle.setPressed(false);
                         }
                     }
                     return false;
                 }
             });
         }
-    }
-
-    private void setTrianglePressed(boolean isPressed) {
-        mHandler.postDelayed(() -> mTriangle.setPressed(isPressed), 50);
     }
 
     @Override
