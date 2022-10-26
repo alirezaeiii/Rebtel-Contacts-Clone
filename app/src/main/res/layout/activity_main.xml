@@ -22,7 +22,9 @@
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/rectangle_shape"
+            app:tabBackground="@drawable/rectangle_selector"
             app:tabIndicatorHeight="2dp"
+            app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/color1" />
 
         <ImageView

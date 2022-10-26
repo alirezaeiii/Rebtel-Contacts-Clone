@@ -100,7 +100,7 @@ public class MainActivity extends DaggerAppCompatActivity {
     }
 
     private void setTrianglePressed(boolean isPressed) {
-        mHandler.postDelayed(() -> mTriangle.setPressed(isPressed), 175);
+        mHandler.postDelayed(() -> mTriangle.setPressed(isPressed), 50);
     }
 
     @Override

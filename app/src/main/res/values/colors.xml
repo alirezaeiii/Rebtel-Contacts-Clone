@@ -16,7 +16,7 @@
     <color name="dialpad_icon_tint">@color/color4</color>
 
     <color name="colorLine">#DCDCDC</color>
-    <color name="triangle_pressed">#D3D3D3</color>
+    <color name="tab_pressed">#D3D3D3</color>
 
     <color name="call_button_default">#00cc00</color>
     <color name="call_button_pressed">#009900</color>
