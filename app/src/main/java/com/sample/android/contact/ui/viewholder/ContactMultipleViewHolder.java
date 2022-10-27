@@ -1,6 +1,6 @@
 package com.sample.android.contact.ui.viewholder;
 
-import static com.sample.android.contact.util.ContactUtils.*;
+import static com.sample.android.contact.util.ContactUtils.toVisibility;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;;
+import butterknife.OnClick;
 
 public class ContactMultipleViewHolder extends BaseViewHolder {
 
@@ -57,12 +57,12 @@ public class ContactMultipleViewHolder extends BaseViewHolder {
     public void bind(ContactItem contactItem, boolean showSeparator) {
         Contact contact = contactItem.getContact();
         flagItem.removeAllViews();
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
+                (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_height));
+        params.setMarginEnd((int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_margin_end));
         for (int flagResId : contact.getFlagResIds()) {
             ImageView imageView = new ImageView(context);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_width),
-                    (int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_height));
-            params.setMarginEnd((int) context.getResources().getDimension(R.dimen.dimen_flag_image_view_margin_end));
             imageView.setLayoutParams(params);
             imageView.setImageResource(flagResId);
             flagItem.addView(imageView);
@@ -95,7 +95,6 @@ public class ContactMultipleViewHolder extends BaseViewHolder {
             FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     (int) context.getResources().getDimension(R.dimen.dimen_child_contact_item_height));
-
             rlp.setMarginStart(phoneNumber.getStartMargin());
             childViewHolder.relativeLayout.setLayoutParams(rlp);
             childViewHolder.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
