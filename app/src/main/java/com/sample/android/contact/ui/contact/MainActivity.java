@@ -85,29 +85,25 @@ public class MainActivity extends DaggerAppCompatActivity {
             final int tabIndex = i;
             tabView.setOnTouchListener(new View.OnTouchListener() {
 
-                private static final int MAX_CLICK_DURATION = 200;
-                private long startClickTime;
-
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (selectedPosition == tabIndex) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            startClickTime = Calendar.getInstance().getTimeInMillis();
-                            mHandler.postDelayed(() -> mTriangle.setPressed(true), 100);
+                           setTrianglePressed(true);
                         } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
                             mTriangle.setPressed(false);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                            if(clickDuration < MAX_CLICK_DURATION) {
-                                mHandler.removeCallbacksAndMessages(null);
-                            }
-                            mTriangle.setPressed(false);
+                            setTrianglePressed(false);
                         }
                     }
                     return false;
                 }
             });
         }
+    }
+
+    private void setTrianglePressed(boolean isPressed) {
+        mHandler.postDelayed(() -> mTriangle.setPressed(isPressed), 50);
     }
 
     @Override
