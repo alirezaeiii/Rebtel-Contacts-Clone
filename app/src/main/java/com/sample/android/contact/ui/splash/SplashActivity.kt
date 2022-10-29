@@ -8,15 +8,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.sample.android.contact.Application
 import com.sample.android.contact.R
 import com.sample.android.contact.ui.contact.MainActivity
 import com.sample.android.contact.viewmodels.SplashViewModel
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
-class SplashActivity : DaggerAppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: SplashViewModel.Factory
@@ -29,6 +30,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (applicationContext as Application).applicationComponent.inject(this)
         setContentView(R.layout.activity_splash)
         val versionName = packageManager.getPackageInfo(packageName, 0).versionName
         tv_splash_app_version.text = getString(R.string.splash_app_version, versionName)

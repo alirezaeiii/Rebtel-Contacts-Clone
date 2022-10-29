@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -16,24 +17,13 @@ import com.sample.android.contact.ui.adapter.MainPagerAdapter;
 import com.sample.android.contact.util.TabIndicatorFollower;
 import com.sample.android.contact.widget.ListenableTabLayout;
 
-import java.util.Calendar;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import dagger.android.support.DaggerAppCompatActivity;
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-
-    @Inject
-    ContactsFragment contactsFragment;
-
-    @Inject
-    DialpadFragment dialpadFragment;
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
@@ -55,8 +45,8 @@ public class MainActivity extends DaggerAppCompatActivity {
         unbinder = ButterKnife.bind(this);
 
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addItem(new MainPagerItem(contactsFragment, getString(R.string.contacts)));
-        pagerAdapter.addItem(new MainPagerItem(dialpadFragment, getString(R.string.dialpad)));
+        pagerAdapter.addItem(new MainPagerItem(new ContactsFragment(), getString(R.string.contacts)));
+        pagerAdapter.addItem(new MainPagerItem(new DialpadFragment(), getString(R.string.dialpad)));
 
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);

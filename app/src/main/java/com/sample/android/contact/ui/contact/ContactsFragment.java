@@ -7,28 +7,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.sample.android.contact.Application;
 import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.ui.adapter.ContactsAdapter;
-import com.sample.android.contact.widget.HeaderItemDecoration;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
+import com.sample.android.contact.widget.HeaderItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
-
-public class ContactsFragment extends DaggerFragment {
+public class ContactsFragment extends Fragment {
 
     @Inject
     ContactsViewModel.Factory mFactory;
@@ -37,11 +38,18 @@ public class ContactsFragment extends DaggerFragment {
 
     private List<ContactItem> mContacts;
 
-    private List<ContactItem> mSearchedContacts;
+    private final List<ContactItem> mSearchedContacts = new ArrayList<>();
 
     @Inject
     public ContactsFragment() {
         // Requires empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((Application) getContext().getApplicationContext()).getApplicationComponent()
+                .inject(this);
     }
 
     @Override
@@ -101,8 +109,6 @@ public class ContactsFragment extends DaggerFragment {
         };
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
         viewModel.getLiveData().observe(this, contactsObserver);
-
-        this.mSearchedContacts = new ArrayList<>();
 
         return root;
     }
