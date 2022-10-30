@@ -1,16 +1,13 @@
 package com.sample.android.contact.ui.contact;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.sample.android.contact.Application;
 import com.sample.android.contact.R;
 
 import javax.inject.Inject;
@@ -22,13 +19,6 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
     @Inject
     public DialpadFragment() {
         // Requires empty public constructor
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        ((Application) context.getApplicationContext()).getApplicationComponent()
-                .inject(this);
     }
 
     @Override
