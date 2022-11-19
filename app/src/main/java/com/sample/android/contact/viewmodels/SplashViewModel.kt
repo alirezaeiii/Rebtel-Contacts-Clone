@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.repository.ContactsRepository
 import javax.inject.Inject
 
-class SplashViewModel(private val repository: ContactsRepository) : ViewModel() {
+class SplashViewModel(private val repository: ContactsRepository) : BaseViewModel(repository) {
 
     fun loadContacts() {
         repository.loadContacts()
@@ -17,7 +17,7 @@ class SplashViewModel(private val repository: ContactsRepository) : ViewModel() 
     class Factory @Inject constructor(
             private val repository: ContactsRepository
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(SplashViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return SplashViewModel(repository) as T

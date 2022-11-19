@@ -8,11 +8,7 @@ import com.sample.android.contact.repository.ContactsRepository
 import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
-class ContactsViewModel(private val repository: ContactsRepository) : ViewModel() {
-
-    private val _liveData = repository.liveData
-    val liveData: LiveData<Resource<List<ContactItem>>>
-        get() = _liveData
+class ContactsViewModel(private val repository: ContactsRepository) : BaseViewModel(repository) {
 
     init {
         // Reload contacts in case of system initiated process death
@@ -31,7 +27,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     class Factory @Inject constructor(
             private val repository: ContactsRepository
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ContactsViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return ContactsViewModel(repository) as T

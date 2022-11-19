@@ -1,6 +1,7 @@
 package com.sample.android.contact.ui.splash
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -9,20 +10,22 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.Application
 import com.sample.android.contact.R
+import com.sample.android.contact.domain.ContactItem
 import com.sample.android.contact.ui.contact.MainActivity
+import com.sample.android.contact.util.Resource
 import com.sample.android.contact.viewmodels.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: SplashViewModel.Factory
-
-    private val handler = Handler(Looper.getMainLooper())
 
     private val viewModel: SplashViewModel by lazy {
         ViewModelProvider(this, factory).get(SplashViewModel::class.java)
@@ -43,8 +46,16 @@ class SplashActivity : AppCompatActivity() {
             )
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else { // Android version is lesser than 6.0 or the permission is already granted.
-            startMainActivity()
+            viewModel.loadContacts()
         }
+
+        viewModel.liveData.observe(this, Observer<Resource<List<ContactItem>>> {
+            if (it is Resource.Success) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -53,7 +64,7 @@ class SplashActivity : AppCompatActivity() {
     ) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
-                startMainActivity()
+                viewModel.loadContacts()
             } else {
                 Toast.makeText(
                     this,
@@ -63,23 +74,7 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun startMainActivity() {
-        viewModel.loadContacts()
-        handler.postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, SPLASH_DEFAULT_DELAY.toLong())
-    }
-
-    override fun onBackPressed() {
-        handler.removeCallbacksAndMessages(null)
-        super.onBackPressed()
-    }
 }
-
-private const val SPLASH_DEFAULT_DELAY = 1500
 
 // Request code for READ_CONTACTS. It can be any number > 0.
 private const val PERMISSIONS_REQUEST_READ_CONTACTS = 100
