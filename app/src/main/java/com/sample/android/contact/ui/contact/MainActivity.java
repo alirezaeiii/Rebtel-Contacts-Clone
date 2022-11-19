@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             final int tabIndex = i;
             tabView.setOnTouchListener(new View.OnTouchListener() {
 
-                private static final int MAX_CLICK_DURATION = 100;
+                private static final int MAX_CLICK_DURATION = 105;
                 private long startClickTime;
 
                 @Override
