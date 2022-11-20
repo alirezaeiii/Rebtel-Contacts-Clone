@@ -45,7 +45,8 @@
         android:paddingEnd="@dimen/dimen_flag_image_view_margin_end"
         app:layout_constraintEnd_toStartOf="@id/phone_number"
         app:layout_constraintStart_toStartOf="@+id/contact_name"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@id/phone_number"
+        app:layout_constraintBottom_toBottomOf="@id/phone_number"
         tools:ignore="RtlSymmetry, contentDescription"
         tools:src="@drawable/flag_iran" />
 
