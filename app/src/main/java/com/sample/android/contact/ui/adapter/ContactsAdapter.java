@@ -15,9 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
+import com.sample.android.contact.ui.viewholder.BaseContactMultipleViewHolder;
 import com.sample.android.contact.ui.viewholder.BaseViewHolder;
 import com.sample.android.contact.ui.viewholder.ContactMultipleViewHolder;
 import com.sample.android.contact.ui.viewholder.ContactViewHolder;
+import com.sample.android.contact.ui.viewholder.SearchContactMultipleViewHolder;
+import com.sample.android.contact.ui.viewholder.SearchContactViewHolder;
 import com.sample.android.contact.ui.viewholder.SeparatorViewHolder;
 import com.sample.android.contact.widget.HeaderItemDecoration;
 
@@ -25,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
-        implements ContactMultipleViewHolder.ClickListener,
+        implements BaseContactMultipleViewHolder.ClickListener,
         HeaderItemDecoration.StickyHeaderInterface {
 
     private static final int TYPE_SEPARATOR = 1;
     private static final int TYPE_CONTACT = 2;
     private static final int TYPE_CONTACT_MULTIPLE = 3;
+    private static final int TYPE_SEARCH_CONTACT = 4;
+    private static final int TYPE_SEARCH_CONTACT_MULTIPLE = 5;
     private List<ContactItem> mContacts = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
@@ -45,11 +50,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
             case TYPE_CONTACT:
                 return new ContactViewHolder(layoutInflater
                         .inflate(R.layout.contact_item, parent, false));
+            case TYPE_SEARCH_CONTACT:
+                return new SearchContactViewHolder(layoutInflater
+                        .inflate(R.layout.contact_item, parent, false));
             case TYPE_SEPARATOR:
                 return new SeparatorViewHolder(layoutInflater
                         .inflate(R.layout.contact_separator, parent, false));
             case TYPE_CONTACT_MULTIPLE:
                 return new ContactMultipleViewHolder(layoutInflater
+                        .inflate(R.layout.contact_multiple_items, parent, false), this);
+            case TYPE_SEARCH_CONTACT_MULTIPLE:
+                return new SearchContactMultipleViewHolder(layoutInflater
                         .inflate(R.layout.contact_multiple_items, parent, false), this);
             default:
                 throw new RuntimeException("You must supply a valid type for this adapter");
@@ -59,7 +70,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         final ContactItem contactItem = mContacts.get(position);
-        holder.bind(contactItem, mShowSeparator);
+        holder.bind(contactItem);
     }
 
     @Override
@@ -67,9 +78,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         ContactItem contactItem = mContacts.get(position);
         if (contactItem.getContactSeparator() == null) {
             if (contactItem.getContact().getPhoneNumbers().size() == 1) {
-                return TYPE_CONTACT;
+                if (mShowSeparator) {
+                    return TYPE_CONTACT;
+                }
+                return TYPE_SEARCH_CONTACT;
             }
-            return TYPE_CONTACT_MULTIPLE;
+            if (mShowSeparator) {
+                return TYPE_CONTACT_MULTIPLE;
+            }
+            return TYPE_SEARCH_CONTACT_MULTIPLE;
         }
         return TYPE_SEPARATOR;
     }

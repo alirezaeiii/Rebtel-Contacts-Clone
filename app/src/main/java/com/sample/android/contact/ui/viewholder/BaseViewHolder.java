@@ -9,9 +9,16 @@ import com.sample.android.contact.domain.ContactItem;
 
 abstract public class BaseViewHolder extends RecyclerView.ViewHolder {
 
+    protected ContactItem contactItem;
+
     public BaseViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
-    public abstract void bind(ContactItem contactItem, boolean showSeparator);
+    protected abstract void bind();
+
+    public void bind(ContactItem contactItem) {
+        this.contactItem = contactItem;
+        bind();
+    }
 }

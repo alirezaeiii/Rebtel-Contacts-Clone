@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
-import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 
 import java.util.Iterator;
@@ -15,9 +14,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.sample.android.contact.util.ContactUtils.toVisibility;
-
-public class ContactViewHolder extends BaseViewHolder {
+public abstract class BaseContactViewHolder extends BaseViewHolder {
 
     @BindView(R.id.contact_name)
     TextView contactNameView;
@@ -37,17 +34,19 @@ public class ContactViewHolder extends BaseViewHolder {
     @BindView(R.id.bottomLine)
     View bottomLine;
 
-    public ContactViewHolder(View root) {
+    public BaseContactViewHolder(View root) {
         super(root);
         ButterKnife.bind(this, root);
     }
 
+    protected abstract int getBottomLineVisibility();
+
     @Override
-    public void bind(ContactItem contactItem, boolean showSeparator) {
+    public void bind() {
         Contact contact = contactItem.getContact();
         Iterator<Integer> flags = contact.getFlagResIds().iterator();
         flagImageView.setImageResource(flags.next());
-        toVisibility(showSeparator, bottomLine, contact.getShowBottomLine());
+        bottomLine.setVisibility(getBottomLineVisibility());
         Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
         Iterator<ContactPhoneNumber> iterator = numbers.iterator();
         ContactPhoneNumber phoneNumber = iterator.next();

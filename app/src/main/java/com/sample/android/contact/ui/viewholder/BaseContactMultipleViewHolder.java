@@ -1,7 +1,5 @@
 package com.sample.android.contact.ui.viewholder;
 
-import static com.sample.android.contact.util.ContactUtils.toVisibility;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
-import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 
 import java.util.Set;
@@ -22,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactMultipleViewHolder extends BaseViewHolder {
+public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
 
     @BindView(R.id.contact_name)
     TextView contactNameView;
@@ -46,15 +43,19 @@ public class ContactMultipleViewHolder extends BaseViewHolder {
 
     private final ClickListener clickListener;
 
-    public ContactMultipleViewHolder(View root, ClickListener clickListener) {
+    public BaseContactMultipleViewHolder(View root, ClickListener clickListener) {
         super(root);
         context = root.getContext();
         this.clickListener = clickListener;
         ButterKnife.bind(this, root);
     }
 
+    protected abstract int getBottomLineVisibility();
+
+    protected abstract boolean getShowChildBottomLine();
+
     @Override
-    public void bind(ContactItem contactItem, boolean showSeparator) {
+    public void bind() {
         Contact contact = contactItem.getContact();
         flagItem.removeAllViews();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -67,14 +68,13 @@ public class ContactMultipleViewHolder extends BaseViewHolder {
             imageView.setImageResource(flagResId);
             flagItem.addView(imageView);
         }
-        toVisibility(showSeparator, bottomLine, contact.getShowBottomLine());
+        bottomLine.setVisibility(getBottomLineVisibility());
         subItem.removeAllViews();
         Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
         lineNumber.setText(String.valueOf(numbers.size()));
         contactNameView.setText(contact.getName());
         imageText.setText(contact.getBriefName());
         subItem.setVisibility(contact.isExpanded() ? View.VISIBLE : View.GONE);
-        boolean showChildBottomLine = !showSeparator || contact.getShowChildBottomLine();
         for (ContactPhoneNumber phoneNumber : numbers) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View childView = inflater.inflate(R.layout.contact_child_item, null);
@@ -84,7 +84,7 @@ public class ContactMultipleViewHolder extends BaseViewHolder {
             childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
             childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-            if (showChildBottomLine) {
+            if (getShowChildBottomLine()) {
                 childViewHolder.childBottomLine.setVisibility(View.VISIBLE);
                 childViewHolder.childTopLine.setVisibility(View.GONE);
             } else {

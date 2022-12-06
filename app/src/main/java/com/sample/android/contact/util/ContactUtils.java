@@ -1,10 +1,11 @@
 package com.sample.android.contact.util;
 
+import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.view.View;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -21,8 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 
 public class ContactUtils {
 
@@ -127,14 +126,6 @@ public class ContactUtils {
             prevContact.setShowChildBottomLine(false);
         }
         return contacts;
-    }
-
-    public static void toVisibility(boolean showSeparator, View view, boolean showBottomLine) {
-        if (showSeparator) {
-            view.setVisibility(showBottomLine ? View.VISIBLE : View.GONE);
-        } else {
-            view.setVisibility(View.VISIBLE);
-        }
     }
 
     /* Helper Methods */
