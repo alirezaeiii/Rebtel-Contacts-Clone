@@ -8,7 +8,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -44,12 +43,10 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
     @Override
     public void bind() {
         Contact contact = contactItem.getContact();
-        Iterator<Integer> flags = contact.getFlagResIds().iterator();
-        flagImageView.setImageResource(flags.next());
+        flagImageView.setImageResource(contact.getFlagResIds().iterator().next());
         bottomLine.setVisibility(getBottomLineVisibility());
         Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
-        Iterator<ContactPhoneNumber> iterator = numbers.iterator();
-        ContactPhoneNumber phoneNumber = iterator.next();
+        ContactPhoneNumber phoneNumber = numbers.iterator().next();
         phoneNumberType.setText(phoneNumber.getTypeLabel());
         contactNameView.setText(contact.getName());
         imageText.setText(contact.getBriefName());

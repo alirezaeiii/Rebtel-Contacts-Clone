@@ -110,12 +110,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         };
     }
 
-    public void setItems(List<ContactItem> contacts, boolean showSeparator) {
-        mContacts = contacts;
-        mShowSeparator = showSeparator;
-        notifyDataSetChanged();
-    }
-
     @Override
     public void onClick(int position) {
 
@@ -167,5 +161,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public boolean isHeader(int itemPosition) {
         ContactItem contactItem = mContacts.get(itemPosition);
         return contactItem.getContactSeparator() != null;
+    }
+
+    public void setItems(List<ContactItem> contacts, boolean showSeparator) {
+        mContacts = contacts;
+        mShowSeparator = showSeparator;
+        notifyDataSetChanged();
     }
 }
