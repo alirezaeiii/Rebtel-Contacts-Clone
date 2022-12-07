@@ -45,8 +45,7 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
         Contact contact = contactItem.getContact();
         flagImageView.setImageResource(contact.getFlagResIds().iterator().next());
         bottomLine.setVisibility(getBottomLineVisibility());
-        Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
-        ContactPhoneNumber phoneNumber = numbers.iterator().next();
+        ContactPhoneNumber phoneNumber = contact.getPhoneNumbers().iterator().next();
         phoneNumberType.setText(phoneNumber.getTypeLabel());
         contactNameView.setText(contact.getName());
         imageText.setText(contact.getBriefName());
