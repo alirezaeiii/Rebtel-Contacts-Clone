@@ -8,8 +8,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
 
-import java.util.Set;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,13 +36,13 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
         ButterKnife.bind(this, root);
     }
 
-    protected abstract int getBottomLineVisibility();
+    protected abstract boolean isBottomLineVisible();
 
     @Override
     public void bind() {
         Contact contact = contactItem.getContact();
         flagImageView.setImageResource(contact.getFlagResIds().iterator().next());
-        bottomLine.setVisibility(getBottomLineVisibility());
+        bottomLine.setVisibility(isBottomLineVisible() ? View.VISIBLE : View.GONE);
         ContactPhoneNumber phoneNumber = contact.getPhoneNumbers().iterator().next();
         phoneNumberType.setText(phoneNumber.getTypeLabel());
         contactNameView.setText(contact.getName());

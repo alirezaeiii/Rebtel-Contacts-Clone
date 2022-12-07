@@ -5,8 +5,7 @@ import android.view.View
 class ContactMultipleViewHolder(root: View, clickListener: ClickListener) :
     BaseContactMultipleViewHolder(root, clickListener) {
 
-    override fun getBottomLineVisibility() =
-        if (contactItem.contact!!.showBottomLine) View.VISIBLE else View.GONE
+    override fun isBottomLineVisible() = contactItem.contact!!.showBottomLine
 
-    override fun getShowChildBottomLine() = contactItem.contact!!.showChildBottomLine
+    override fun isChildBottomLineVisible() = contactItem.contact!!.showChildBottomLine
 }

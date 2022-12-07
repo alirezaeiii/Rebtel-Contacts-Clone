@@ -50,9 +50,9 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
         ButterKnife.bind(this, root);
     }
 
-    protected abstract int getBottomLineVisibility();
+    protected abstract boolean isBottomLineVisible();
 
-    protected abstract boolean getShowChildBottomLine();
+    protected abstract boolean isChildBottomLineVisible();
 
     @Override
     public void bind() {
@@ -68,7 +68,7 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
             imageView.setImageResource(flagResId);
             flagItem.addView(imageView);
         }
-        bottomLine.setVisibility(getBottomLineVisibility());
+        bottomLine.setVisibility(isBottomLineVisible() ? View.VISIBLE : View.GONE);
         subItem.removeAllViews();
         Set<ContactPhoneNumber> numbers = contact.getPhoneNumbers();
         lineNumber.setText(String.valueOf(numbers.size()));
@@ -84,7 +84,7 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
             childViewHolder.numberType.setText(phoneNumber.getTypeLabel());
             childViewHolder.flagImageView.setImageResource(phoneNumber.getFlagResId());
 
-            if (getShowChildBottomLine()) {
+            if (isChildBottomLineVisible()) {
                 childViewHolder.childBottomLine.setVisibility(View.VISIBLE);
                 childViewHolder.childTopLine.setVisibility(View.GONE);
             } else {

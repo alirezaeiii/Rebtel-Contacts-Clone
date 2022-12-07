@@ -4,5 +4,5 @@ import android.view.View
 
 class SearchContactViewHolder(root: View): BaseContactViewHolder(root) {
 
-    override fun getBottomLineVisibility() = View.VISIBLE
+    override fun isBottomLineVisible() = true
 }
