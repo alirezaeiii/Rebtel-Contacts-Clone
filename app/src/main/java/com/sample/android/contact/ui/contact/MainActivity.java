@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                mTriangle.setPressed(false);
             }
 
             @Override
@@ -85,18 +86,22 @@ public class MainActivity extends AppCompatActivity {
                     if (selectedPosition == tabIndex) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             startClickTime = Calendar.getInstance().getTimeInMillis();
-                           setTrianglePressed(true, 100);
+                            setTrianglePressed(true, 100);
                         } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
                             mTriangle.setPressed(false);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
                             long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                            if(clickDuration < MAX_CLICK_DURATION) {
+                            if (clickDuration < MAX_CLICK_DURATION) {
                                 mHandler.removeCallbacksAndMessages(null);
                                 mTriangle.setPressed(true);
                                 setTrianglePressed(false, 50);
                             } else {
                                 mTriangle.setPressed(false);
                             }
+                        } else if (v.isPressed()) {
+                            mTriangle.setPressed(true);
+                        } else {
+                            mTriangle.setPressed(false);
                         }
                     }
                     return false;
