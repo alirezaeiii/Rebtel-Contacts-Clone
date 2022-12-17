@@ -98,11 +98,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 mTriangle.setPressed(false);
                             }
-                        } else if (v.isPressed()) {
-                            mTriangle.setPressed(true);
-                        } else {
-                            mTriangle.setPressed(false);
-                        }
+                        } else mTriangle.setPressed(v.isPressed());
                     }
                     return false;
                 }
