@@ -1,6 +1,9 @@
 package com.sample.android.contact.util;
 
 import androidx.viewpager.widget.ViewPager;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -47,12 +50,14 @@ public class TabIndicatorFollower {
                         }
 
                         final View tabView = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(position);
-                        final int tabWidth = tabView.getMeasuredWidth();
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            final int tabWidth = tabView.getMeasuredWidth();
 
-                        float x = tabView.getLeft() + tabWidth * positionOffset;
-                        x += (tabWidth / 2f - indicatorView.getWidth() / 2f);
+                            float x = tabView.getLeft() + tabWidth * positionOffset;
+                            x += (tabWidth / 2f - indicatorView.getWidth() / 2f);
 
-                        indicatorView.setX(x);
+                            indicatorView.setX(x);
+                        });
                     }
                 }
             });
