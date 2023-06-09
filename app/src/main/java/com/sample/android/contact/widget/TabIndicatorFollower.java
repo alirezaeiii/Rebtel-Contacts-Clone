@@ -1,4 +1,4 @@
-package com.sample.android.contact.util;
+package com.sample.android.contact.widget;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -6,8 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.sample.android.contact.widget.ListenableTabLayout;
 
 public class TabIndicatorFollower {
 

@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.MainPagerItem;
 import com.sample.android.contact.ui.adapter.MainPagerAdapter;
-import com.sample.android.contact.util.TabIndicatorFollower;
+import com.sample.android.contact.widget.TabIndicatorFollower;
 import com.sample.android.contact.widget.ListenableTabLayout;
 
 import java.util.Calendar;
