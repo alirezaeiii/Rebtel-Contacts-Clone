@@ -41,7 +41,6 @@ public class ContactsFragment extends Fragment {
 
     private final List<ContactItem> mSearchedContacts = new ArrayList<>();
 
-    @Inject
     public ContactsFragment() {
         // Requires empty public constructor
     }

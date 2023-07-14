@@ -10,13 +10,10 @@ import androidx.fragment.app.Fragment;
 
 import com.sample.android.contact.R;
 
-import javax.inject.Inject;
-
 public class DialpadFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     private EditText digits;
 
-    @Inject
     public DialpadFragment() {
         // Requires empty public constructor
     }
