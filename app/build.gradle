@@ -13,8 +13,8 @@ android {
         applicationId "com.sample.android.contact"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 10
-        versionName "1.0.6"
+        versionCode 11
+        versionName "1.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.3'
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.10.2'
-    implementation 'io.github.ali-rezaei:padLayout:1.1.1'
+    implementation 'io.github.ali-rezaei:padLayout:1.1.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     //Android RX

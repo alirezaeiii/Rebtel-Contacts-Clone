@@ -9,7 +9,7 @@
     <dimen name="dimen_child_contact_item_height">48dp</dimen>
     <dimen name="dimen_recycler_view_spacing">48dp</dimen>
     <dimen name="dialpad_key_number_margin_bottom">1dp</dimen>
-    <dimen name="dialpad_key_numbers_size">36sp</dimen>
+    <dimen name="dialpad_key_numbers_size">46sp</dimen>
     <dimen name="dialpad_key_letters_size">12sp</dimen>
     <dimen name="dimen_triangle_bottom_margin">-2dp</dimen>
     <dimen name="contact_separator_height">32dp</dimen>

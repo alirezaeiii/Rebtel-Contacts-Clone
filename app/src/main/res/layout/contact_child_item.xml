@@ -28,6 +28,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/flagImageView"
+            android:fontFamily="@font/exo2_regular"
             android:gravity="center"
             android:textSize="13sp"
             tools:text="+989121895634" />
@@ -38,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="@font/exo2_regular"
             android:gravity="center"
             android:paddingEnd="8dp"
             android:textSize="13sp"
@@ -54,6 +55,6 @@
 
     <View
         android:id="@+id/child_top_line"
-        style="@style/LineStyle"/>
+        style="@style/LineStyle" />
 
 </FrameLayout>
