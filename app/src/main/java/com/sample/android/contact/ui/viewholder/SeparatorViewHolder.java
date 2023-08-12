@@ -22,6 +22,6 @@ public class SeparatorViewHolder extends BaseViewHolder {
 
     @Override
     public void bind() {
-        separatorText.setText(String.valueOf(contactItem.getContactSeparator()));
+        separatorText.setText(contactItem.getContactSeparator());
     }
 }

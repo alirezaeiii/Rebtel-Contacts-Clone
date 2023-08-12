@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class ContactItem @JvmOverloads constructor(
         var contact: Contact? = null,
-        var contactSeparator: Char? = null
+        var contactSeparator: String? = null
 ) : Parcelable
 
 @Parcelize
