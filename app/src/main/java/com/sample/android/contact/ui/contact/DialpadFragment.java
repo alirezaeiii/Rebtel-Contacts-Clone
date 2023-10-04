@@ -1,6 +1,7 @@
 package com.sample.android.contact.ui.contact;
 
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
         deleteButton.setOnLongClickListener(this);
         digits = root.findViewById(R.id.digits);
         digits.setShowSoftInputOnFocus(false);
+        digits.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         return root;
     }
