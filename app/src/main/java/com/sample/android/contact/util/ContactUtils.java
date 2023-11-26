@@ -109,7 +109,7 @@ public class ContactUtils {
                 Set<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
                 Set<Integer> flagResIds = prevContact.getFlagResIds();
                 if (numbers.size() == 1) {
-                    if(!numbers.iterator().next().equals(phoneNumber)) {
+                    if (!numbers.contains(phoneNumber)) {
                         prevContact.setContactType(ContactType.MULTIPLE);
                     }
                     Iterator<ContactPhoneNumber> numberIterator = numbers.iterator();
