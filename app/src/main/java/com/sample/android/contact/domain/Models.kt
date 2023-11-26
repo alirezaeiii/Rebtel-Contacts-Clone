@@ -18,7 +18,8 @@ class Contact @JvmOverloads constructor(
         // State of the item
         var isExpanded: Boolean = false,
         var showBottomLine: Boolean = true,
-        var showChildBottomLine: Boolean = true
+        var showChildBottomLine: Boolean = true,
+        var contactType: ContactType = ContactType.SINGLE
 ) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
@@ -53,4 +54,9 @@ class ContactPhoneNumber @JvmOverloads constructor(
     override fun hashCode(): Int {
         return javaClass.hashCode()
     }
+}
+
+enum class ContactType {
+    SINGLE,
+    MULTIPLE
 }

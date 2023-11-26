@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
+import com.sample.android.contact.domain.ContactType;
 import com.sample.android.contact.ui.viewholder.BaseContactMultipleViewHolder;
 import com.sample.android.contact.ui.viewholder.BaseViewHolder;
 import com.sample.android.contact.ui.viewholder.ContactMultipleViewHolder;
@@ -77,7 +78,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public int getItemViewType(int position) {
         ContactItem contactItem = mContacts.get(position);
         if (contactItem.getContactSeparator() == null) {
-            if (contactItem.getContact().getPhoneNumbers().size() == 1) {
+            if (contactItem.getContact().getContactType() == ContactType.SINGLE) {
                 if (mShowSeparator) {
                     return TYPE_CONTACT;
                 }
