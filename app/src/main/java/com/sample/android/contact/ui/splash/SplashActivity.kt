@@ -6,19 +6,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.contact.Application
 import com.sample.android.contact.R
-import com.sample.android.contact.domain.ContactItem
+import com.sample.android.contact.databinding.ActivitySplashBinding
 import com.sample.android.contact.ui.contact.MainActivity
 import com.sample.android.contact.util.Resource
 import com.sample.android.contact.viewmodels.SplashViewModel
-import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
 @SuppressLint("CustomSplashScreen")
@@ -34,9 +30,10 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (applicationContext as Application).applicationComponent.inject(this)
-        setContentView(R.layout.activity_splash)
+        val binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val versionName = packageManager.getPackageInfo(packageName, 0).versionName
-        tv_splash_app_version.text = getString(R.string.splash_app_version, versionName)
+        binding.tvSplashAppVersion.text = getString(R.string.splash_app_version, versionName)
 
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -49,13 +46,13 @@ class SplashActivity : AppCompatActivity() {
             viewModel.loadContacts()
         }
 
-        viewModel.liveData.observe(this, Observer<Resource<List<ContactItem>>> {
+        viewModel.liveData.observe(this) {
             if (it is Resource.Success) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-        })
+        }
     }
 
     override fun onRequestPermissionsResult(
