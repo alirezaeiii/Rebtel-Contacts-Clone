@@ -35,7 +35,8 @@ public class ContactsFragment extends Fragment {
     @Inject
     ContactsViewModel.Factory mFactory;
 
-    private ContactsAdapter mAdapter;
+    @Inject
+    ContactsAdapter mAdapter;
 
     private List<ContactItem> mContacts;
 
@@ -61,7 +62,6 @@ public class ContactsFragment extends Fragment {
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        mAdapter = new ContactsAdapter();
         binding.recyclerView.setAdapter(mAdapter);
         binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
 

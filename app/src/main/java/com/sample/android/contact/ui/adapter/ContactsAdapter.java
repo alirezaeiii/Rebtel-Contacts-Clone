@@ -28,6 +28,8 @@ import com.sample.android.contact.widget.HeaderItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements BaseContactMultipleViewHolder.ClickListener,
         HeaderItemDecoration.StickyHeaderInterface {
@@ -42,6 +44,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private RecyclerView.SmoothScroller mSmoothScroller;
     private boolean mShowSeparator;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    @Inject
+    public ContactsAdapter() {
+        // Requires empty public constructor
+    }
 
     @NonNull
     @Override
