@@ -8,13 +8,13 @@ androidExtensions {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.sample.android.contact"
         minSdkVersion 21
-        targetSdkVersion 32
-        versionCode 11
-        versionName "1.0.7"
+        targetSdkVersion 33
+        versionCode 12
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
