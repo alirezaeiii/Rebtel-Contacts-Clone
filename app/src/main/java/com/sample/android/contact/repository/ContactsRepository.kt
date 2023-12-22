@@ -35,7 +35,7 @@ class ContactsRepository @Inject constructor(
                     null,
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME +
                             " COLLATE UNICODE ASC")
-        }.flatMap { cursor ->
+        }.switchMap { cursor ->
             composeObservable { ContactUtils.getContacts(cursor, context) }
                     .doOnComplete { cursor.close() }
         }.subscribeOn(schedulerProvider.io())
@@ -50,5 +50,5 @@ class ContactsRepository @Inject constructor(
     }
 
     private inline fun <T> composeObservable(crossinline task: () -> T): Observable<T> =
-            Observable.fromCallable<T> { task() }
+            Observable.fromCallable { task() }
 }
