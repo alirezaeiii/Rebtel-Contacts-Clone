@@ -1,60 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/contact_selector"
-    android:clickable="true"
-    android:focusable="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/contact_selector"
+        android:clickable="true"
+        android:focusable="true">
 
-        <ImageView
-            android:id="@+id/flagImageView"
-            android:layout_width="@dimen/dimen_flag_image_view_width"
-            android:layout_height="@dimen/dimen_flag_image_view_height"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dimen_flag_image_view_margin_end"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/flag_sweden" />
-
-        <TextView
-            android:id="@+id/contact_number"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/flagImageView"
-            android:fontFamily="@font/exo2_regular"
-            android:gravity="center"
-            android:textSize="13sp"
-            tools:text="+989121895634" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:fontFamily="@font/exo2_regular"
-            android:gravity="center"
-            android:paddingEnd="8dp"
-            android:textSize="13sp"
-            tools:ignore="RelativeOverlap,RtlSymmetry"
-            tools:text="Mobile" />
+            <ImageView
+                android:id="@+id/flagImageView"
+                android:layout_width="@dimen/dimen_flag_image_view_width"
+                android:layout_height="@dimen/dimen_flag_image_view_height"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dimen_flag_image_view_margin_end"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/flag_sweden" />
+
+            <TextView
+                android:id="@+id/contact_number"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/flagImageView"
+                android:fontFamily="@font/exo2_regular"
+                android:gravity="center"
+                android:textSize="13sp"
+                tools:text="+989121895634" />
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/exo2_regular"
+                android:gravity="center"
+                android:paddingEnd="8dp"
+                android:textSize="13sp"
+                tools:ignore="RelativeOverlap,RtlSymmetry"
+                tools:text="Mobile" />
+
+            <View
+                android:id="@+id/child_bottom_line"
+                style="@style/LineStyle"
+                android:layout_alignParentBottom="true" />
+
+        </RelativeLayout>
 
         <View
-            android:id="@+id/child_bottom_line"
-            style="@style/LineStyle"
-            android:layout_alignParentBottom="true" />
+            android:id="@+id/child_top_line"
+            style="@style/LineStyle" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
-    <View
-        android:id="@+id/child_top_line"
-        style="@style/LineStyle" />
-
-</FrameLayout>
+</layout>

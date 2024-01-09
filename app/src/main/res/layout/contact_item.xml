@@ -1,93 +1,98 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/contact_selector"
-    android:clickable="true"
-    android:focusable="true"
-    android:minHeight="64dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/image_text"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/contact_circle"
-        android:fontFamily="@font/exo2_regular"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:text="A.R" />
-
-    <TextView
-        android:id="@+id/contact_name"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/exo2_bold"
-        android:maxLines="1"
-        android:paddingStart="16dp"
-        android:textColor="@color/color4"
-        android:textSize="17sp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@id/phone_type"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/image_text"
-        tools:ignore="RtlSymmetry"
-        tools:text="Ali Rezaei" />
+        android:background="@drawable/contact_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="64dp">
 
-    <ImageView
-        android:id="@+id/flagItem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="@dimen/dimen_flag_image_view_margin_end"
-        app:layout_constraintBottom_toBottomOf="@id/phone_number"
-        app:layout_constraintEnd_toStartOf="@id/phone_number"
-        app:layout_constraintStart_toStartOf="@+id/contact_name"
-        app:layout_constraintTop_toTopOf="@id/phone_number"
-        tools:ignore="RtlSymmetry, contentDescription"
-        tools:src="@drawable/flag_iran" />
+        <TextView
+            android:id="@+id/image_text"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/contact_circle"
+            android:fontFamily="@font/exo2_regular"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            tools:text="A.R" />
 
-    <TextView
-        android:id="@+id/phone_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:fontFamily="@font/exo2_regular"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@id/contact_name"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:text="+989121895634" />
+        <TextView
+            android:id="@+id/contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/exo2_bold"
+            android:maxLines="1"
+            android:paddingStart="16dp"
+            android:textColor="@color/color4"
+            android:textSize="17sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@id/phone_type"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/image_text"
+            tools:ignore="RtlSymmetry"
+            tools:text="Ali Rezaei" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        <ImageView
+            android:id="@+id/flagItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="@dimen/dimen_flag_image_view_margin_end"
+            app:layout_constraintBottom_toBottomOf="@id/phone_number"
+            app:layout_constraintEnd_toStartOf="@id/phone_number"
+            app:layout_constraintStart_toStartOf="@+id/contact_name"
+            app:layout_constraintTop_toTopOf="@id/phone_number"
+            tools:ignore="RtlSymmetry, contentDescription"
+            tools:src="@drawable/flag_iran" />
 
-    <TextView
-        android:id="@+id/phone_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/exo2_regular"
-        android:paddingEnd="8dp"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:ignore="RtlSymmetry"
-        tools:text="Mobile" />
+        <TextView
+            android:id="@+id/phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:fontFamily="@font/exo2_regular"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@id/contact_name"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            tools:text="+989121895634" />
 
-    <View
-        android:id="@+id/bottomLine"
-        style="@style/LineStyle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_text" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/phone_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo2_regular"
+            android:paddingEnd="8dp"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            tools:ignore="RtlSymmetry"
+            tools:text="Mobile" />
+
+        <View
+            android:id="@+id/bottomLine"
+            style="@style/LineStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -20,7 +20,6 @@ A sample to showcase a customized contact list divided into sections with group 
    * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) is lifecycle-aware, meaning it respects the lifecycle of other app components updating app component observers that are in an active lifecycle state.
 * [Dagger](https://github.com/google/dagger) is a fully static, compile-time dependency injection framework for Java, Kotlin, and Android.
 * [RxJava](https://github.com/ReactiveX/RxJava) is a library for composing asynchronous code using observable sequences.
-* [Butterknife](https://github.com/JakeWharton/butterknife) which Binds Android views and callbacks to fields and methods.
 * [libphonenumber](https://github.com/google/libphonenumber) Google library for parsing, formatting, and validating international phone numbers.
 * [Dialpad-CustomView](https://github.com/Ali-Rezaei/CharityLayout) is a Custom ViewGroup that lays out child views with equal distance.
 

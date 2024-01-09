@@ -1,27 +1,22 @@
 package com.sample.android.contact.ui.viewholder;
 
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.sample.android.contact.R;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.sample.android.contact.databinding.ContactSeparatorBinding;
 
 public class SeparatorViewHolder extends BaseViewHolder {
 
-    @BindView(R.id.separator_text)
-    TextView separatorText;
+    private final ContactSeparatorBinding binding;
 
     public SeparatorViewHolder(@NonNull View root) {
         super(root);
-        ButterKnife.bind(this, root);
+        binding = ContactSeparatorBinding.bind(root);
     }
 
     @Override
     public void bind() {
-        separatorText.setText(contactItem.getContactSeparator());
+        binding.separatorText.setText(contactItem.getContactSeparator());
     }
 }

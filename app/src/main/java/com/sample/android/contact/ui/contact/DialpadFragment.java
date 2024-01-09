@@ -5,15 +5,15 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
 import com.sample.android.contact.R;
+import com.sample.android.contact.databinding.FragmentDialpadBinding;
 
 public class DialpadFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
-    private EditText digits;
+    private FragmentDialpadBinding mBinding;
 
     public DialpadFragment() {
         // Requires empty public constructor
@@ -23,26 +23,25 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dialpad, container, false);
-        root.findViewById(R.id.button1).setOnClickListener(this);
-        root.findViewById(R.id.button2).setOnClickListener(this);
-        root.findViewById(R.id.button3).setOnClickListener(this);
-        root.findViewById(R.id.button4).setOnClickListener(this);
-        root.findViewById(R.id.button5).setOnClickListener(this);
-        root.findViewById(R.id.button6).setOnClickListener(this);
-        root.findViewById(R.id.button7).setOnClickListener(this);
-        root.findViewById(R.id.button8).setOnClickListener(this);
-        root.findViewById(R.id.button9).setOnClickListener(this);
-        root.findViewById(R.id.button10).setOnClickListener(this);
-        root.findViewById(R.id.button12).setOnClickListener(this);
-        View button11 = root.findViewById(R.id.button11);
-        button11.setOnClickListener(this);
-        button11.setOnLongClickListener(this);
-        View deleteButton = root.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(this);
-        deleteButton.setOnLongClickListener(this);
-        digits = root.findViewById(R.id.digits);
-        digits.setShowSoftInputOnFocus(false);
-        digits.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        mBinding = FragmentDialpadBinding.bind(root);
+        mBinding.button1.setOnClickListener(this);
+        mBinding.button2.setOnClickListener(this);
+        mBinding.button3.setOnClickListener(this);
+        mBinding.button4.setOnClickListener(this);
+        mBinding.button5.setOnClickListener(this);
+        mBinding.button6.setOnClickListener(this);
+        mBinding.button7.setOnClickListener(this);
+        mBinding.button8.setOnClickListener(this);
+        mBinding.button9.setOnClickListener(this);
+        mBinding.button10.setOnClickListener(this);
+        mBinding.button12.setOnClickListener(this);
+        mBinding.button11.setOnClickListener(this);
+        mBinding.button11.setOnLongClickListener(this);
+
+        mBinding.display.deleteButton.setOnClickListener(this);
+        mBinding.display.deleteButton.setOnLongClickListener(this);
+        mBinding.display.digits.setShowSoftInputOnFocus(false);
+        mBinding.display.digits.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         return root;
     }
@@ -51,46 +50,46 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button1:
-                digits.append("1");
+                mBinding.display.digits.append("1");
                 break;
             case R.id.button2:
-                digits.append("2");
+                mBinding.display.digits.append("2");
                 break;
             case R.id.button3:
-                digits.append("3");
+                mBinding.display.digits.append("3");
                 break;
             case R.id.button4:
-                digits.append("4");
+                mBinding.display.digits.append("4");
                 break;
             case R.id.button5:
-                digits.append("5");
+                mBinding.display.digits.append("5");
                 break;
             case R.id.button6:
-                digits.append("6");
+                mBinding.display.digits.append("6");
                 break;
             case R.id.button7:
-                digits.append("7");
+                mBinding.display.digits.append("7");
                 break;
             case R.id.button8:
-                digits.append("8");
+                mBinding.display.digits.append("8");
                 break;
             case R.id.button9:
-                digits.append("9");
+                mBinding.display.digits.append("9");
                 break;
             case R.id.button10:
-                digits.append("*");
+                mBinding.display.digits.append("*");
                 break;
             case R.id.button11:
-                digits.append("0");
+                mBinding.display.digits.append("0");
                 break;
             case R.id.button12:
-                digits.append("#");
+                mBinding.display.digits.append("#");
                 break;
             case R.id.deleteButton:
-                String input = digits.getText().toString();
+                String input = mBinding.display.digits.getText().toString();
                 if (!input.isEmpty()) {
                     input = input.substring(0, input.length() - 1);
-                    digits.setText(input);
+                    mBinding.display.digits.setText(input);
                 }
                 break;
         }
@@ -100,10 +99,10 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
     public boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.button11:
-                digits.append("+");
+                mBinding.display.digits.append("+");
                 break;
             case R.id.deleteButton:
-                digits.setText("");
+                mBinding.display.digits.setText("");
                 break;
         }
         return true;

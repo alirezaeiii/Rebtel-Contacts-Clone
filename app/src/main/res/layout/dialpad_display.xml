@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="60dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="60dp">
 
-        <com.sample.android.contact.widget.ResizingTextEditText
-            android:id="@+id/digits"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:cursorVisible="false"
-            android:fontFamily="@font/exo2_regular"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textSize="34sp"
-            app:resizing_text_min_size="24dp"
-            tools:text="+989121895634" />
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/btn_dialpad_key"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:src="@drawable/ic_backspace_24dp"
-            android:state_enabled="false"
-            tools:ignore="ContentDescription" />
+            <com.sample.android.contact.widget.ResizingTextEditText
+                android:id="@+id/digits"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:cursorVisible="false"
+                android:fontFamily="@font/exo2_regular"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textSize="34sp"
+                app:resizing_text_min_size="24dp"
+                tools:text="+989121895634" />
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_dialpad_key"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:src="@drawable/ic_backspace_24dp"
+                android:state_enabled="false"
+                tools:ignore="ContentDescription" />
 
-    <View
-        style="@style/LineStyle"
-        android:layout_gravity="bottom" />
+        </LinearLayout>
 
-</FrameLayout>
+        <View
+            style="@style/LineStyle"
+            android:layout_gravity="bottom" />
+
+    </FrameLayout>
+
+</layout>
