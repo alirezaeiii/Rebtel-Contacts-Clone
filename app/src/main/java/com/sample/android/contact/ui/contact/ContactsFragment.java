@@ -54,11 +54,10 @@ public class ContactsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_contacts, container, false);
+        FragmentContactsBinding binding = FragmentContactsBinding.inflate(inflater, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
-        FragmentContactsBinding binding = FragmentContactsBinding.bind(root);
         binding.setVariable(BR.vm, viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -110,7 +109,7 @@ public class ContactsFragment extends Fragment {
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
         viewModel.getLiveData().observe(this, contactsObserver);
 
-        return root;
+        return binding.getRoot();
     }
 
     private void search(String query) {

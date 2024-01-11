@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.sample.android.contact.R;
@@ -20,10 +21,9 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_dialpad, container, false);
-        mBinding = FragmentDialpadBinding.bind(root);
+        mBinding = FragmentDialpadBinding.inflate(inflater, container, false);
         mBinding.button1.setOnClickListener(this);
         mBinding.button2.setOnClickListener(this);
         mBinding.button3.setOnClickListener(this);
@@ -43,7 +43,7 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
         mBinding.display.digits.setShowSoftInputOnFocus(false);
         mBinding.display.digits.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
-        return root;
+        return mBinding.getRoot();
     }
 
     @Override
