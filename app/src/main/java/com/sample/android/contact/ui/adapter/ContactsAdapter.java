@@ -158,7 +158,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         View separatorView = header.findViewById(R.id.separator_view);
         if (mShowSeparator) {
             ContactItem contact = mContacts.get(headerPosition);
-            separatorText.setText(String.valueOf(contact.getContactSeparator()));
+            separatorText.setText(contact.getContactSeparator());
         } else {
             separatorView.setVisibility(View.GONE);
             separatorText.setVisibility(View.GONE);

@@ -42,7 +42,7 @@ class SplashActivity : AppCompatActivity() {
                 PERMISSIONS_REQUEST_READ_CONTACTS
             )
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else { // Android version is lesser than 6.0 or the permission is already granted.
+        } else { // Android version is less than 6.0 or the permission is already granted.
             viewModel.loadContacts()
         }
 
