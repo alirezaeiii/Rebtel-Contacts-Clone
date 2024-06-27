@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
+    private final int TRIANGLE_DELAY_PRESS = 50;
+
     private ActivityMainBinding mBinding;
 
     private int selectedPosition = 0;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.viewPager.setAdapter(pagerAdapter);
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
         TabIndicatorFollower.setupWith(mBinding.tabLayout, mBinding.triangle);
-        mHandler.postDelayed(() -> mBinding.tabLayout.getTabAt(0).select(), 10);
+        mHandler.post(() -> mBinding.tabLayout.getTabAt(0).select());
 
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 mBinding.tabLayout.setPressed(false);
+                if (selectedPosition == tab.getPosition()) {
+                    setTrianglePressed(false, TRIANGLE_DELAY_PRESS);
+                }
             }
 
             @Override
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     if (selectedPosition == tabIndex) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             startClickTime = Calendar.getInstance().getTimeInMillis();
-                            setTrianglePressed(true, 100);
+                            setTrianglePressed(true, TRIANGLE_DELAY_PRESS * 2);
                         } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
                             mBinding.triangle.setPressed(false);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             if (clickDuration < MAX_CLICK_DURATION) {
                                 mHandler.removeCallbacksAndMessages(null);
                                 mBinding.triangle.setPressed(true);
-                                setTrianglePressed(false, 50);
+                                setTrianglePressed(false, TRIANGLE_DELAY_PRESS);
                             } else {
                                 mBinding.triangle.setPressed(false);
                             }
