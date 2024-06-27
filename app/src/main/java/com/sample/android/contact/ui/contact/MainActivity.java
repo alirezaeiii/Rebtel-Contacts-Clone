@@ -20,9 +20,9 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private static final int TRIANGLE_DELAY_PRESS = 50;
 
-    private final int TRIANGLE_DELAY_PRESS = 50;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private ActivityMainBinding mBinding;
 
