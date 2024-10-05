@@ -26,8 +26,8 @@ class ContactsRepository @Inject constructor(
     val liveData: LiveData<Resource<List<ContactItem>>>
         get() = _liveData
 
-    fun loadContacts() {
-        _liveData.value = Resource.Loading()
+    fun loadContacts(isRefreshing: Boolean = false) {
+        _liveData.value = Resource.Loading(isRefreshing)
         composeObservable {
             context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     PROJECTION,
@@ -46,7 +46,7 @@ class ContactsRepository @Inject constructor(
 
     fun refreshContacts() {
         compositeDisposable.clear()
-        loadContacts()
+        loadContacts(true)
     }
 
     private inline fun <T> composeObservable(crossinline task: () -> T): Observable<T> =

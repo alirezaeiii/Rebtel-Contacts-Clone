@@ -43,7 +43,7 @@
                     android:queryHint="@string/search_hint"
                     android:theme="@style/SearchViewStyle"
                     android:transitionGroup="true"
-                    app:showData="@{vm.liveData}"/>
+                    app:showData="@{vm.liveData}" />
 
                 <FrameLayout
                     android:layout_width="96dp"
@@ -79,8 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/dimen_recycler_view_spacing"
                 android:clipToPadding="false"
-                app:layoutManager="LinearLayoutManager"
-                app:showData="@{vm.liveData}" />
+                app:layoutManager="LinearLayoutManager" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -88,8 +87,7 @@
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:showLoading="@{vm.liveData}" />
+            android:layout_gravity="center" />
 
     </com.sample.android.contact.widget.NestedCoordinatorLayout>
 

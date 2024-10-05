@@ -42,10 +42,6 @@ public class ContactsFragment extends Fragment {
 
     private final List<ContactItem> mSearchedContacts = new ArrayList<>();
 
-    public ContactsFragment() {
-        // Requires empty public constructor
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -65,10 +61,7 @@ public class ContactsFragment extends Fragment {
         binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
-        binding.swipeRefresh.setOnRefreshListener(() -> {
-            viewModel.refresh();
-            binding.swipeRefresh.setRefreshing(false);
-        });
+        binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -101,9 +94,19 @@ public class ContactsFragment extends Fragment {
 
         // Create the observer which updates the UI.
         final Observer<Resource<List<ContactItem>>> contactsObserver = resource -> {
-            if (resource instanceof Resource.Success) {
+            if (resource instanceof Resource.Loading) {
+                if (((Resource.Loading) resource).isRefreshing()) {
+                    binding.swipeRefresh.setRefreshing(true);
+                    binding.progressBar.setVisibility(View.GONE);
+                } else {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    binding.swipeRefresh.setRefreshing(false);
+                }
+            } else {
                 mContacts = ((Resource.Success<List<ContactItem>>) resource).getData();
                 mAdapter.setItems(mContacts, true);
+                binding.progressBar.setVisibility(View.GONE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         };
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.

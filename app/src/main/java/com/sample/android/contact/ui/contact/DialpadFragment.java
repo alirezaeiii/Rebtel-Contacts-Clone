@@ -16,10 +16,6 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
 
     private FragmentDialpadBinding mBinding;
 
-    public DialpadFragment() {
-        // Requires empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
