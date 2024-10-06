@@ -73,7 +73,7 @@ public class ContactsFragment extends Fragment {
                     binding.searchBack.setVisibility(View.VISIBLE);
                     binding.swipeRefresh.setRefreshing(false);
                     binding.swipeRefresh.setEnabled(false);
-                    viewModel.clear();
+                    viewModel.clearJob();
                     search(query);
                 }
                 return true;

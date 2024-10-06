@@ -18,7 +18,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
         repository.refreshContacts()
     }
 
-    fun clear() {
+    fun clearJob() {
         repository.clearDisposable()
     }
 
