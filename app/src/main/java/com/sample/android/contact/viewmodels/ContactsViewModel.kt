@@ -1,11 +1,8 @@
 package com.sample.android.contact.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sample.android.contact.domain.ContactItem
 import com.sample.android.contact.repository.ContactsRepository
-import com.sample.android.contact.util.Resource
 import javax.inject.Inject
 
 class ContactsViewModel(private val repository: ContactsRepository) : BaseViewModel(repository) {
@@ -19,6 +16,10 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
 
     fun refresh() {
         repository.refreshContacts()
+    }
+
+    fun clear() {
+        repository.clearDisposable()
     }
 
     /**

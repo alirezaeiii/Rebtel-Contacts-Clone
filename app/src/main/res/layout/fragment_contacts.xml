@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.contact.ContactsFragment">
 
-    <data>
-
-        <variable
-            name="vm"
-            type="com.sample.android.contact.viewmodels.ContactsViewModel" />
-    </data>
-
     <com.sample.android.contact.widget.NestedCoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -42,8 +35,7 @@
                     android:iconifiedByDefault="false"
                     android:queryHint="@string/search_hint"
                     android:theme="@style/SearchViewStyle"
-                    android:transitionGroup="true"
-                    app:showData="@{vm.liveData}" />
+                    android:transitionGroup="true" />
 
                 <FrameLayout
                     android:layout_width="96dp"

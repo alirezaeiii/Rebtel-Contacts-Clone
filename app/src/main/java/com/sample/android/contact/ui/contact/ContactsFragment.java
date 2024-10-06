@@ -15,7 +15,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sample.android.contact.Application;
-import com.sample.android.contact.BR;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
@@ -54,8 +53,6 @@ public class ContactsFragment extends Fragment {
                              Bundle savedInstanceState) {
         FragmentContactsBinding binding = FragmentContactsBinding.inflate(inflater, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
-        binding.setVariable(BR.vm, viewModel);
-        binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.recyclerView.setAdapter(mAdapter);
         binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
@@ -74,7 +71,9 @@ public class ContactsFragment extends Fragment {
             public boolean onQueryTextChange(String query) {
                 if (!query.isEmpty()) {
                     binding.searchBack.setVisibility(View.VISIBLE);
+                    binding.swipeRefresh.setRefreshing(false);
                     binding.swipeRefresh.setEnabled(false);
+                    viewModel.clear();
                     search(query);
                 }
                 return true;
