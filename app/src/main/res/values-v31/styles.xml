@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:editTextColor">@color/color3</item>
-        <item name="android:windowBackground">@color/color_new_blue</item>
+        <item name="android:windowBackground">@color/color_background</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
     </style>
