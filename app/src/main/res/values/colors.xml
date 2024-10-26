@@ -8,6 +8,8 @@
     <color name="color2">#4D469AFA</color>
     <color name="color3">#737373</color>
     <color name="color4">#89000000</color>
+    <color name="color5">#3978FC</color>
+    <color name="color6">#ADD8E6</color>
 
     <color name="dialpad_primary_text_color">@color/color1</color>
     <color name="dialpad_secondary_text_color">@color/color3</color>
@@ -15,13 +17,14 @@
     <color name="dialpad_button_pressed">@color/color2</color>
     <color name="dialpad_icon_tint">@color/color4</color>
 
-    <color name="colorLine">#DCDCDC</color>
+    <color name="color_line">#DCDCDC</color>
     <color name="tab_pressed">#D3D3D3</color>
+    <color name="color_separator">@color/color6</color>
 
     <color name="call_button_default">#00cc00</color>
     <color name="call_button_pressed">#009900</color>
 
-    <color name="color_new_blue">#3978FC</color>
+    <color name="color_background">@color/color5</color>
     <color name="text_color_white">#ffffff</color>
     <color name="text_color_white_alpha_06">#96ffffff</color>
 </resources>

@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/contact_selector"
-            android:minHeight="64dp">
+            android:minHeight="80dp">
 
             <TextView
                 android:id="@+id/image_text"

@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:editTextColor">@color/color3</item>
-        <item name="android:windowBackground">@color/color_new_blue</item>
+        <item name="android:windowBackground">@color/color_background</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
@@ -18,7 +18,7 @@
     <style name="LineStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/colorLine</item>
+        <item name="android:background">@color/color_line</item>
     </style>
 
     <style name="PadLayoutStyle">

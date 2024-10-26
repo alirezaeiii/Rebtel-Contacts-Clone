@@ -9,7 +9,7 @@
         android:background="@drawable/contact_selector"
         android:clickable="true"
         android:focusable="true"
-        android:minHeight="64dp">
+        android:minHeight="80dp">
 
         <TextView
             android:id="@+id/image_text"
