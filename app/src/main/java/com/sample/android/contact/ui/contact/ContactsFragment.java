@@ -26,6 +26,7 @@ import com.sample.android.contact.widget.HeaderItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -116,10 +117,10 @@ public class ContactsFragment extends Fragment {
 
     private void search(String query) {
         mSearchedContacts.clear();
-        query = query.toLowerCase().trim();
         for (ContactItem contactItem : mContacts) {
             Contact contact = contactItem.getContact();
-            if (contact != null && contact.getName().toLowerCase().trim().contains(query)) {
+            if (contact != null && Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
+                    .matcher(contact.getName()).find()) {
                 mSearchedContacts.add(contactItem);
             }
         }
