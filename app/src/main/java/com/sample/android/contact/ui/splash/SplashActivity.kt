@@ -3,6 +3,7 @@ package com.sample.android.contact.ui.splash
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -32,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
         (applicationContext as Application).applicationComponent.inject(this)
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+        val versionName = packageManager.getPackageInfoCompat(packageName).versionName
         binding.tvSplashAppVersion.text = getString(R.string.splash_app_version, versionName)
 
         // Check the SDK version and whether the permission is already granted or not.
@@ -75,3 +76,10 @@ class SplashActivity : AppCompatActivity() {
 
 // Request code for READ_CONTACTS. It can be any number > 0.
 private const val PERMISSIONS_REQUEST_READ_CONTACTS = 100
+
+fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo =
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
+} else {
+    @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
+}

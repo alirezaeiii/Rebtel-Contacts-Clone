@@ -1,16 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
-
-androidExtensions {
-    experimental = true
-}
 
 android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.sample.android.contact"
+        namespace "com.sample.android.contact"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 14
@@ -24,8 +21,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     dataBinding {
         enabled = true

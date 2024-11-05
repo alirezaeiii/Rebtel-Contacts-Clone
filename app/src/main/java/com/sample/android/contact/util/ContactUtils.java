@@ -14,7 +14,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.domain.ContactType;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -110,7 +109,7 @@ public class ContactUtils {
                 Set<Integer> flagResIds = prevContact.getFlagResIds();
                 if (numbers.size() == 1) {
                     if (!numbers.contains(phoneNumber)) {
-                        prevContact.setContactType(ContactType.MULTIPLE);
+                        prevContact.setContactType(Contact.ContactType.MULTIPLE);
                     }
                     Iterator<ContactPhoneNumber> numberIterator = numbers.iterator();
                     ContactPhoneNumber firstPhoneNumber = numberIterator.next();
