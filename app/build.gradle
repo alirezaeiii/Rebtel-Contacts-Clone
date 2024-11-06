@@ -7,7 +7,6 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.sample.android.contact"
-        namespace "com.sample.android.contact"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 14
@@ -27,6 +26,7 @@ android {
     dataBinding {
         enabled = true
     }
+    namespace "com.sample.android.contact"
 }
 
 dependencies {
