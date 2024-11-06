@@ -86,7 +86,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public int getItemViewType(int position) {
         ContactItem contactItem = mContacts.get(position);
         if (isNotSeparator(contactItem)) {
-            if (contactItem.getContact().getContactType() == Contact.ContactType.SINGLE) {
+            if (contactItem.getContact().getType() == Contact.Type.SINGLE) {
                 if (mShowSeparator) {
                     return TYPE_CONTACT;
                 }
