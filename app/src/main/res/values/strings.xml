@@ -4,4 +4,13 @@
     <string name="dialpad">Dialpad</string>
     <string name="splash_app_version">v %s</string>
     <string name="permission_not_granted_msg">Until you grant the permission, we cannot display the names</string>
+    <string name="home">Home</string>
+    <string name="mobile">Mobile</string>
+    <string name="work">Work</string>
+    <string name="work_fax">Work Fax</string>
+    <string name="home_fax">Home Fax</string>
+    <string name="pager">Pager</string>
+    <string name="main">Main</string>
+    <string name="other">Other</string>
+    <string name="empty"></string>
 </resources>
