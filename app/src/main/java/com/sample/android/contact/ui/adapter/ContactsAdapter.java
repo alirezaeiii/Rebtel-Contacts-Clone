@@ -55,25 +55,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        switch (viewType) {
-            case TYPE_CONTACT:
-                return new ContactViewHolder(layoutInflater
-                        .inflate(R.layout.contact_item, parent, false));
-            case TYPE_SEARCH_CONTACT:
-                return new SearchContactViewHolder(layoutInflater
-                        .inflate(R.layout.contact_item, parent, false));
-            case TYPE_SEPARATOR:
-                return new SeparatorViewHolder(layoutInflater
-                        .inflate(R.layout.contact_separator, parent, false));
-            case TYPE_CONTACT_MULTIPLE:
-                return new ContactMultipleViewHolder(layoutInflater
-                        .inflate(R.layout.contact_multiple_items, parent, false), this);
-            case TYPE_SEARCH_CONTACT_MULTIPLE:
-                return new SearchContactMultipleViewHolder(layoutInflater
-                        .inflate(R.layout.contact_multiple_items, parent, false), this);
-            default:
-                throw new RuntimeException("You must supply a valid type for this adapter");
-        }
+        return switch (viewType) {
+            case TYPE_CONTACT -> new ContactViewHolder(layoutInflater
+                    .inflate(R.layout.contact_item, parent, false));
+            case TYPE_SEARCH_CONTACT -> new SearchContactViewHolder(layoutInflater
+                    .inflate(R.layout.contact_item, parent, false));
+            case TYPE_SEPARATOR -> new SeparatorViewHolder(layoutInflater
+                    .inflate(R.layout.contact_separator, parent, false));
+            case TYPE_CONTACT_MULTIPLE -> new ContactMultipleViewHolder(layoutInflater
+                    .inflate(R.layout.contact_multiple_items, parent, false), this);
+            case TYPE_SEARCH_CONTACT_MULTIPLE -> new SearchContactMultipleViewHolder(layoutInflater
+                    .inflate(R.layout.contact_multiple_items, parent, false), this);
+            default -> throw new RuntimeException("You must supply a valid type for this adapter");
+        };
     }
 
     @Override
