@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sample.android.contact.Application;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
@@ -43,8 +42,6 @@ public class ContactsFragment extends Fragment {
     private List<ContactItem> mContacts;
 
     private final List<ContactItem> mSearchedContacts = new ArrayList<>();
-
-    private final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -127,11 +124,11 @@ public class ContactsFragment extends Fragment {
                 if (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
                         .matcher(contact.getName()).find()) {
                     mSearchedContacts.add(contactItem);
-                } else if (contact.getPhoneNumbers() != null) {
+                }
+                if (contact.getPhoneNumbers() != null) {
                     for (ContactPhoneNumber phoneNumber : contact.getPhoneNumbers()) {
-                        if (phoneUtil.isPossibleNumber(phoneNumber.getNumber(), "") &&
-                                Pattern.compile(Pattern.quote(query.replaceAll("\\s+", ""))).matcher(
-                                        phoneNumber.getNumber().replaceAll("\\s+", "")).find()) {
+                        if (Pattern.compile(Pattern.quote(getCleanNumber(query))).matcher(
+                                        getCleanNumber(phoneNumber.getNumber())).find()) {
                             mSearchedContacts.add(contactItem);
                         }
                     }
@@ -139,5 +136,9 @@ public class ContactsFragment extends Fragment {
             }
         }
         mAdapter.setItems(mSearchedContacts, false);
+    }
+
+    private String getCleanNumber(String res) {
+        return res.replaceAll("\\s+", "").replaceAll("\\.", "");
     }
 }
