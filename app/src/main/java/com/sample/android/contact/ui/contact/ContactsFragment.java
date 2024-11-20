@@ -125,10 +125,12 @@ public class ContactsFragment extends Fragment {
                         .matcher(contact.getName()).find()) {
                     mSearchedContacts.add(contactItem);
                 }
-                if (contact.getPhoneNumbers() != null) {
+                query = getClean(query);
+                if (query.matches("^[+\\d]+$") &&
+                        contact.getPhoneNumbers() != null) {
                     for (ContactPhoneNumber phoneNumber : contact.getPhoneNumbers()) {
-                        if (Pattern.compile(Pattern.quote(getCleanNumber(query))).matcher(
-                                getCleanNumber(phoneNumber.getNumber())).find() &&
+                        if (Pattern.compile(Pattern.quote(query)).matcher(
+                                getClean(phoneNumber.getNumber())).find() &&
                                 !mSearchedContacts.contains(contactItem)) {
                             mSearchedContacts.add(contactItem);
 
@@ -140,7 +142,7 @@ public class ContactsFragment extends Fragment {
         mAdapter.setItems(mSearchedContacts, false);
     }
 
-    private String getCleanNumber(String res) {
+    private String getClean(String res) {
         return res.replaceAll("\\s+", "").replaceAll("\\.", "");
     }
 }
