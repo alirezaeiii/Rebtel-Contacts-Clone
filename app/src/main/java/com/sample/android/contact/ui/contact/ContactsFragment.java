@@ -14,11 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sample.android.contact.Application;
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
+import com.sample.android.contact.domain.ContactPhoneNumber;
 import com.sample.android.contact.ui.adapter.ContactsAdapter;
 import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
@@ -41,6 +43,8 @@ public class ContactsFragment extends Fragment {
     private List<ContactItem> mContacts;
 
     private final List<ContactItem> mSearchedContacts = new ArrayList<>();
+
+    private final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -119,9 +123,19 @@ public class ContactsFragment extends Fragment {
         mSearchedContacts.clear();
         for (ContactItem contactItem : mContacts) {
             Contact contact = contactItem.getContact();
-            if (contact != null && Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
-                    .matcher(contact.getName()).find()) {
-                mSearchedContacts.add(contactItem);
+            if (contact != null) {
+                if (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
+                        .matcher(contact.getName()).find()) {
+                    mSearchedContacts.add(contactItem);
+                } else if (contact.getPhoneNumbers() != null) {
+                    for (ContactPhoneNumber phoneNumber : contact.getPhoneNumbers()) {
+                        if (phoneUtil.isPossibleNumber(phoneNumber.getNumber(), "") &&
+                                Pattern.compile(Pattern.quote(query.replaceAll("\\s+", ""))).matcher(
+                                        phoneNumber.getNumber().replaceAll("\\s+", "")).find()) {
+                            mSearchedContacts.add(contactItem);
+                        }
+                    }
+                }
             }
         }
         mAdapter.setItems(mSearchedContacts, false);
