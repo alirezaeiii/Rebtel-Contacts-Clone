@@ -128,8 +128,10 @@ public class ContactsFragment extends Fragment {
                 if (contact.getPhoneNumbers() != null) {
                     for (ContactPhoneNumber phoneNumber : contact.getPhoneNumbers()) {
                         if (Pattern.compile(Pattern.quote(getCleanNumber(query))).matcher(
-                                        getCleanNumber(phoneNumber.getNumber())).find()) {
+                                getCleanNumber(phoneNumber.getNumber())).find() &&
+                                !mSearchedContacts.contains(contactItem)) {
                             mSearchedContacts.add(contactItem);
+
                         }
                     }
                 }
