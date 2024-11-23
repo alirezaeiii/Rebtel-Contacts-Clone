@@ -3,7 +3,8 @@
     <string name="search_hint">Search for a contact</string>
     <string name="dialpad">Dialpad</string>
     <string name="splash_app_version">v %s</string>
-    <string name="permission_not_granted_msg">Until you grant the permission, we cannot display the names</string>
+    <string name="permission_contact_not_granted_msg">Until you grant the permission, we cannot display the contacts</string>
+    <string name="permission_phone_call_not_granted_msg">Until you grant the permission, we cannot make phone call</string>
     <string name="home">Home</string>
     <string name="mobile">Mobile</string>
     <string name="work">Work</string>

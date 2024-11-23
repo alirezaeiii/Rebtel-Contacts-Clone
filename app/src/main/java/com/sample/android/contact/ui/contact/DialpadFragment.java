@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentDialpadBinding;
+import com.sample.android.contact.util.ContactUtils;
+
+import java.util.Objects;
 
 public class DialpadFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -33,6 +36,7 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
         mBinding.button12.setOnClickListener(this);
         mBinding.button11.setOnClickListener(this);
         mBinding.button11.setOnLongClickListener(this);
+        mBinding.callBtn.setOnClickListener(this);
 
         mBinding.display.deleteButton.setOnClickListener(this);
         mBinding.display.deleteButton.setOnLongClickListener(this);
@@ -87,6 +91,10 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
                     input = input.substring(0, input.length() - 1);
                     mBinding.display.digits.setText(input);
                 }
+                break;
+            case R.id.call_btn:
+                String phoneNumber = mBinding.display.digits.getText().toString();
+                ContactUtils.call(Objects.requireNonNull(getContext()), phoneNumber);
                 break;
         }
     }

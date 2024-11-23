@@ -3,7 +3,9 @@ package com.sample.android.contact.util;
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 
@@ -129,6 +131,12 @@ public class ContactUtils {
             prevContact.setShowChildBottomLine(false);
         }
         return contacts;
+    }
+
+    public static void call(Context context, String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        context.startActivity(intent);
     }
 
     /* Helper Methods */

@@ -13,6 +13,7 @@ import com.sample.android.contact.databinding.ContactChildItemBinding;
 import com.sample.android.contact.databinding.ContactMultipleItemsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
+import com.sample.android.contact.util.ContactUtils;
 
 import java.util.Set;
 
@@ -79,6 +80,7 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
             rlp.setMarginStart(phoneNumber.getStartMargin());
             childViewHolder.binding.relativeLayout.setLayoutParams(rlp);
             childViewHolder.binding.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
+            childViewHolder.binding.frameLayout.setOnClickListener(view -> ContactUtils.call(context, phoneNumber.getNumber()));
             binding.subItem.addView(childView);
         }
         binding.detail.setOnClickListener(view -> clickListener.onClick(getAdapterPosition()));
