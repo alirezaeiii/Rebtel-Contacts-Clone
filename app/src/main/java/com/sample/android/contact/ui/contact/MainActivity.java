@@ -51,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                mBinding.tabLayout.setPressed(false);
-                if (selectedPosition == tab.getPosition()) {
-                    setTrianglePressed(false, TRIANGLE_DELAY_PRESS);
-                }
+                setTrianglePressed(false, TRIANGLE_DELAY_PRESS);
             }
 
             @Override
@@ -64,13 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
         final View tabStrip = mBinding.tabLayout.getChildAt(0);
         int childCount = ((ViewGroup) tabStrip).getChildCount();
-        for (int i = 0; i < childCount; i++) {
+        for(int i = 0; i < childCount; i++) {
             View tabView = ((ViewGroup) tabStrip).getChildAt(i);
             final int tabIndex = i;
             tabView.setOnTouchListener(new View.OnTouchListener() {
 
                 private static final int MAX_CLICK_DURATION = 105;
                 private long startClickTime;
+                private boolean isDown = false;
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -78,7 +76,12 @@ public class MainActivity extends AppCompatActivity {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             startClickTime = Calendar.getInstance().getTimeInMillis();
                             setTrianglePressed(true, TRIANGLE_DELAY_PRESS * 2);
+                            isDown = true;
                         } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                            if(isDown) {
+                                mHandler.removeCallbacksAndMessages(null);
+                                isDown = false;
+                            }
                             mBinding.triangle.setPressed(false);
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
                             long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 mBinding.triangle.setPressed(false);
                             }
-                        } else mBinding.triangle.setPressed(v.isPressed());
+                        }
                     }
                     return false;
                 }
