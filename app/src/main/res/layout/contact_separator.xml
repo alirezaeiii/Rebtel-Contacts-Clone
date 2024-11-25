@@ -29,6 +29,20 @@
             app:layout_constraintTop_toTopOf="@+id/guideline"
             tools:text="A" />
 
+        <View
+            style="@style/LineStyle"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/separator_view" />
+
+        <View
+            style="@style/LineStyle"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="@id/separator_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
