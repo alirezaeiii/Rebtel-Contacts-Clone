@@ -157,6 +157,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         } else {
             separatorView.setVisibility(View.GONE);
             separatorText.setVisibility(View.GONE);
+            header.findViewById(R.id.separator_top_line).setVisibility(View.GONE);
+            header.findViewById(R.id.separator_bottom_line).setVisibility(View.GONE);
         }
     }
 

@@ -30,6 +30,7 @@
             tools:text="A" />
 
         <View
+            android:id="@+id/separator_top_line"
             style="@style/LineStyle"
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +38,7 @@
             app:layout_constraintTop_toTopOf="@id/separator_view" />
 
         <View
+            android:id="@+id/separator_bottom_line"
             style="@style/LineStyle"
             android:background="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="@id/separator_view"
