@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 mBinding.triangle.setPressed(false);
                             }
-                        }
+                        } else mBinding.triangle.setPressed(v.isPressed());
                     }
                     return false;
                 }
