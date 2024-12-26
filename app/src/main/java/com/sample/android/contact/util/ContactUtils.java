@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.util.Pair;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -47,59 +48,33 @@ public class ContactUtils {
 
         Contact prevContact = null;
         char previousFirstChar = 0;
-        while (cursor.moveToNext()) {
 
+        while (cursor.moveToNext()) {
             String name = cursor.getString(nameIndex);
             String number = cursor.getString(numberIndex);
             int type = cursor.getInt(typeIndex);
 
-            String numberType = type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM ?
-                    cursor.getString(typeLabelIndex) : getTypeValue(context, type);
+            String numberType = type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM
+                    ? cursor.getString(typeLabelIndex)
+                    : getTypeValue(context, type);
 
-            number = (!number.matches("000+([0-9]+)") &&
-                    number.startsWith("00")) ? "+" + number.substring(2) : number;
-            PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-
-            ContactPhoneNumber phoneNumber;
-            String regionCode = null;
-            try {
-                Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
-                regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
-                phoneNumber = new ContactPhoneNumber(phoneUtil.format(numberProto, INTERNATIONAL), numberType);
-            } catch (NumberParseException e) {
-                phoneNumber = new ContactPhoneNumber(number, numberType);
-            }
+            number = normalizePhoneNumber(number);
+            Pair<ContactPhoneNumber, String> result = parsePhoneNumber(number, numberType);
+            ContactPhoneNumber phoneNumber = result.first;
+            String regionCode = result.second;
 
             Contact contact = new Contact(name);
+            char nameFirstChar = getNameAccent(name).toUpperCase().charAt(0);
+
             if (!contact.equals(prevContact)) {
-                String nameAccent = getNameAccent(name);
-                char nameFirstChar = nameAccent.toUpperCase().charAt(0);
-                if (prevContact == null) {
-                    ContactItem contactItem = new ContactItem();
-                    contactItem.setContactSeparator(getContactSeparator(name));
-                    contacts.add(contactItem);
-                } else {
-                    if (Character.isLetter(nameFirstChar) && nameFirstChar != previousFirstChar) {
-                        ContactItem contactItem = new ContactItem();
-                        contactItem.setContactSeparator(getContactSeparator(name));
-                        contacts.add(contactItem);
-                    }
-                    if ((Character.isLetter(previousFirstChar) && previousFirstChar != nameFirstChar) ||
-                            (!Character.isLetter(previousFirstChar) && Character.isLetter(nameFirstChar)
-                                    && previousFirstChar != nameFirstChar)) {
-                        prevContact.setShowBottomLine(false);
-                    }
-                    if ((Character.isLetter(previousFirstChar) || Character.isLetter(nameFirstChar))
-                            && previousFirstChar != nameFirstChar) {
-                        prevContact.setShowChildBottomLine(false);
-                    }
-                }
+                processNewContact(contacts, name, nameFirstChar, prevContact, previousFirstChar);
 
                 Set<Integer> flagResIds = new LinkedHashSet<>();
-                flagResIds.add(getFlagResID(context, regionCode));
+                flagResIds.add(getFlagResID(context, null)); // Pass regionCode if needed
                 Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), flagResIds);
+
                 ContactItem contactItem = new ContactItem();
                 contactItem.setContact(contact);
 
@@ -107,23 +82,7 @@ public class ContactUtils {
                 previousFirstChar = nameFirstChar;
                 contacts.add(contactItem);
             } else {
-                Set<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
-                Set<Integer> flagResIds = prevContact.getFlagResIds();
-                if (numbers.size() == 1) {
-                    if (!numbers.contains(phoneNumber)) {
-                        prevContact.setType(Contact.Type.MULTIPLE);
-                    }
-                    Iterator<ContactPhoneNumber> numberIterator = numbers.iterator();
-                    ContactPhoneNumber firstPhoneNumber = numberIterator.next();
-                    firstPhoneNumber.setStartPadding((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
-                    firstPhoneNumber.setStartMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
-                    firstPhoneNumber.setFlagResId(flagResIds.iterator().next());
-                }
-                phoneNumber.setStartPadding((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
-                phoneNumber.setStartMargin(0);
-                phoneNumber.setFlagResId(getFlagResID(context, regionCode));
-                numbers.add(phoneNumber);
-                flagResIds.add(phoneNumber.getFlagResId());
+                updateExistingContact(prevContact, phoneNumber, context, regionCode);
             }
         }
         if (prevContact != null) {
@@ -140,6 +99,67 @@ public class ContactUtils {
     }
 
     /* Helper Methods */
+
+    private static String normalizePhoneNumber(String number) {
+        if (!number.matches("000+([0-9]+)") && number.startsWith("00")) {
+            return "+" + number.substring(2);
+        }
+        return number;
+    }
+
+    private static Pair<ContactPhoneNumber, String> parsePhoneNumber(String number, String numberType) {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        try {
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
+            String regionCode = phoneUtil.getRegionCodeForNumber(numberProto);
+            ContactPhoneNumber contactPhoneNumber = new ContactPhoneNumber(
+                    phoneUtil.format(numberProto, INTERNATIONAL),
+                    numberType
+            );
+            return new Pair<>(contactPhoneNumber, regionCode);
+        } catch (NumberParseException e) {
+            return new Pair<>(new ContactPhoneNumber(number, numberType), null);
+        }
+    }
+
+    private static void processNewContact(List<ContactItem> contacts, String name, char nameFirstChar, Contact prevContact, char previousFirstChar) {
+        ContactItem contactItem = new ContactItem();
+
+        if (prevContact == null || Character.isLetter(nameFirstChar) && nameFirstChar != previousFirstChar) {
+            contactItem.setContactSeparator(getContactSeparator(name));
+            contacts.add(contactItem);
+        }
+
+        if (prevContact != null) {
+            if ((Character.isLetter(previousFirstChar) && previousFirstChar != nameFirstChar) ||
+                    (!Character.isLetter(previousFirstChar) && Character.isLetter(nameFirstChar))) {
+                prevContact.setShowBottomLine(false);
+            }
+            if ((Character.isLetter(previousFirstChar) || Character.isLetter(nameFirstChar)) && previousFirstChar != nameFirstChar) {
+                prevContact.setShowChildBottomLine(false);
+            }
+        }
+    }
+
+    private static void updateExistingContact(Contact prevContact, ContactPhoneNumber phoneNumber, Context context, String regionCode) {
+        Set<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
+        Set<Integer> flagResIds = prevContact.getFlagResIds();
+
+        if (numbers.size() == 1 && !numbers.contains(phoneNumber)) {
+            prevContact.setType(Contact.Type.MULTIPLE);
+            Iterator<ContactPhoneNumber> numberIterator = numbers.iterator();
+            ContactPhoneNumber firstPhoneNumber = numberIterator.next();
+            firstPhoneNumber.setStartPadding((int) context.getResources().getDimension(R.dimen.dimen_frame_margin_default));
+            firstPhoneNumber.setStartMargin((int) context.getResources().getDimension(R.dimen.dimen_relative_margin_default));
+            firstPhoneNumber.setFlagResId(flagResIds.iterator().next());
+        }
+
+        phoneNumber.setStartPadding((int) context.getResources().getDimension(R.dimen.dimen_frame_margin));
+        phoneNumber.setStartMargin(0);
+        phoneNumber.setFlagResId(getFlagResID(context, regionCode));
+        numbers.add(phoneNumber);
+        flagResIds.add(phoneNumber.getFlagResId());
+    }
 
     private static String getContactSeparator(String name) {
         char ch = name.toUpperCase().charAt(0);
