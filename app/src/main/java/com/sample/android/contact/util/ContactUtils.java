@@ -70,7 +70,7 @@ public class ContactUtils {
                 processNewContact(contacts, name, nameFirstChar, prevContact, previousFirstChar);
 
                 Set<Integer> flagResIds = new LinkedHashSet<>();
-                flagResIds.add(getFlagResID(context, null)); // Pass regionCode if needed
+                flagResIds.add(getFlagResID(context, regionCode));
                 Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
                 numbers.add(phoneNumber);
                 contact = new Contact(name, numbers, getBriefName(name), flagResIds);
