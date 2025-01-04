@@ -6,14 +6,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class Contact @JvmOverloads constructor(
     val name: String,
-    val phoneNumbers: Set<ContactPhoneNumber>? = null,
-    val briefName: String? = null,
-    val flagResIds: Set<Int>? = null,
-    // State of the item
-    var isExpanded: Boolean = false,
+    val phoneNumbers: Set<ContactPhoneNumber>,
+    val briefName: String,
+    val flagResIds: Set<Int>,
     var showBottomLine: Boolean = true,
     var showChildBottomLine: Boolean = true,
-    var type: Type = Type.SINGLE
+    var type: Type = Type.SINGLE,
+    var isExpanded: Boolean = false
 ) : Parcelable {
 
     enum class Type {

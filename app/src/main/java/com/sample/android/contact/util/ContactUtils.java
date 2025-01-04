@@ -28,15 +28,15 @@ import java.util.regex.Pattern;
 
 public class ContactUtils {
 
+    private ContactUtils() {
+    }
+
     public static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
             ContactsContract.CommonDataKinds.Phone.TYPE,
             ContactsContract.CommonDataKinds.Phone.LABEL
     };
-
-    private ContactUtils() {
-    }
 
     public static List<ContactItem> getContacts(Cursor cursor, Context context) {
         List<ContactItem> contacts = new ArrayList<>();
@@ -145,13 +145,6 @@ public class ContactUtils {
         }
     }
 
-    private static void finalizePreviousContact(Contact prevContact) {
-        if (prevContact != null) {
-            prevContact.setShowBottomLine(false);
-            prevContact.setShowChildBottomLine(false);
-        }
-    }
-
     private static void updateExistingContact(Contact prevContact, ContactPhoneNumber phoneNumber, Context context, String regionCode) {
         Set<ContactPhoneNumber> numbers = prevContact.getPhoneNumbers();
         Set<Integer> flagResIds = prevContact.getFlagResIds();
@@ -170,6 +163,13 @@ public class ContactUtils {
         phoneNumber.setFlagResId(getFlagResID(context, regionCode));
         numbers.add(phoneNumber);
         flagResIds.add(phoneNumber.getFlagResId());
+    }
+
+    private static void finalizePreviousContact(Contact prevContact) {
+        if (prevContact != null) {
+            prevContact.setShowBottomLine(false);
+            prevContact.setShowChildBottomLine(false);
+        }
     }
 
     private static String getContactSeparator(String name) {
