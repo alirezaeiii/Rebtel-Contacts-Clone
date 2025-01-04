@@ -16,17 +16,6 @@ class Contact @JvmOverloads constructor(
     var type: Type = Type.SINGLE
 ) : Parcelable {
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is Contact) {
-            return false
-        }
-        return other.name == name
-    }
-
-    override fun hashCode(): Int {
-        return javaClass.hashCode()
-    }
-
     enum class Type {
         SINGLE,
         MULTIPLE

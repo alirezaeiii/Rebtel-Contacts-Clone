@@ -63,32 +63,27 @@ public class ContactUtils {
             ContactPhoneNumber phoneNumber = result.first;
             String regionCode = result.second;
 
-            Contact contact = new Contact(name);
             char nameFirstChar = getNameAccent(name).toUpperCase().charAt(0);
 
-            if (!contact.equals(prevContact)) {
-                processNewContact(contacts, name, nameFirstChar, prevContact, previousFirstChar);
+            if (prevContact == null) {
+                addSeparator(contacts, name);
 
-                Set<Integer> flagResIds = new LinkedHashSet<>();
-                flagResIds.add(getFlagResID(context, regionCode));
-                Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
-                numbers.add(phoneNumber);
-                contact = new Contact(name, numbers, getBriefName(name), flagResIds);
-
-                ContactItem contactItem = new ContactItem();
-                contactItem.setContact(contact);
-
-                prevContact = contact;
+                prevContact = processNewContact(contacts, context, regionCode, phoneNumber, name);
                 previousFirstChar = nameFirstChar;
-                contacts.add(contactItem);
+
+            } else if (!name.equals(prevContact.getName())) {
+                if (Character.isLetter(nameFirstChar) && nameFirstChar != previousFirstChar) {
+                    addSeparator(contacts, name);
+                }
+                processPreviousContact(nameFirstChar, prevContact, previousFirstChar);
+
+                prevContact = processNewContact(contacts, context, regionCode, phoneNumber, name);
+                previousFirstChar = nameFirstChar;
             } else {
                 updateExistingContact(prevContact, phoneNumber, context, regionCode);
             }
         }
-        if (prevContact != null) {
-            prevContact.setShowBottomLine(false);
-            prevContact.setShowChildBottomLine(false);
-        }
+        finalizePreviousContact(prevContact);
         return contacts;
     }
 
@@ -122,22 +117,38 @@ public class ContactUtils {
         }
     }
 
-    private static void processNewContact(List<ContactItem> contacts, String name, char nameFirstChar, Contact prevContact, char previousFirstChar) {
+    private static void addSeparator(List<ContactItem> contacts, String name) {
         ContactItem contactItem = new ContactItem();
+        contactItem.setContactSeparator(getContactSeparator(name));
+        contacts.add(contactItem);
+    }
 
-        if (prevContact == null || Character.isLetter(nameFirstChar) && nameFirstChar != previousFirstChar) {
-            contactItem.setContactSeparator(getContactSeparator(name));
-            contacts.add(contactItem);
+    private static Contact processNewContact(List<ContactItem> contacts, Context context, String regionCode, ContactPhoneNumber phoneNumber, String name) {
+        Set<Integer> flagResIds = new LinkedHashSet<>();
+        flagResIds.add(getFlagResID(context, regionCode));
+        Set<ContactPhoneNumber> numbers = new LinkedHashSet<>();
+        numbers.add(phoneNumber);
+        Contact contact = new Contact(name, numbers, getBriefName(name), flagResIds);
+        ContactItem contactItem = new ContactItem();
+        contactItem.setContact(contact);
+        contacts.add(contactItem);
+        return contact;
+    }
+
+    private static void processPreviousContact(char nameFirstChar, Contact prevContact, char previousFirstChar) {
+        if ((Character.isLetter(previousFirstChar) && previousFirstChar != nameFirstChar) ||
+                (!Character.isLetter(previousFirstChar) && Character.isLetter(nameFirstChar))) {
+            prevContact.setShowBottomLine(false);
         }
+        if ((Character.isLetter(previousFirstChar) || Character.isLetter(nameFirstChar)) && previousFirstChar != nameFirstChar) {
+            prevContact.setShowChildBottomLine(false);
+        }
+    }
 
+    private static void finalizePreviousContact(Contact prevContact) {
         if (prevContact != null) {
-            if ((Character.isLetter(previousFirstChar) && previousFirstChar != nameFirstChar) ||
-                    (!Character.isLetter(previousFirstChar) && Character.isLetter(nameFirstChar))) {
-                prevContact.setShowBottomLine(false);
-            }
-            if ((Character.isLetter(previousFirstChar) || Character.isLetter(nameFirstChar)) && previousFirstChar != nameFirstChar) {
-                prevContact.setShowChildBottomLine(false);
-            }
+            prevContact.setShowBottomLine(false);
+            prevContact.setShowChildBottomLine(false);
         }
     }
 
