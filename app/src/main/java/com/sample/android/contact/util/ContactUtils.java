@@ -66,14 +66,14 @@ public class ContactUtils {
             char nameFirstChar = getNameAccent(name).toUpperCase().charAt(0);
 
             if (prevContact == null) {
-                addSeparator(contacts, name);
+                addSeparator(contacts, nameFirstChar);
 
                 prevContact = processNewContact(contacts, context, regionCode, phoneNumber, name);
                 previousFirstChar = nameFirstChar;
 
             } else if (!name.equals(prevContact.getName())) {
                 if (Character.isLetter(nameFirstChar) && nameFirstChar != previousFirstChar) {
-                    addSeparator(contacts, name);
+                    addSeparator(contacts, nameFirstChar);
                 }
                 processPreviousContact(nameFirstChar, prevContact, previousFirstChar);
 
@@ -117,9 +117,10 @@ public class ContactUtils {
         }
     }
 
-    private static void addSeparator(List<ContactItem> contacts, String name) {
+    private static void addSeparator(List<ContactItem> contacts, char nameFirstChar) {
         ContactItem contactItem = new ContactItem();
-        contactItem.setContactSeparator(getContactSeparator(name));
+        String separator = String.valueOf(Character.isLetter(nameFirstChar) ? nameFirstChar : '&');
+        contactItem.setContactSeparator(separator);
         contacts.add(contactItem);
     }
 
@@ -170,11 +171,6 @@ public class ContactUtils {
             prevContact.setShowBottomLine(false);
             prevContact.setShowChildBottomLine(false);
         }
-    }
-
-    private static String getContactSeparator(String name) {
-        char ch = name.toUpperCase().charAt(0);
-        return String.valueOf(Character.isLetter(ch) ? ch : '&');
     }
 
     private static String getNameAccent(String str) {
