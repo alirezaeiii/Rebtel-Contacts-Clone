@@ -53,7 +53,7 @@ class SplashActivity : AppCompatActivity() {
             } else {
                 checkContactAccessPermission()
             }
-        } else { // Android version is less than 6.0 or the permission is already granted.
+        } else {
             viewModel.loadContacts()
         }
 
@@ -82,7 +82,7 @@ class SplashActivity : AppCompatActivity() {
                 ).show()
             }
         } else if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission is granted
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 viewModel.loadContacts()
             } else {
                 Toast.makeText(
