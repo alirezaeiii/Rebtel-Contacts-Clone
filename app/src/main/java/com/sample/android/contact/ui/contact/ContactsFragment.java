@@ -36,10 +36,9 @@ public class ContactsFragment extends Fragment {
     @Inject
     ContactsViewModel.Factory mFactory;
 
-    @Inject
-    ContactsAdapter mAdapter;
-
     private List<ContactItem> mContacts;
+
+    private ContactsAdapter mAdapter;
 
     private final List<ContactItem> mSearchedContacts = new ArrayList<>();
 
@@ -56,6 +55,7 @@ public class ContactsFragment extends Fragment {
         FragmentContactsBinding binding = FragmentContactsBinding.inflate(inflater, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
 
+        mAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager());
         binding.recyclerView.setAdapter(mAdapter);
         binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
 

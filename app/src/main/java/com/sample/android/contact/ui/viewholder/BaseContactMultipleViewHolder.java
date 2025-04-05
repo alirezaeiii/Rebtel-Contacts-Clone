@@ -8,12 +8,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.ContactChildItemBinding;
 import com.sample.android.contact.databinding.ContactMultipleItemsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.util.ContactUtils;
+import com.sample.android.contact.ui.contact.CallDialogFragment;
 
 import java.util.Set;
 
@@ -23,12 +25,15 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
 
     private final Context context;
 
+    private final FragmentManager fragmentManager;
+
     private final ClickListener clickListener;
 
-    public BaseContactMultipleViewHolder(View root, ClickListener clickListener) {
+    public BaseContactMultipleViewHolder(View root, FragmentManager fragmentManager, ClickListener clickListener) {
         super(root);
         binding = ContactMultipleItemsBinding.bind(root);
         context = root.getContext();
+        this.fragmentManager = fragmentManager;
         this.clickListener = clickListener;
     }
 
@@ -80,7 +85,10 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
             rlp.setMarginStart(phoneNumber.getStartMargin());
             childViewHolder.binding.relativeLayout.setLayoutParams(rlp);
             childViewHolder.binding.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
-            childViewHolder.binding.frameLayout.setOnClickListener(view -> ContactUtils.call(context, phoneNumber.getNumber()));
+            childViewHolder.binding.frameLayout.setOnClickListener(view -> {
+                CallDialogFragment bottomSheet = new CallDialogFragment(contact.getName(), phoneNumber.getNumber(), phoneNumber.getFlagResId());
+                bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
+            });
             binding.subItem.addView(childView);
         }
         binding.detail.setOnClickListener(view -> clickListener.onClick(getAdapterPosition()));

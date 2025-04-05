@@ -9,6 +9,8 @@ import com.sample.android.contact.domain.ContactItem;
 
 public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
+    protected static final String CALL_FRAGMENT_DIALOG_TAG = "call_fragment_dialog";
+
     protected ContactItem contactItem;
 
     public BaseViewHolder(@NonNull View itemView) {

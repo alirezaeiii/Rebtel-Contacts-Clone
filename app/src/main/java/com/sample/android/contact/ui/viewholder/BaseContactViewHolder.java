@@ -1,23 +1,24 @@
 package com.sample.android.contact.ui.viewholder;
 
-import android.content.Context;
 import android.view.View;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.sample.android.contact.databinding.ContactItemBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.util.ContactUtils;
+import com.sample.android.contact.ui.contact.CallDialogFragment;
 
 public abstract class BaseContactViewHolder extends BaseViewHolder {
 
     private final ContactItemBinding binding;
 
-    private final Context context;
+    private final FragmentManager fragmentManager;
 
-    public BaseContactViewHolder(View root) {
+    public BaseContactViewHolder(View root, FragmentManager fragmentManager) {
         super(root);
         binding = ContactItemBinding.bind(root);
-        context = root.getContext();
+        this.fragmentManager = fragmentManager;
     }
 
     protected abstract boolean isBottomLineVisible();
@@ -32,6 +33,10 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
         binding.contactName.setText(contact.getName());
         binding.imageText.setText(contact.getBriefName());
         binding.phoneNumber.setText(phoneNumber.getNumber());
-        binding.contactLayout.setOnClickListener(view -> ContactUtils.call(context, phoneNumber.getNumber()));
+        binding.contactLayout.setOnClickListener(view -> {
+            CallDialogFragment bottomSheet = new CallDialogFragment(contact.getName(), phoneNumber.getNumber(), contact.getFlagResIds().iterator().next());
+            bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
+
+        });
     }
 }
