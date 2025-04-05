@@ -55,7 +55,11 @@ public class ContactsFragment extends Fragment {
         FragmentContactsBinding binding = FragmentContactsBinding.inflate(inflater, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
 
-        mAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager());
+        mAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager(), () -> {
+            if(binding.searchView.hasFocus()) {
+                binding.searchView.clearFocus();
+            }
+        });
         binding.recyclerView.setAdapter(mAdapter);
         binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
 
@@ -126,8 +130,7 @@ public class ContactsFragment extends Fragment {
                     mSearchedContacts.add(contactItem);
                 }
                 query = getClean(query);
-                if (query.matches("^[+\\d]+$") &&
-                        contact.getPhoneNumbers() != null) {
+                if (query.matches("^[+\\d]+$")) {
                     for (ContactPhoneNumber phoneNumber : contact.getPhoneNumbers()) {
                         if (Pattern.compile(Pattern.quote(query)).matcher(
                                 getClean(phoneNumber.getNumber())).find() &&

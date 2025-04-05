@@ -10,6 +10,8 @@ import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -17,6 +19,8 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.domain.ContactPhoneNumber;
+import com.sample.android.contact.ui.adapter.ContactsAdapter;
+import com.sample.android.contact.ui.contact.CallDialogFragment;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 public class ContactUtils {
+
+    private static final String CALL_FRAGMENT_DIALOG_TAG = "call_fragment_dialog";
 
     private ContactUtils() {
     }
@@ -91,6 +97,12 @@ public class ContactUtils {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         context.startActivity(intent);
+    }
+
+    public static void openCallDialog(String contactName, String phoneNumber, int flagResId, FragmentManager fragmentManager, ContactsAdapter.OnItemClickListener clickListener) {
+        CallDialogFragment bottomSheet = new CallDialogFragment(contactName, phoneNumber, flagResId);
+        bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
+        clickListener.onItemClick();
     }
 
     /* Helper Methods */

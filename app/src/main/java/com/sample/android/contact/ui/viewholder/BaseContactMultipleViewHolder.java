@@ -1,5 +1,7 @@
 package com.sample.android.contact.ui.viewholder;
 
+import static com.sample.android.contact.util.ContactUtils.openCallDialog;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,7 @@ import com.sample.android.contact.databinding.ContactChildItemBinding;
 import com.sample.android.contact.databinding.ContactMultipleItemsBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.ui.contact.CallDialogFragment;
+import com.sample.android.contact.ui.adapter.ContactsAdapter;
 
 import java.util.Set;
 
@@ -29,12 +31,16 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
 
     private final ClickListener clickListener;
 
-    public BaseContactMultipleViewHolder(View root, FragmentManager fragmentManager, ClickListener clickListener) {
+    private final ContactsAdapter.OnItemClickListener onItemClickListener;
+
+    public BaseContactMultipleViewHolder(View root, FragmentManager fragmentManager, ClickListener clickListener,
+                                         ContactsAdapter.OnItemClickListener onItemClickListener) {
         super(root);
         binding = ContactMultipleItemsBinding.bind(root);
         context = root.getContext();
         this.fragmentManager = fragmentManager;
         this.clickListener = clickListener;
+        this.onItemClickListener = onItemClickListener;
     }
 
     protected abstract boolean isBottomLineVisible();
@@ -85,10 +91,9 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
             rlp.setMarginStart(phoneNumber.getStartMargin());
             childViewHolder.binding.relativeLayout.setLayoutParams(rlp);
             childViewHolder.binding.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
-            childViewHolder.binding.frameLayout.setOnClickListener(view -> {
-                CallDialogFragment bottomSheet = new CallDialogFragment(contact.getName(), phoneNumber.getNumber(), phoneNumber.getFlagResId());
-                bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
-            });
+            childViewHolder.binding.frameLayout.setOnClickListener(view -> openCallDialog(contact.getName(),
+                    phoneNumber.getNumber(), contact.getFlagResIds().iterator().next(), fragmentManager,
+                    onItemClickListener));
             binding.subItem.addView(childView);
         }
         binding.detail.setOnClickListener(view -> clickListener.onClick(getAdapterPosition()));

@@ -1,5 +1,7 @@
 package com.sample.android.contact.ui.viewholder;
 
+import static com.sample.android.contact.util.ContactUtils.openCallDialog;
+
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
@@ -7,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import com.sample.android.contact.databinding.ContactItemBinding;
 import com.sample.android.contact.domain.Contact;
 import com.sample.android.contact.domain.ContactPhoneNumber;
-import com.sample.android.contact.ui.contact.CallDialogFragment;
+import com.sample.android.contact.ui.adapter.ContactsAdapter;
 
 public abstract class BaseContactViewHolder extends BaseViewHolder {
 
@@ -15,10 +17,13 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
 
     private final FragmentManager fragmentManager;
 
-    public BaseContactViewHolder(View root, FragmentManager fragmentManager) {
+    private final ContactsAdapter.OnItemClickListener clickListener;
+
+    public BaseContactViewHolder(View root, FragmentManager fragmentManager, ContactsAdapter.OnItemClickListener clickListener) {
         super(root);
         binding = ContactItemBinding.bind(root);
         this.fragmentManager = fragmentManager;
+        this.clickListener = clickListener;
     }
 
     protected abstract boolean isBottomLineVisible();
@@ -33,10 +38,8 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
         binding.contactName.setText(contact.getName());
         binding.imageText.setText(contact.getBriefName());
         binding.phoneNumber.setText(phoneNumber.getNumber());
-        binding.contactLayout.setOnClickListener(view -> {
-            CallDialogFragment bottomSheet = new CallDialogFragment(contact.getName(), phoneNumber.getNumber(), contact.getFlagResIds().iterator().next());
-            bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
-
-        });
+        binding.contactLayout.setOnClickListener(view -> openCallDialog(contact.getName(),
+                phoneNumber.getNumber(), contact.getFlagResIds().iterator().next(), fragmentManager,
+                clickListener));
     }
 }
