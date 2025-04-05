@@ -9,19 +9,19 @@
 
         <TextView
             android:id="@+id/contact_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="3dp"
             android:ellipsize="end"
             android:fontFamily="@font/exo2_bold"
             android:maxLines="1"
-            android:text="Ali Rezaei"
             android:textColor="@color/color4"
-            android:textSize="20sp"
+            android:textSize="19sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            tools:text="Ali Rezaei" />
 
         <ImageView
             android:id="@+id/flagItem"
@@ -36,14 +36,14 @@
 
         <TextView
             android:id="@+id/phone_number"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/exo2_regular"
-            android:text="+989121895634"
-            android:textSize="17sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/flagItem"
             app:layout_constraintStart_toEndOf="@id/flagItem"
-            app:layout_constraintTop_toTopOf="@id/flagItem" />
+            app:layout_constraintTop_toTopOf="@id/flagItem"
+            tools:text="+989121895634" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -54,8 +54,8 @@
 
         <ImageButton
             android:id="@+id/call_btn"
-            android:layout_width="84dp"
-            android:layout_height="84dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_margin="8dp"
             android:background="@drawable/call_button_selector"
             android:elevation="5dp"
