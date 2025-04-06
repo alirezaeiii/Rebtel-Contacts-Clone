@@ -9,6 +9,7 @@
         <item name="android:editTextColor">@color/color3</item>
         <item name="android:windowBackground">@color/color_background</item>
         <item name="android:windowAnimationStyle">@null</item>
+        <item name="bottomSheetDialogTheme">@style/RoundedBottomSheetDialogTheme</item>
     </style>
 
     <style name="DefaultTheme" parent="AppTheme">
@@ -76,6 +77,14 @@
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="android:textColorHint">@android:color/darker_gray</item>
         <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="RoundedBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundedBottomSheetStyle</item>
+    </style>
+
+    <style name="RoundedBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_corners_dialog</item>
     </style>
 
 </resources>
