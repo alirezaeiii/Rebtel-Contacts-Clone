@@ -31,7 +31,8 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
     @Override
     public void bind() {
         Contact contact = contactItem.getContact();
-        binding.flagItem.setImageResource(contact.getFlagResIds().iterator().next());
+        int flagResId = contact.getFlagResIds().iterator().next();
+        binding.flagItem.setImageResource(flagResId);
         binding.bottomLine.setVisibility(isBottomLineVisible() ? View.VISIBLE : View.GONE);
         ContactPhoneNumber phoneNumber = contact.getPhoneNumbers().iterator().next();
         binding.phoneType.setText(phoneNumber.getTypeLabel());
@@ -39,7 +40,7 @@ public abstract class BaseContactViewHolder extends BaseViewHolder {
         binding.imageText.setText(contact.getBriefName());
         binding.phoneNumber.setText(phoneNumber.getNumber());
         binding.contactLayout.setOnClickListener(view -> openCallDialog(contact.getName(),
-                phoneNumber.getNumber(), contact.getFlagResIds().iterator().next(), fragmentManager,
+                phoneNumber.getNumber(), flagResId, fragmentManager,
                 clickListener));
     }
 }
