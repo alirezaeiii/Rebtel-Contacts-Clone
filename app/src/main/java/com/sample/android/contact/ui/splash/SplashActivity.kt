@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
     lateinit var factory: SplashViewModel.Factory
 
     private val viewModel: SplashViewModel by lazy {
-        ViewModelProvider(this, factory).get(SplashViewModel::class.java)
+        ViewModelProvider(this, factory)[SplashViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

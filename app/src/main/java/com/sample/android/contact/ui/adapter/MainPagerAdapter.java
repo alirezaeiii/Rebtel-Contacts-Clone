@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    private List<MainPagerItem> fragments;
+    private final List<MainPagerItem> fragments;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

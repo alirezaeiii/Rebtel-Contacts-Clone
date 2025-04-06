@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 
 public class MainPagerItem {
 
-    private Fragment fragment;
-    private String title;
+    private final Fragment fragment;
+    private final String title;
 
     public MainPagerItem(Fragment fragment, String title) {
         this.fragment = fragment;
