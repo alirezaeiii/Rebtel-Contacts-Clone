@@ -56,7 +56,7 @@ public class ContactsFragment extends Fragment {
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
 
         mAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager(), () -> {
-            if(binding.searchView.hasFocus()) {
+            if (binding.searchView.hasFocus()) {
                 binding.searchView.clearFocus();
             }
         });
@@ -75,7 +75,8 @@ public class ContactsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                if (!query.isEmpty()) {
+                // Check contacts in case of system initiated process death
+                if (!query.isEmpty() && mContacts != null) {
                     binding.searchBack.setVisibility(View.VISIBLE);
                     binding.swipeRefresh.setRefreshing(false);
                     binding.swipeRefresh.setEnabled(false);
@@ -116,6 +117,9 @@ public class ContactsFragment extends Fragment {
         };
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
         viewModel.getLiveData().observe(this, contactsObserver);
+
+        // Reset SearchView in case of system initiated process death
+        binding.searchView.post(() -> binding.searchView.setQuery("", false));
 
         return binding.getRoot();
     }
