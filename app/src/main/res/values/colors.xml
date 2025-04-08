@@ -10,6 +10,7 @@
     <color name="color4">#89000000</color>
     <color name="color5">#3978FC</color>
     <color name="color6">#DCDCDC</color>
+    <color name="color7">#FFFFFF</color>
 
     <color name="dialpad_primary_text_color">@color/color1</color>
     <color name="dialpad_secondary_text_color">@color/color3</color>
@@ -25,6 +26,6 @@
     <color name="call_button_pressed">#009900</color>
 
     <color name="color_background">@color/color5</color>
-    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_white">@color/color7</color>
     <color name="text_color_white_alpha_06">#96ffffff</color>
 </resources>
