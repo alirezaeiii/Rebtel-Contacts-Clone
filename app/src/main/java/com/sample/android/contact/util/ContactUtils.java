@@ -100,7 +100,7 @@ public class ContactUtils {
     }
 
     public static void openCallDialog(String contactName, String phoneNumber, int flagResId, FragmentManager fragmentManager, ContactsAdapter.OnItemClickListener clickListener) {
-        CallDialogFragment bottomSheet = new CallDialogFragment(contactName, phoneNumber, flagResId);
+        CallDialogFragment bottomSheet = CallDialogFragment.Companion.newInstance(contactName, phoneNumber, flagResId);
         bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
         clickListener.onItemClick();
     }
