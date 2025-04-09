@@ -38,15 +38,15 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
         localSearchedContacts.clear()
         contacts?.forEach { contactItem ->
             val contact = contactItem.contact
-            if (contact != null) {
+            contact?.let {
                 if (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
-                        .matcher(contact.name).find()
+                        .matcher(it.name).find()
                 ) {
                     localSearchedContacts.add(contactItem)
                 }
                 val getCleanQuery = query.getCleanString()
                 if (getCleanQuery.matches("^[+\\d]+$".toRegex())) {
-                    for (phoneNumber in contact.phoneNumbers) {
+                    for (phoneNumber in it.phoneNumbers) {
                         if (Pattern.compile(Pattern.quote(getCleanQuery)).matcher(
                                 phoneNumber.number.getCleanString()
                             ).find() && !localSearchedContacts.contains(contactItem)
