@@ -77,7 +77,6 @@ public class ContactsFragment extends Fragment {
             public boolean onQueryTextChange(String query) {
                 // Check contacts in case of system initiated process death
                 if (mContacts == null) {
-                    binding.searchView.setOnQueryTextListener(null);
                     binding.searchView.post(() -> binding.searchView.setQuery("", false));
                 } else if (!query.isEmpty()) {
                     binding.searchBack.setVisibility(View.VISIBLE);
