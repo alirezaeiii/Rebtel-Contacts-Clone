@@ -77,7 +77,12 @@ public class ContactsFragment extends Fragment {
             public boolean onQueryTextChange(String query) {
                 // Check contacts in case of system initiated process death
                 if (mContacts == null) {
-                    binding.searchView.post(() -> binding.searchView.setQuery("", false));
+                    // Since setting query to "" and do not want to recall onQueryTextChange("")
+                    binding.searchView.setOnQueryTextListener(null);
+                    binding.searchView.post(() -> {
+                        binding.searchView.setQuery("", false);
+                        binding.searchView.setOnQueryTextListener(this);
+                    });
                 } else if (!query.isEmpty()) {
                     binding.searchBack.setVisibility(View.VISIBLE);
                     binding.swipeRefresh.setRefreshing(false);
