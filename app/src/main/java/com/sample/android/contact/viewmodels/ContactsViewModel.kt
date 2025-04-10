@@ -44,10 +44,10 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
                 ) {
                     localSearchedContacts.add(contactItem)
                 }
-                val getCleanQuery = query.getCleanString()
-                if (getCleanQuery.matches("^[+\\d]+$".toRegex())) {
+                val cleanQuery = query.getCleanString()
+                if (cleanQuery.matches("^[+\\d]+$".toRegex())) {
                     for (phoneNumber in it.phoneNumbers) {
-                        if (Pattern.compile(Pattern.quote(getCleanQuery)).matcher(
+                        if (Pattern.compile(Pattern.quote(cleanQuery)).matcher(
                                 phoneNumber.number.getCleanString()
                             ).find() && !localSearchedContacts.contains(contactItem)
                         ) {
