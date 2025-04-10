@@ -4,14 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import com.sample.android.contact.domain.ContactItem
 import com.sample.android.contact.repository.ContactsRepository
+import com.sample.android.contact.util.Resource
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ContactsViewModel(private val repository: ContactsRepository) : BaseViewModel(repository) {
 
-    var contacts: List<ContactItem>? = null
+    val contacts: LiveData<List<ContactItem>?> = liveData.map { resource ->
+        if (resource is Resource.Success) resource.data else emptyList()
+    }
 
     private val localSearchedContacts: MutableList<ContactItem> = mutableListOf()
 
@@ -36,7 +40,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
 
     fun search(query: String) {
         localSearchedContacts.clear()
-        contacts?.forEach { contactItem ->
+        contacts.value?.forEach { contactItem ->
             val contact = contactItem.contact
             contact?.let {
                 if (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
@@ -44,11 +48,11 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
                 ) {
                     localSearchedContacts.add(contactItem)
                 }
-                val cleanQuery = query.getCleanString()
+                val cleanQuery = query.cleanString()
                 if (cleanQuery.matches("^[+\\d]+$".toRegex())) {
                     for (phoneNumber in it.phoneNumbers) {
                         if (Pattern.compile(Pattern.quote(cleanQuery)).matcher(
-                                phoneNumber.number.getCleanString()
+                                phoneNumber.number.cleanString()
                             ).find() && !localSearchedContacts.contains(contactItem)
                         ) {
                             localSearchedContacts.add(contactItem)
@@ -60,7 +64,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
         _searchedContacts.value = localSearchedContacts
     }
 
-    private fun String.getCleanString(): String =
+    private fun String.cleanString(): String =
         replace("\\s+".toRegex(), "").replace("\\.".toRegex(), "")
 
     /**
