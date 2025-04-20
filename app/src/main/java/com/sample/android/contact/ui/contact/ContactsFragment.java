@@ -2,6 +2,7 @@ package com.sample.android.contact.ui.contact;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ public class ContactsFragment extends Fragment {
 
     private ContactsAdapter mAdapter;
 
+    private FragmentContactsBinding mBinding;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -44,21 +47,21 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentContactsBinding binding = FragmentContactsBinding.inflate(inflater, container, false);
+        mBinding = FragmentContactsBinding.inflate(inflater, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
 
         mAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager(), () -> {
-            if (binding.searchView.hasFocus()) {
-                binding.searchView.clearFocus();
+            if (mBinding.searchView.hasFocus()) {
+                mBinding.searchView.clearFocus();
             }
         });
-        binding.recyclerView.setAdapter(mAdapter);
-        binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
+        mBinding.recyclerView.setAdapter(mAdapter);
+        mBinding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
 
-        binding.swipeRefresh.setColorSchemeResources(R.color.color1);
-        binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
+        mBinding.swipeRefresh.setColorSchemeResources(R.color.color1);
+        mBinding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
 
-        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mBinding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 viewModel.search(query);
@@ -67,13 +70,10 @@ public class ContactsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                // Check contacts in case of system initiated process death
-                if (viewModel.getContacts().getValue() == null) {
-                    binding.searchView.post(() -> binding.searchView.setQuery("", false));
-                } else if (!query.isEmpty()) {
-                    binding.searchBack.setVisibility(View.VISIBLE);
-                    binding.swipeRefresh.setRefreshing(false);
-                    binding.swipeRefresh.setEnabled(false);
+                if (!query.isEmpty()) {
+                    mBinding.searchBack.setVisibility(View.VISIBLE);
+                    mBinding.swipeRefresh.setRefreshing(false);
+                    mBinding.swipeRefresh.setEnabled(false);
                     viewModel.clearJob();
                     viewModel.search(query);
                 }
@@ -81,33 +81,35 @@ public class ContactsFragment extends Fragment {
             }
         });
         int searchCloseIconButtonId = getResources().getIdentifier("android:id/search_close_btn", null, null);
-        ImageView searchClose = binding.searchView.findViewById(searchCloseIconButtonId);
+        ImageView searchClose = mBinding.searchView.findViewById(searchCloseIconButtonId);
         int searchCloseIconColor = ResourcesCompat.getColor(getResources(), R.color.color3, null);
         searchClose.setColorFilter(searchCloseIconColor);
 
-        binding.searchBack.setOnClickListener(view -> {
+        mBinding.searchBack.setOnClickListener(view -> {
             mAdapter.setItems(viewModel.getContacts().getValue(), true);
-            binding.searchBack.setVisibility(View.INVISIBLE);
-            binding.swipeRefresh.setEnabled(true);
-            binding.searchView.setQuery("", false);
+            resetSearchView();
         });
 
         // Create the observer which updates the UI.
         final Observer<Resource<List<ContactItem>>> contactsResourceObserver = resource -> {
             if (resource instanceof Resource.Loading) {
                 if (((Resource.Loading) resource).isRefreshing()) {
-                    binding.swipeRefresh.setRefreshing(true);
-                    binding.progressBar.setVisibility(View.GONE);
+                    mBinding.swipeRefresh.setRefreshing(true);
+                    mBinding.progressBar.setVisibility(View.GONE);
                 } else {
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                    binding.swipeRefresh.setRefreshing(false);
+                    mBinding.progressBar.setVisibility(View.VISIBLE);
+                    mBinding.swipeRefresh.setRefreshing(false);
                 }
             }
         };
         final Observer<List<ContactItem>> contactsObserver = contacts -> {
             mAdapter.setItems(contacts, true);
-            binding.progressBar.setVisibility(View.GONE);
-            binding.swipeRefresh.setRefreshing(false);
+            mBinding.progressBar.setVisibility(View.GONE);
+            mBinding.swipeRefresh.setRefreshing(false);
+            // Reset SearchView in case of system initiated process death
+            if (!TextUtils.isEmpty(mBinding.searchView.getQuery())) {
+                resetSearchView();
+            }
         };
         final Observer<List<ContactItem>> searchedContactsObserver = searchedContacts -> mAdapter.setItems(searchedContacts, false);
 
@@ -116,6 +118,12 @@ public class ContactsFragment extends Fragment {
         viewModel.getContacts().observe(this, contactsObserver);
         viewModel.getSearchedContacts().observe(this, searchedContactsObserver);
 
-        return binding.getRoot();
+        return mBinding.getRoot();
+    }
+
+    private void resetSearchView() {
+        mBinding.searchBack.setVisibility(View.INVISIBLE);
+        mBinding.swipeRefresh.setEnabled(true);
+        mBinding.searchView.setQuery("", false);
     }
 }
