@@ -1,6 +1,7 @@
 package com.sample.android.contact.ui.contact;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -68,8 +69,8 @@ public class ContactsFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String query) {
                 // Check contacts in case of system initiated process death
-                if (viewModel.getContacts().getValue() == null) {
-                    binding.searchView.post(() -> binding.searchView.setQuery("", false));
+                if (viewModel.getContacts().getValue() == null && !query.isEmpty()) {
+                    binding.searchView.setQuery("", false);
                 } else if (!query.isEmpty()) {
                     binding.searchBack.setVisibility(View.VISIBLE);
                     binding.swipeRefresh.setRefreshing(false);
@@ -80,10 +81,12 @@ public class ContactsFragment extends Fragment {
                 return true;
             }
         });
-        int searchCloseIconButtonId = getResources().getIdentifier("android:id/search_close_btn", null, null);
-        ImageView searchClose = binding.searchView.findViewById(searchCloseIconButtonId);
-        int searchCloseIconColor = ResourcesCompat.getColor(getResources(), R.color.color3, null);
-        searchClose.setColorFilter(searchCloseIconColor);
+
+        int closeBtnId = getResources().getIdentifier("search_close_btn", "id", "android");
+        ImageView closeButton = binding.searchView.findViewById(closeBtnId);
+        if (closeButton != null) {
+            closeButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.color3), PorterDuff.Mode.SRC_IN);
+        }
 
         binding.searchBack.setOnClickListener(view -> {
             mAdapter.setItems(viewModel.getContacts().getValue(), true);
