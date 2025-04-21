@@ -60,8 +60,8 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
                     }
                 }
             }
-            _searchedContacts.value = localSearchedContacts
         }
+        _searchedContacts.value = localSearchedContacts
     }
 
     private fun String.cleanString(): String =
