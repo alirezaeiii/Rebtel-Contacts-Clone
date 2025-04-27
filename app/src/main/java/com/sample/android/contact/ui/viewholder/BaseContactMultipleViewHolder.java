@@ -92,7 +92,7 @@ public abstract class BaseContactMultipleViewHolder extends BaseViewHolder {
             childViewHolder.binding.relativeLayout.setLayoutParams(rlp);
             childViewHolder.binding.frameLayout.setPadding(phoneNumber.getStartPadding(), 0, 0, 0);
             childViewHolder.binding.frameLayout.setOnClickListener(view -> openCallDialog(contact.getName(),
-                    phoneNumber.getNumber(), contact.getFlagResIds().iterator().next(), fragmentManager,
+                    phoneNumber.getNumber(), phoneNumber.getFlagResId(), fragmentManager,
                     onItemClickListener));
             binding.subItem.addView(childView);
         }
