@@ -9,4 +9,4 @@ class ContactItem @JvmOverloads constructor(
     var contactSeparator: String? = null
 ) : Parcelable
 
-fun ContactItem.isNotSeparator() = contactSeparator == null
+fun ContactItem.isSeparator() = contact == null

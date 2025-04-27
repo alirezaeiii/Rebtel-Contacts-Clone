@@ -8,6 +8,7 @@ import androidx.lifecycle.map
 import com.sample.android.contact.domain.ContactItem
 import com.sample.android.contact.repository.ContactsRepository
 import com.sample.android.contact.util.Resource
+import com.sample.android.contact.util.cleanQueryString
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -48,11 +49,11 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
                 ) {
                     localSearchedContacts.add(contactItem)
                 }
-                val cleanQuery = query.cleanString()
+                val cleanQuery = query.cleanQueryString()
                 if (cleanQuery.matches("^[+\\d]+$".toRegex())) {
                     for (phoneNumber in it.phoneNumbers) {
                         if (Pattern.compile(Pattern.quote(cleanQuery)).matcher(
-                                phoneNumber.number.cleanString()
+                                phoneNumber.number.cleanQueryString()
                             ).find() && !localSearchedContacts.contains(contactItem)
                         ) {
                             localSearchedContacts.add(contactItem)
@@ -63,9 +64,6 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
         }
         _searchedContacts.value = localSearchedContacts
     }
-
-    private fun String.cleanString(): String =
-        replace("\\s+".toRegex(), "").replace("\\.".toRegex(), "")
 
     /**
      * Factory for constructing ContactsViewModel with parameter

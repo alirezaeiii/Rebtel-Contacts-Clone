@@ -1,6 +1,6 @@
 package com.sample.android.contact.ui.adapter;
 
-import static com.sample.android.contact.domain.ContactItemKt.isNotSeparator;
+import static com.sample.android.contact.domain.ContactItemKt.isSeparator;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -81,7 +81,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     @Override
     public int getItemViewType(int position) {
         ContactItem contactItem = mContacts.get(position);
-        if (isNotSeparator(contactItem)) {
+        if (!isSeparator(contactItem)) {
             if (contactItem.getContact().getType() == Contact.Type.SINGLE) {
                 if (mShowSeparator) {
                     return TYPE_CONTACT;
@@ -167,7 +167,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     @Override
     public boolean isHeader(int itemPosition) {
         ContactItem contactItem = mContacts.get(itemPosition);
-        return contactItem.getContactSeparator() != null;
+        return isSeparator(contactItem);
     }
 
     public void setItems(List<ContactItem> contacts, boolean showSeparator) {

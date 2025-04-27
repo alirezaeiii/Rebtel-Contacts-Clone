@@ -2,6 +2,7 @@ package com.sample.android.contact.domain
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import com.sample.android.contact.util.cleanString
 
 @Parcelize
 class ContactPhoneNumber @JvmOverloads constructor(
@@ -16,12 +17,10 @@ class ContactPhoneNumber @JvmOverloads constructor(
         if (other !is ContactPhoneNumber) {
             return false
         }
-        return normalizeNumber(other.number) == normalizeNumber(number)
+        return other.number.cleanString() == number.cleanString()
     }
 
     override fun hashCode(): Int {
         return javaClass.hashCode()
     }
-
-    private fun normalizeNumber(number: String): String = number.replace("\\s".toRegex(), "")
 }
