@@ -14,8 +14,12 @@ import javax.inject.Inject
 
 class ContactsViewModel(private val repository: ContactsRepository) : BaseViewModel(repository) {
 
+    val refreshing: LiveData<Boolean?> = liveData.map { resource ->
+        if (resource is Resource.Loading) resource.isRefreshing else null
+    }
+
     val contacts: LiveData<List<ContactItem>?> = liveData.map { resource ->
-        if (resource is Resource.Success) resource.data else emptyList()
+        if (resource is Resource.Success) resource.data else null
     }
 
     private val localSearchedContacts: MutableList<ContactItem> = mutableListOf()
