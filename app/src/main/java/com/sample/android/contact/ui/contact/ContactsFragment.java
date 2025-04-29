@@ -33,8 +33,6 @@ public class ContactsFragment extends Fragment {
     @Inject
     ContactsViewModel.Factory mFactory;
 
-    private ContactsAdapter mAdapter;
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -48,13 +46,13 @@ public class ContactsFragment extends Fragment {
         FragmentContactsBinding binding = FragmentContactsBinding.inflate(inflater, container, false);
         ContactsViewModel viewModel = new ViewModelProvider(this, mFactory).get(ContactsViewModel.class);
 
-        mAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager(), () -> {
+        ContactsAdapter contactsAdapter = new ContactsAdapter(requireActivity().getSupportFragmentManager(), () -> {
             if (binding.searchView.hasFocus()) {
                 binding.searchView.clearFocus();
             }
         });
-        binding.recyclerView.setAdapter(mAdapter);
-        binding.recyclerView.addItemDecoration(new HeaderItemDecoration(mAdapter));
+        binding.recyclerView.setAdapter(contactsAdapter);
+        binding.recyclerView.addItemDecoration(new HeaderItemDecoration(contactsAdapter));
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
@@ -89,7 +87,7 @@ public class ContactsFragment extends Fragment {
         }
 
         binding.searchBack.setOnClickListener(view -> {
-            mAdapter.setItems(viewModel.getContacts().getValue(), true);
+            contactsAdapter.setItems(viewModel.getContacts().getValue(), true);
             binding.searchBack.setVisibility(View.INVISIBLE);
             binding.swipeRefresh.setEnabled(true);
             binding.searchView.setQuery("", false);
@@ -108,12 +106,12 @@ public class ContactsFragment extends Fragment {
             }
         };
         final Observer<List<ContactItem>> contactsObserver = contacts -> {
-            mAdapter.setItems(contacts, true);
+            contactsAdapter.setItems(contacts, true);
             binding.progressBar.setVisibility(View.GONE);
             binding.swipeRefresh.setRefreshing(false);
         };
         final Observer<List<ContactItem>> searchedContactsObserver = searchedContacts ->
-                mAdapter.setItems(searchedContacts, false);
+                contactsAdapter.setItems(searchedContacts, false);
 
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
         viewModel.getLiveData().observe(this, contactsResourceObserver);
