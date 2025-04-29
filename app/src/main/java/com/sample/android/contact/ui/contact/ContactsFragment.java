@@ -20,7 +20,6 @@ import com.sample.android.contact.R;
 import com.sample.android.contact.databinding.FragmentContactsBinding;
 import com.sample.android.contact.domain.ContactItem;
 import com.sample.android.contact.ui.adapter.ContactsAdapter;
-import com.sample.android.contact.util.Resource;
 import com.sample.android.contact.viewmodels.ContactsViewModel;
 import com.sample.android.contact.widget.HeaderItemDecoration;
 
@@ -94,9 +93,9 @@ public class ContactsFragment extends Fragment {
         });
 
         // Create the observer which updates the UI.
-        final Observer<Resource<List<ContactItem>>> contactsResourceObserver = resource -> {
-            if (resource instanceof Resource.Loading) {
-                if (((Resource.Loading) resource).isRefreshing()) {
+        final Observer<Boolean> refresingObserver = isRefreshing -> {
+            if (isRefreshing != null) {
+                if (isRefreshing) {
                     binding.swipeRefresh.setRefreshing(true);
                     binding.progressBar.setVisibility(View.GONE);
                 } else {
@@ -106,15 +105,17 @@ public class ContactsFragment extends Fragment {
             }
         };
         final Observer<List<ContactItem>> contactsObserver = contacts -> {
-            contactsAdapter.setItems(contacts, true);
-            binding.progressBar.setVisibility(View.GONE);
-            binding.swipeRefresh.setRefreshing(false);
+            if (contacts != null) {
+                contactsAdapter.setItems(contacts, true);
+                binding.progressBar.setVisibility(View.GONE);
+                binding.swipeRefresh.setRefreshing(false);
+            }
         };
         final Observer<List<ContactItem>> searchedContactsObserver = searchedContacts ->
                 contactsAdapter.setItems(searchedContacts, false);
 
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        viewModel.getLiveData().observe(this, contactsResourceObserver);
+        viewModel.getRefreshing().observe(this, refresingObserver);
         viewModel.getContacts().observe(this, contactsObserver);
         viewModel.getSearchedContacts().observe(this, searchedContactsObserver);
 
