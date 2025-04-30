@@ -14,7 +14,7 @@ import com.sample.android.contact.R;
 
 public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
-    private int actionBarHeight;
+    private int mActionBarHeight;
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -27,7 +27,7 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
         super(context, attrs);
         // Calculate ActionBar height
         TypedValue tv = new TypedValue();
-        actionBarHeight = context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
+        mActionBarHeight = context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
                 TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics()) :
                 (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
     }
@@ -49,17 +49,12 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void removeSpace(View view) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-        params.setMargins(0, 0, 0, 0);
-        view.setLayoutParams(params);
+        view.setPadding(0, 0, 0, 0);
+
     }
 
     @Override
     protected void addSpace(View view) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-        mHandler.postDelayed(() -> {
-            view.setLayoutParams(params);
-            params.setMargins(0, actionBarHeight, 0, 0);
-        }, 100);
+        mHandler.postDelayed(() -> view.setPadding(0, mActionBarHeight, 0, 0), ADD_SPACE_DELAY);
     }
 }

@@ -9,7 +9,7 @@ import com.sample.android.contact.R;
 
 public class QuickHideBottomBarBehavior extends QuickHideBehavior {
 
-    private int bottomSpacing;
+    private int mBottomSpacing;
 
     //Required to instantiate as a default behavior
     @SuppressWarnings("unused")
@@ -20,7 +20,7 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
     @SuppressWarnings("unused")
     public QuickHideBottomBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        bottomSpacing = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+        mBottomSpacing = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
     }
 
     @Override
@@ -30,12 +30,11 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void removeSpace(View view) {
-        view.setPadding(0, 0, 0, 0);
+        view.setPadding(0, 0, 0, -mBottomSpacing);
     }
 
     @Override
     protected void addSpace(View view) {
-        mHandler.postDelayed(() ->
-                view.setPadding(0, 0, 0, bottomSpacing), 200);
+        mHandler.postDelayed(() -> view.setPadding(0, 0, 0, 0), ADD_SPACE_DELAY * 2);
     }
 }

@@ -63,13 +63,13 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize">
+            android:paddingTop="?attr/actionBarSize">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimen_recycler_view_spacing"
+                android:paddingBottom="@dimen/dimen_recycler_view_spacing"
                 android:clipToPadding="false"
                 app:layoutManager="LinearLayoutManager" />
 

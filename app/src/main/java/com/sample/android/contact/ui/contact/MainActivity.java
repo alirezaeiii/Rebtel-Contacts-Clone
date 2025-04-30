@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
 
-    private int selectedPosition = 0;
+    private int mSelectedPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                selectedPosition = tab.getPosition();
+                mSelectedPosition = tab.getPosition();
             }
 
             @Override
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (selectedPosition == tabIndex) {
+                    if (mSelectedPosition == tabIndex) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             startClickTime = Calendar.getInstance().getTimeInMillis();
                             setTrianglePressed(true, TRIANGLE_DELAY_PRESS * 2);
