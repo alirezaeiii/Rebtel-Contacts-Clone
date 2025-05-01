@@ -74,9 +74,6 @@ public class ContactsFragment extends Fragment {
                 if (viewModel.getContacts().getValue() == null && !query.isEmpty()) {
                     binding.searchView.setQuery("", false);
                 } else if (!query.isEmpty()) {
-                    binding.searchBack.setVisibility(View.VISIBLE);
-                    binding.swipeRefresh.setRefreshing(false);
-                    binding.swipeRefresh.setEnabled(false);
                     viewModel.clearJob();
                     viewModel.search(query);
                 }
@@ -120,6 +117,9 @@ public class ContactsFragment extends Fragment {
         final Observer<List<ContactItem>> searchedContactsObserver = searchedContacts -> {
             if (searchedContacts != null) {
                 contactsAdapter.setItems(searchedContacts, false);
+                binding.searchBack.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
+                binding.swipeRefresh.setEnabled(false);
             }
         };
 
