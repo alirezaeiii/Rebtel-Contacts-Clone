@@ -69,6 +69,10 @@ class ContactsViewModel(private val repository: ContactsRepository) : BaseViewMo
         _searchedContacts.value = localSearchedContacts
     }
 
+    fun resetSearch() {
+        _searchedContacts.value = null
+    }
+
     /**
      * Factory for constructing ContactsViewModel with parameter
      */

@@ -1,5 +1,7 @@
 package com.sample.android.contact.ui.contact;
 
+import static com.sample.android.contact.util.ContactUtils.getActionBarHeight;
+
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ import javax.inject.Inject;
 
 public class ContactsFragment extends Fragment {
 
+    private static final int SWIPE_REFRESH_OFFSET = 64;
+
     @Inject
     ContactsViewModel.Factory mFactory;
 
@@ -55,6 +59,7 @@ public class ContactsFragment extends Fragment {
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
+        binding.swipeRefresh.setProgressViewOffset(true, 0, getActionBarHeight(requireContext()) + SWIPE_REFRESH_OFFSET);
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -90,6 +95,7 @@ public class ContactsFragment extends Fragment {
             binding.searchBack.setVisibility(View.INVISIBLE);
             binding.swipeRefresh.setEnabled(true);
             binding.searchView.setQuery("", false);
+            viewModel.resetSearch();
         });
 
         // Create the observer which updates the UI.
@@ -111,8 +117,11 @@ public class ContactsFragment extends Fragment {
                 binding.swipeRefresh.setRefreshing(false);
             }
         };
-        final Observer<List<ContactItem>> searchedContactsObserver = searchedContacts ->
+        final Observer<List<ContactItem>> searchedContactsObserver = searchedContacts -> {
+            if (searchedContacts != null) {
                 contactsAdapter.setItems(searchedContacts, false);
+            }
+        };
 
         // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
         viewModel.getRefreshing().observe(this, refresingObserver);

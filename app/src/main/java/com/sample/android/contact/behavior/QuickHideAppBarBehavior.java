@@ -1,16 +1,15 @@
 package com.sample.android.contact.behavior;
 
+import static com.sample.android.contact.util.ContactUtils.getActionBarHeight;
+
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.sample.android.contact.R;
 
 public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
@@ -26,10 +25,7 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
     public QuickHideAppBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         // Calculate ActionBar height
-        TypedValue tv = new TypedValue();
-        mActionBarHeight = context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
-                TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics()) :
-                (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
+        mActionBarHeight = getActionBarHeight(context);
     }
 
     @Override

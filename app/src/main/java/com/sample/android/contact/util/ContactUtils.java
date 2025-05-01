@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
+import android.util.TypedValue;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -103,6 +104,13 @@ public class ContactUtils {
         CallDialogFragment bottomSheet = CallDialogFragment.Companion.newInstance(contactName, phoneNumber, flagResId);
         bottomSheet.show(fragmentManager, CALL_FRAGMENT_DIALOG_TAG);
         clickListener.onItemClick();
+    }
+
+    public static int getActionBarHeight(Context context) {
+        TypedValue tv = new TypedValue();
+        return context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true) ?
+                TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics()) :
+                (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing);
     }
 
     /* Helper Methods */
