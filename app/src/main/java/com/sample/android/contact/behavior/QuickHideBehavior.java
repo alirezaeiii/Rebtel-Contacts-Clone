@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
     //Required to attach behavior via XML
     public QuickHideBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mVelocity = (int) context.getResources().getDimension(R.dimen.dimen_recycler_view_spacing) * 48;
+        mVelocity = (int) (ViewConfiguration.get(context).getScaledMaximumFlingVelocity() / 3.5f);
     }
 
     //Called before a nested scroll event. Return true to declare interest
