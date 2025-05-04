@@ -98,17 +98,13 @@ public class ContactsFragment extends Fragment {
         // Create the observer which updates the UI.
         final Observer<Boolean> refresingObserver = isRefreshing -> {
             if (isRefreshing != null) {
-                if (isRefreshing) {
-                    binding.swipeRefresh.setRefreshing(true);
-                    binding.progressBar.setVisibility(View.GONE);
-                } else {
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                    binding.swipeRefresh.setRefreshing(false);
-                }
+                binding.swipeRefresh.setRefreshing(isRefreshing);
+                binding.progressBar.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
+
             }
         };
         final Observer<List<ContactItem>> contactsObserver = contacts -> {
-            if (contacts != null) {
+            if (contacts != null && viewModel.getSearchedContacts().getValue() == null) {
                 contactsAdapter.setItems(contacts, true);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.swipeRefresh.setRefreshing(false);
@@ -120,6 +116,7 @@ public class ContactsFragment extends Fragment {
                 binding.searchBack.setVisibility(View.VISIBLE);
                 binding.swipeRefresh.setRefreshing(false);
                 binding.swipeRefresh.setEnabled(false);
+                binding.progressBar.setVisibility(View.GONE);
             }
         };
 
