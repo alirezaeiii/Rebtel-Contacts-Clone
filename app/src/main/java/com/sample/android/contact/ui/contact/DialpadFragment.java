@@ -1,5 +1,7 @@
 package com.sample.android.contact.ui.contact;
 
+import static com.sample.android.contact.util.ContactUtils.call;
+
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
@@ -94,7 +96,7 @@ public class DialpadFragment extends Fragment implements View.OnClickListener, V
                 break;
             case R.id.call_btn:
                 String phoneNumber = mBinding.display.digits.getText().toString();
-                ContactUtils.call(Objects.requireNonNull(getContext()), phoneNumber);
+                call(Objects.requireNonNull(getContext()), phoneNumber);
                 break;
         }
     }

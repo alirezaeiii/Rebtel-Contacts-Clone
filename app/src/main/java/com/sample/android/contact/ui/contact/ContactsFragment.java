@@ -100,7 +100,6 @@ public class ContactsFragment extends Fragment {
             if (isRefreshing != null) {
                 binding.swipeRefresh.setRefreshing(isRefreshing);
                 binding.progressBar.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
-
             }
         };
         final Observer<List<ContactItem>> contactsObserver = contacts -> {

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sample.android.contact.databinding.FragmentDialogCallBinding
-import com.sample.android.contact.util.ContactUtils
+import com.sample.android.contact.util.ContactUtils.call
 
 class CallDialogFragment: BottomSheetDialogFragment() {
 
@@ -28,7 +28,7 @@ class CallDialogFragment: BottomSheetDialogFragment() {
         binding.phoneNumber.text = phoneNumber
         arguments?.getInt(FLAG_RES_ID)?.let { binding.flagItem.setImageResource(it) }
         binding.callBtn.setOnClickListener {
-            ContactUtils.call(context, phoneNumber)
+            call(context, phoneNumber)
             dismiss()
         }
     }
