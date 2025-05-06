@@ -1,7 +1,5 @@
 package com.sample.android.contact.ui.contact;
 
-import static com.sample.android.contact.util.ContactUtils.getActionBarHeight;
-
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -31,8 +29,6 @@ import javax.inject.Inject;
 
 public class ContactsFragment extends Fragment {
 
-    private static final int SWIPE_REFRESH_OFFSET = 64;
-
     @Inject
     ContactsViewModel.Factory mFactory;
 
@@ -59,7 +55,6 @@ public class ContactsFragment extends Fragment {
 
         binding.swipeRefresh.setColorSchemeResources(R.color.color1);
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
-        binding.swipeRefresh.setProgressViewOffset(true, 0, getActionBarHeight(requireContext()) + SWIPE_REFRESH_OFFSET);
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

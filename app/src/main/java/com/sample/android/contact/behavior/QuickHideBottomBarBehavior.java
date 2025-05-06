@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.sample.android.contact.R;
 
 public class QuickHideBottomBarBehavior extends QuickHideBehavior {
@@ -30,11 +32,13 @@ public class QuickHideBottomBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void removeSpace(View view) {
-        view.setPadding(0, 0, 0, -mBottomSpacing);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setPadding(0, 0, 0, 0);
     }
 
     @Override
     protected void addSpace(View view) {
-        mHandler.postDelayed(() -> view.setPadding(0, 0, 0, 0), ADD_SPACE_DELAY * 2);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        mHandler.postDelayed(() -> recyclerView.setPadding(0, 0, 0, mBottomSpacing), ADD_SPACE_DELAY * 2);
     }
 }

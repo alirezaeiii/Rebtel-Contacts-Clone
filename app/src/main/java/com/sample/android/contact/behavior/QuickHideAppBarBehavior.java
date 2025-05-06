@@ -45,12 +45,17 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void removeSpace(View view) {
-        view.setPadding(0, 0, 0, 0);
-
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        params.setMargins(0, 0, 0, 0);
+        view.setLayoutParams(params);
     }
 
     @Override
     protected void addSpace(View view) {
-        mHandler.postDelayed(() -> view.setPadding(0, mActionBarHeight, 0, 0), ADD_SPACE_DELAY);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        mHandler.postDelayed(() -> {
+            params.setMargins(0, mActionBarHeight, 0, 0);
+            view.setLayoutParams(params);
+        }, ADD_SPACE_DELAY);
     }
 }
