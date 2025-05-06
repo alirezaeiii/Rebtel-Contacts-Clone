@@ -32,6 +32,8 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
     public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child,
                                  @NonNull View target, float velocityX, float velocityY,
                                  boolean consumed) {
+        // target is instance of SwipeRefreshLayout by default and RecyclerView in Search state
+        // We do not want to animate searchView when we are in Search state
         if (!(target instanceof RecyclerView)) {
             return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
         }
