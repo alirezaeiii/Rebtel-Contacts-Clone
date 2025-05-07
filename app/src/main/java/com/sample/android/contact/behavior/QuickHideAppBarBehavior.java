@@ -47,6 +47,7 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void removeSpace(View view) {
+        // Use margin instead of padding in order to SwipeRefreshLayout works from top with default behavior
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         params.setMargins(0, 0, 0, 0);
         view.setLayoutParams(params);
@@ -54,6 +55,7 @@ public class QuickHideAppBarBehavior extends QuickHideBehavior {
 
     @Override
     protected void addSpace(View view) {
+        // Use margin instead of padding in order to SwipeRefreshLayout works from top with default behavior
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         mHandler.postDelayed(() -> {
             params.setMargins(0, mActionBarHeight, 0, 0);
