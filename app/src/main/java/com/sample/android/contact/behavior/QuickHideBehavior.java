@@ -39,7 +39,7 @@ public abstract class QuickHideBehavior extends CoordinatorLayout.Behavior<View>
 
     protected abstract void removeSpace(View view);
 
-    protected abstract void addSpace(View recyclerView);
+    protected abstract void addSpace(View view);
 
     //Required to instantiate as a default behavior
     public QuickHideBehavior() {
