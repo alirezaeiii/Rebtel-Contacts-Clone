@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.9.0'
+        kotlin_version = '1.9.23'
         version_rxjava = '2.1.9'
         version_dagger = '2.48'
         version_leakcanary ='2.9.1'
@@ -10,10 +10,10 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath 'com.android.tools.build:gradle:8.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,7 +23,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
