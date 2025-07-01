@@ -6,7 +6,7 @@ import com.sample.android.contact.util.cleanString
 
 @Parcelize
 class ContactPhoneNumber @JvmOverloads constructor(
-    var number: String,
+    val number: String,
     val typeLabel: String,
     var flagResId: Int? = null,
     var startPadding: Int? = null,
