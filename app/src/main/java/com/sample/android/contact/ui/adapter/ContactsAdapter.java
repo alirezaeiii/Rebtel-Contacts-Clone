@@ -40,8 +40,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private static final int TYPE_SEARCH_CONTACT = 4;
     private static final int TYPE_SEARCH_CONTACT_MULTIPLE = 5;
 
-    private final FragmentManager fragmentManager;
-    private final OnItemClickListener clickListener;
+    private final FragmentManager mFragmentManager;
+    private final OnItemClickListener mClickListener;
     private List<ContactItem> mContacts = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.SmoothScroller mSmoothScroller;
@@ -49,8 +49,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     public ContactsAdapter(FragmentManager fragmentManager, OnItemClickListener clickListener) {
-        this.fragmentManager = fragmentManager;
-        this.clickListener = clickListener;
+        this.mFragmentManager = fragmentManager;
+        this.mClickListener = clickListener;
     }
 
     @NonNull
@@ -59,15 +59,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         return switch (viewType) {
             case TYPE_CONTACT -> new ContactViewHolder(layoutInflater
-                    .inflate(R.layout.contact_item, parent, false), fragmentManager, clickListener);
+                    .inflate(R.layout.contact_item, parent, false), mFragmentManager, mClickListener);
             case TYPE_SEARCH_CONTACT -> new SearchContactViewHolder(layoutInflater
-                    .inflate(R.layout.contact_item, parent, false), fragmentManager, clickListener);
+                    .inflate(R.layout.contact_item, parent, false), mFragmentManager, mClickListener);
             case TYPE_SEPARATOR -> new SeparatorViewHolder(layoutInflater
                     .inflate(R.layout.contact_separator, parent, false));
             case TYPE_CONTACT_MULTIPLE -> new ContactMultipleViewHolder(layoutInflater
-                    .inflate(R.layout.contact_multiple_items, parent, false), fragmentManager, this, clickListener);
+                    .inflate(R.layout.contact_multiple_items, parent, false), mFragmentManager, this, mClickListener);
             case TYPE_SEARCH_CONTACT_MULTIPLE -> new SearchContactMultipleViewHolder(layoutInflater
-                    .inflate(R.layout.contact_multiple_items, parent, false), fragmentManager, this, clickListener);
+                    .inflate(R.layout.contact_multiple_items, parent, false), mFragmentManager, this, mClickListener);
             default -> throw new RuntimeException("You must supply a valid type for this adapter");
         };
     }

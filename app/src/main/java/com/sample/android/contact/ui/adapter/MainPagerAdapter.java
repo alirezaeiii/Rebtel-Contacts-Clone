@@ -13,31 +13,31 @@ import java.util.List;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    private final List<MainPagerItem> fragments;
+    private final List<MainPagerItem> mFragments;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        fragments = new ArrayList<>();
+        mFragments = new ArrayList<>();
     }
 
     public void addItem(MainPagerItem mainPagerItem) {
-        fragments.add(mainPagerItem);
+        mFragments.add(mainPagerItem);
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position).getFragment();
+        return mFragments.get(position).getFragment();
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return mFragments.size();
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return fragments.get(position).getTitle();
+        return mFragments.get(position).getTitle();
     }
 }
